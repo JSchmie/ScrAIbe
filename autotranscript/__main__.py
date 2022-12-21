@@ -2,8 +2,9 @@
 import whisper
 from time import time
 import os
-from moviepy.editor import *
+
 from typing import Union
+from pydub import AudioSegment
 
 class Transcribe:
     def __init__(self, audiofile : Union[bool, str, list] = None, model : str =  "medium", language :str =  "German"):
@@ -53,12 +54,20 @@ class Transcribe:
 
         return currentpath, audiopath, transcriptionpath, audiofiles
 
-    def video_to_audio(self,file,  remove_video=True):
-        clip = VideoFileClip(file)
-        clip.audio.write_audiofile(os.path.join(file[:-4] + '.mp3'))
-        if remove_video:
+    def to_mp3(self,file,  remove_orginal=True):
+        """
+        Convert video file or other audio files to mp3 file, ensures that the audio file is in the correct format for the
+        Whisper model
+        :param file:  audio or video file
+        :param remove_orginal: remove original file
+        :return: mp3 file path
+        """
+
+        AudioSegment.from_file(file, format=file.split('.')[-1]).export(file[:-4] + '.mp3', format='mp3')
+
+        if remove_orginal:
             os.remove(file)
-            print(f'Video {file} removed')
+            print(f'File {file} removed')
         return os.path.join(file[:-4] + '.mp3')
 
 
@@ -70,9 +79,9 @@ class Transcribe:
             else:
                 raise ValueError('Audio file not found')
 
-            if audiofile.endswith('.mp4'):
+            if not audiofile.endswith('.mp3'):
                 print('Converting video to audio')
-                audiofile = self.video_to_audio(audiofile)
+                audiofile = self.to_mp3(audiofile)
 
             print(f'Start transcribing Audio file: {audiofile}')
             _stime = time()
@@ -95,8 +104,8 @@ class Transcribe:
 
                 audiofile = os.path.join(self.audiopath, audiofile)
 
-                if audiofile.endswith('.mp4'):
-                    audiofile = self.video_to_audio(audiofile)
+                if not audiofile.endswith('.mp3'):
+                    audiofile = self.to_mp3(audiofile)
 
                 print(f'Start transcribing Audio file: {audiofile}')
                 _stime = time()
