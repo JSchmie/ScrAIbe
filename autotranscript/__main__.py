@@ -1,6 +1,6 @@
 
 import whisper
-from time import time
+from time import time, sleep
 import os
 
 from typing import Union
@@ -32,6 +32,8 @@ class Transcribe:
         self.model = whisper.load_model(model)  # load model
         print("model loaded")
 
+
+
     def create_folder_structure(self):
         """
         Create folder structure for audio and transcription files
@@ -53,7 +55,18 @@ class Transcribe:
         audiofiles = os.listdir(audiopath) # list of audio files
 
         return currentpath, audiopath, transcriptionpath, audiofiles
-
+    def check_if_allready_transcribed(self, filename):
+        """
+        Check if all audio files are already transcribed
+        :param filename: audio file name
+        :return: bool
+        """
+        purefilename = filename.split('/')[-1][:-4] + '.txt'
+        if purefilename in os.listdir(self.transcriptionpath):
+            print(f'File {purefilename[:-4]} already transcribed')
+            return True
+        else:
+            return False
     def to_mp3(self,file,  remove_orginal=True):
         """
         Convert video file or other audio files to mp3 file, ensures that the audio file is in the correct format for the
@@ -79,37 +92,16 @@ class Transcribe:
             else:
                 raise ValueError('Audio file not found')
 
-            if not audiofile.endswith('.mp3'):
-                print('Converting video to audio')
-                audiofile = self.to_mp3(audiofile)
-
-            print(f'Start transcribing Audio file: {audiofile}')
-            _stime = time()
-            result = self.model.transcribe(audiofile, verbose=True, language= self.language)
-
-            print(f'Transcription finished in {time() - _stime} seconds')
-
-            txtfilename = str(audiofile.split('/')[-1][:-4]) + '.txt'
-
-            savepath = os.path.join(self.transcriptionpath, txtfilename)
-
-            with open(savepath, 'w') as f:
-                f.write(result["text"])
-        elif self.audiofile is None or isinstance(self.audiofile, list):
-            print('No audio file specified or list of audio files')
-            print(f"{len(self.audiofiles)} audio files found in {self.audiopath}")
-            print("Start transcribing all audio files")
-            i = 0
-            for audiofile in self.audiofiles:
-
-                audiofile = os.path.join(self.audiopath, audiofile)
+            if not self.check_if_allready_transcribed(self.audiofile):
 
                 if not audiofile.endswith('.mp3'):
+                    print('Converting video to audio')
                     audiofile = self.to_mp3(audiofile)
 
                 print(f'Start transcribing Audio file: {audiofile}')
                 _stime = time()
-                result = self.model.transcribe(audiofile, verbose=True, language=self.language)
+                result = self.model.transcribe(audiofile, verbose=True, language= self.language)
+
                 print(f'Transcription finished in {time() - _stime} seconds')
 
                 txtfilename = str(audiofile.split('/')[-1][:-4]) + '.txt'
@@ -119,8 +111,34 @@ class Transcribe:
                 with open(savepath, 'w') as f:
                     f.write(result["text"])
 
-                i += 1
-                print(f'{i} of {len(self.audiofiles)} files transcribed')
+        elif self.audiofile is None or isinstance(self.audiofile, list):
+            print('No audio file specified or list of audio files')
+            print(f"{len(self.audiofiles)} audio files found in {self.audiopath}")
+            print("Start transcribing all audio files")
+            i = 0
+            for audiofile in self.audiofiles:
+
+                audiofile = os.path.join(self.audiopath, audiofile)
+
+                if not self.check_if_allready_transcribed(audiofile):
+
+                    if not audiofile.endswith('.mp3'):
+                        audiofile = self.to_mp3(audiofile)
+
+                    print(f'Start transcribing Audio file: {audiofile}')
+                    _stime = time()
+                    result = self.model.transcribe(audiofile, verbose=True, language=self.language)
+                    print(f'Transcription finished in {time() - _stime} seconds')
+
+                    txtfilename = str(audiofile.split('/')[-1][:-4]) + '.txt'
+
+                    savepath = os.path.join(self.transcriptionpath, txtfilename)
+
+                    with open(savepath, 'w') as f:
+                        f.write(result["text"])
+
+                    i += 1
+                    print(f'{i} of {len(self.audiofiles)} files transcribed')
 
         else:
             raise ValueError('Audio file not found')
@@ -133,3 +151,4 @@ class Transcribe:
         return f"Transcribe(audiofile={self.audiofile}, model={self.model}, language={self.language})"
     def __str__(self):
         return f"Transcribe(audiofile={self.audiofile}, model={self.model}, language={self.language})"
+
