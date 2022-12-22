@@ -52,6 +52,7 @@ class Transcribe:
         audiopath = os.path.join(currentpath, 'audiofiles')  # path to audio files
         transcriptionpath = os.path.join(currentpath, 'transcription') # path to transcription files
 
+
         audiofiles = os.listdir(audiopath) # list of audio files
 
         return currentpath, audiopath, transcriptionpath, audiofiles
@@ -75,16 +76,37 @@ class Transcribe:
         :param remove_orginal: remove original file
         :return: mp3 file path
         """
-
+        print(f'Converting {file} to mp3')
         AudioSegment.from_file(file, format=file.split('.')[-1]).export(file[:-4] + '.mp3', format='mp3')
-
+        print(f'Converted {file} to mp3')
         if remove_orginal:
             os.remove(file)
             print(f'File {file} removed')
         return os.path.join(file[:-4] + '.mp3')
 
+    def slower_mp3(self, file, speed=0.5):
+        """
+        Slow down mp3 file
+        :param file: mp3 file
+        :param speed: speed
+        :return: None
+        """
+        if not os.path.exists(os.path.join(self.transcriptionpath, 'slower_version')):
+            print('Creating slower_version folder')
+            os.makedirs(os.path.join(self.transcriptionpath, 'slower_version'))
 
-    def transcribe(self):
+        path = os.path.join(self.transcriptionpath, 'slower_version')
+
+        sound = AudioSegment.from_file(file, format="mp3")
+        slow_sound = sound._spawn(sound.raw_data, overrides={
+            "frame_rate": int(sound.frame_rate * speed)
+        })
+        speedstr = str(speed).replace('.', '')
+        file_out = file.split('/')[-1][:-4] + f'_{speedstr}.mp3'
+        save_path = os.path.join(path, file_out)
+        slow_sound.export(save_path, format="mp3")
+
+    def transcribe(self, speed = 0.75):
 
         if self.audiofile is not None:
             if self.audiofile in self.audiofiles:
@@ -97,6 +119,9 @@ class Transcribe:
                 if not audiofile.endswith('.mp3'):
                     print('Converting video to audio')
                     audiofile = self.to_mp3(audiofile)
+                if speed != 1:
+                    print('Creating slower version of the audio file with speed {}'.format(speed))
+                    self.slower_mp3(audiofile, speed=speed)
 
                 print(f'Start transcribing Audio file: {audiofile}')
                 _stime = time()
@@ -124,6 +149,9 @@ class Transcribe:
 
                     if not audiofile.endswith('.mp3'):
                         audiofile = self.to_mp3(audiofile)
+                    if speed != 1:
+                        print('Creating slower version of the audio file with speed {}'.format(speed))
+                        self.slower_mp3(audiofile, speed=speed)
 
                     print(f'Start transcribing Audio file: {audiofile}')
                     _stime = time()
