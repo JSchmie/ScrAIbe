@@ -1,4 +1,3 @@
-from autotranscript import Transcribe
+from autotranscript import AutoTranscribe
 
-Transcribe().transcribe()
-
+AutoTranscribe(diarisation=True).transcribe()
