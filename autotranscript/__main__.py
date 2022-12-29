@@ -368,7 +368,10 @@ class AutoTranscribe:
                 if "speed" in kwargs:
                     speed = kwargs['speed']
                     print('Creating slower version of the audio file with speed {}'.format(speed))
-                    audio.slower_mp3(speed=speed)
+                    slower_audio = os.path.join(self.transcriptionpath, 'slower_version')
+                    if not os.path.exists(slower_audio):
+                        os.makedirs(slower_audio)
+                    audio.slower_mp3(savefolder=slower_audio,speed=speed)
 
                 if not self.diarisation:
                     WhisperTranscription(audiofile, self.model, self.language
