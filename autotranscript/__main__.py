@@ -316,8 +316,10 @@ class AutoTranscribe:
         """
         if audiofile is None:
             audiofile = os.listdir(audioinput) # get all audio files in audioinput folder
+            for i in range(len(audiofile)):
+                audiofile[i] =  os.path.realpath(audiofile[i])
 
-        self.audiofile = os.path.realpath(audiofile)
+        self.audiofile = audiofile
         self.language = language
         self.diarisation = diarisation
         if diarisation:
@@ -336,6 +338,7 @@ class AutoTranscribe:
             self.transcriptionpath, \
             self.audiofiles = self.create_folder_structure(audioinput, transcriptionout)  # create folder structure
 
+        self.audiofile = self.audiofiles #stupid workaround
 
     def transcribe(self, *args, **kwargs):
 
@@ -345,8 +348,6 @@ class AutoTranscribe:
             audiolist = self.audiofile
         else:
             audiolist = self.audiofiles
-
-        print("Start transcribing audio files")
 
         if not set(audiolist).issubset(set(self.audiofiles)):
             raise ValueError(f"Audio file {self.audiofile} not found in {self.audiopath}")
