@@ -5,6 +5,7 @@ import os
 import glob
 import re
 import shutil
+import sys
 
 from typing import Union
 from pydub import AudioSegment
@@ -265,7 +266,6 @@ class Diarisation(AudioProcessor):
         if not hasattr(self, 'normalized_output') or not hasattr(self, 'diarization_output'):
             self.format_diarization_output()
 
-        print("jkvndhjfvndfhjvndfijhvndvijkdvndfjklvndkvjl")
 
         speaker = set(self.diarization_output["speakers"])
         num_speak_iter = [0 for _ in range(len(speaker))]
@@ -338,12 +338,18 @@ class AutoTranscribe:
             self.transcriptionpath, \
             self.audiofiles = self.create_folder_structure(audioinput, transcriptionout)  # create folder structure
 
-        self.audiofile = self.audiofiles #stupid workaround
+
 
     def transcribe(self, *args, **kwargs):
 
         if isinstance(self.audiofile, str):
-            audiolist= [self.audiofile] # convert to list
+            for i in range(len(self.audiofiles)):
+                if self.audiofile in self.audiofiles[i]:
+                    self.audiofile = [self.audiofiles[i]]
+                    break
+
+            audiolist = self.audiofile
+
         elif isinstance(self.audiofile, list):
             audiolist = self.audiofile
         else:
@@ -424,7 +430,7 @@ class AutoTranscribe:
 
         :return:  currentpath, audiopath, transcriptionpath, audiofiles
         """
-        currentpath = os.getcwd()  # get current path
+        currentpath = os.path.dirname(sys.argv[0]) # get executable path
 
         if not os.path.exists(os.path.join(currentpath, audiopath)):
             print('Creating audiofiles folder')
