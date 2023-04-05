@@ -43,9 +43,9 @@ class AudioProcessor:
         else:
             savename = savename + f'.{type}'
 
-        print(savefolder, savename)
-
         savepath = os.path.join(savefolder, savename)
+
+        self.audio_file.export(savepath, format=type)
 
         print(f'Converted {self.audiofilename} to {type}')
 
