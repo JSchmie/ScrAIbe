@@ -364,7 +364,7 @@ class AutoTranscribe:
             if not "/" in audiofile:
                 audiofile = os.path.join(self.audiopath, audiofile)
 
-            if not self.check_if_allready_transcribed(audiofile):
+            if not self.check_if_already_transcribed (audiofile):
 
                 audio = AudioProcessor(audiofile)
 
@@ -463,14 +463,18 @@ class AutoTranscribe:
 
         return currentpath, audiopath, transcriptionpath, audiofiles
 
-    def check_if_allready_transcribed(self, filename: str):
+    def check_if_already_transcribed (self, filename: str):
         """
         Check if all audio files are already transcribed
         :param filename: audio file name
         :return: bool
         """
-        purefilename = filename.split('/')[-1][:-4] + '.txt'
-        if purefilename in os.listdir(self.transcriptionpath):
+        purefilename = filename.split('/')[-1][:-4]
+        _files = os.listdir(self.transcriptionpath)
+        for i,f in enumerate(_files):
+            _files[i] = f[:-4]
+
+        if purefilename in _files:
             print(f'File {purefilename[:-4]} already transcribed')
             return True
         else:
