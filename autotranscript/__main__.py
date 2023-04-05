@@ -6,6 +6,7 @@ import glob
 import re
 import shutil
 import sys
+from tqdm import tqdm
 
 from typing import Union
 from pydub import AudioSegment
@@ -41,10 +42,10 @@ class AudioProcessor:
             savename = self.coreaudiofile + f'.{type}'
         else:
             savename = savename + f'.{type}'
-        print(savefolder, savename)
-        savepath = os.path.join(savefolder, savename)
 
-        self.audio_file.export(savepath, format=type)
+        print(savefolder, savename)
+
+        savepath = os.path.join(savefolder, savename)
 
         print(f'Converted {self.audiofilename} to {type}')
 
@@ -118,12 +119,12 @@ class WhisperTranscription:
         """
 
         audiofilename = self.audio_file.split('/')[-1]
-        print(f'Start transcribing Audio file: {audiofilename}')
+        #print(f'Start transcribing Audio file: {audiofilename}')
 
         _stime = time()
-        result = self.model.transcribe(self.audio_file, verbose=True, language=self.language)
+        result = self.model.transcribe(self.audio_file, language=self.language)
 
-        print(f'Transcription finished in {time() - _stime} seconds')
+        #print(f'Transcription finished in {time() - _stime} seconds')
 
         self.transcript = result
 
@@ -169,6 +170,7 @@ class Diarisation(AudioProcessor):
 
         if "num_speakers" in kwargs:
             num_speakers = kwargs['num_speakers']
+            kwargs.pop('num_speakers')
         else:
             num_speakers = 2
 
@@ -210,12 +212,11 @@ class Diarisation(AudioProcessor):
         current_speaker = str()
 
         for i, speaker in enumerate(diarization_output["speakers"]):
-            print(i, speaker)
+
             if i == 0:
                 current_speaker = speaker
 
             if speaker != current_speaker:
-                print("Speaker change")
 
                 index_end_speaker = i - 1
 
@@ -316,8 +317,7 @@ class AutoTranscribe:
         """
         if audiofile is None:
             audiofile = os.listdir(audioinput) # get all audio files in audioinput folder
-            for i in range(len(audiofile)):
-                audiofile[i] =  os.path.realpath(audiofile[i])
+            audiofile = [os.path.realpath(os.path.join(audioinput, file)) for file in audiofile]# add path to audio files
 
         self.audiofile = audiofile
         self.language = language
@@ -371,9 +371,12 @@ class AutoTranscribe:
                 if not audiofile.endswith('wav'):
                     audio = audio.to_wav()
                     self.audiofile = audio.audio_file_path
+                    audiofile = audio.audio_file_path
 
                 if "speed" in kwargs:
                     speed = kwargs['speed']
+                    kwargs.pop('speed')
+
                     print('Creating slower version of the audio file with speed {}'.format(speed))
                     slower_audio = os.path.join(self.transcriptionpath, 'slower_version')
                     if not os.path.exists(slower_audio):
@@ -387,29 +390,39 @@ class AutoTranscribe:
                 else:
                     print("Start diarisation")
                     dia = Diarisation(audiofile, self.diarisation_model)
-                    dia.diarization()
-                    temppath = dia.create_temporary_wav()
 
-                    for file in sorted(os.listdir(temppath)):
-                        print(file )
-                    fstring = "\\begin{drama}" \
-                              "\n\t\Character{F}{Frage}" \
-                              "\n\t\Character{A1}{Antwort}\n" \
+                    if 'num_speakers' in kwargs:
+                        num_speakers = kwargs['num_speakers']
+                        kwargs.pop('num_speakers')
+                        dia.diarization(num_speakers=num_speakers)
+                    else:
+                        dia.diarization()
+
+                    temppath = dia.create_temporary_wav()
+                    temppath_dict, _ = dia.format_diarization_output()
+                    speakers = list(set(temppath_dict["speakers"]))
+
+
+                    fstring = "\\begin{drama}"
+
+                    for speaker in speakers:
+                        speaker = speaker.replace("SPEAKER_", "")
+                        fstring += "\n\t\Character{S"+ str(speaker) + "}{S" + str(speaker) + "}"
+
 
                     files = glob.glob(temppath + "/*.wav")
 
                     # Sort files according to the digits included in the filename
                     files = sorted(files, key=lambda x: float(re.findall("(\d+)", x)[0]))
 
-                    for file in files:
-                            print("Start Whisper")
+                    for file in tqdm(files):
+
                             Whisper = WhisperTranscription(file, self.model, self.language).transcribe()
 
-                            if "SPEAKER_00" in file:
-                                fstring += f"\n\Fragespeaks: \n {Whisper}"
-
-                            elif "SPEAKER_01" in file:
-                                fstring += f"\n\Antwortspeaks: \n {Whisper}"
+                            for s in speakers:
+                                if s in file:
+                                    s = s.replace("SPEAKER_", "")
+                                    fstring += f"\n\S{s}speaks: \n {Whisper}"
 
                     fstring += "\n\end{drama}"
 
