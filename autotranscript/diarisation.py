@@ -23,12 +23,8 @@ class Diarisation:
         :param kwargs: kwargs for diarization model
         :return: diarization
         """
-
-        print(f'Start diarization of audio file: {audiofile}')
-
+        
         diarization = self.model(audiofile,*args, **kwargs)
-
-        print('Diarization finished')
 
         out = self.format_diarization_output(diarization)
 
@@ -81,9 +77,8 @@ class Diarisation:
                                           current_speaker])
        
         for outp in normalized_output:
-            #convert in milliseconds
-            start =  dia_list[outp[0]][0].start * 1000
-            end =  dia_list[outp[1]][0].end * 1000
+            start =  dia_list[outp[0]][0].start 
+            end =  dia_list[outp[1]][0].end
 
             diarization_output["segments"].append([start, end])
             diarization_output["speakers"].append(outp[2])
