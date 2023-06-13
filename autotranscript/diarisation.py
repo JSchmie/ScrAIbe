@@ -14,7 +14,6 @@ class Diarisation:
 
         self.model = model
 
-
     def diarization(self, audiofile : str , *args, **kwargs) -> Annotation:
         """
         Diarization of audio file
@@ -84,7 +83,17 @@ class Diarisation:
             diarization_output["speakers"].append(outp[2])
 
         return diarization_output
-    
+    @staticmethod
+    def _get_token():
+        # check ig .pyannotetoken.txt exists
+        path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '.pyannotetoken')
+        if os.path.exists(path):
+            with open(path, 'r') as f:
+                token = f.read()
+        else:
+            raise ValueError('No token found. Please create a token at https://huggingface.co/settings/token'
+                             ' and save it in a file called .pyannotetoken.txt')
+        return token
     @classmethod
     def load_model(cls, model: str = PYANNOTE_DEFAULT_PATH, 
                         token: str = "",
@@ -111,6 +120,8 @@ class Diarisation:
         if local:
             diarization_model =  Pipeline.from_pretrained(model,*args, **kwargs)
         else:
+            if token == "":
+                token = cls._get_token()
             diarization_model =  Pipeline.from_pretrained(model, use_auth_token = token,
                                                            *args, **kwargs)
         
@@ -128,7 +139,6 @@ if __name__ == '__main__':
     print(model)
     audiofile = "/home/jacob/PycharmProjects/autotranscript/tests/test.wav"
     out = model.diarization(audiofile)
-    print(out)
 
     # # deprecated
     # def create_temporary_wav(self, location_of_temp_folder : str = '.temp'):
