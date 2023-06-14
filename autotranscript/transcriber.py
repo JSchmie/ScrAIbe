@@ -1,5 +1,5 @@
-
 import os
+from whisper import Whisper
 from typing import TypeVar , Union
 from whisper import load_model
 from glob import glob
@@ -43,8 +43,17 @@ class Transcriber:
         :return: transcript as string
         """
         
-        result = self.model.transcribe(audio, *args, **kwargs)
+        kwargs = self._get_whisper_kwargs(**kwargs)
 
+        if kwargs or args: 
+            result = self.model.transcribe(audio, *args, **kwargs)
+        else:
+            # if kwargs is empty but parsed anyway whisper
+            # will not use the default kwargs
+            
+            print("No kwargs parsed. Using default kwargs.")
+            result = self.model.transcribe(audio)
+            
         return result["text"]
     
     @staticmethod
@@ -117,3 +126,21 @@ class Transcriber:
         _model = load_model(model, download_root=download_root)
 
         return cls(_model)
+
+    @staticmethod
+    def _get_whisper_kwargs(**kwargs) -> dict:
+        """
+        Get kwargs for whisper model.
+        Ensure that kwargs are valid.
+        :return: kwargs for whisper model
+            :rtype: dict
+        """
+        _possible_kwargs = Whisper.transcribe.__code__.co_varnames
+        
+        whisper_kwargs = dict()
+        
+        for k in kwargs.keys():
+            if k in _possible_kwargs:
+                whisper_kwargs[k] = kwargs[k]
+            
+        return whisper_kwargs
