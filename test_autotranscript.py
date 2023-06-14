@@ -23,7 +23,7 @@ def transcriber():
     Returns: Transcriber Object
     """
 
-    return Transcriber.load_whisper_model("medium", local=True)
+    return Transcriber.load_model("medium", local=True)
 
 
 def test_Transcriber_init(transcriber):
@@ -46,10 +46,75 @@ def test_save_transcript_to_file(transcriber):
     Test save_transcript_to_file
     """
     transcript = transcriber.transcribe("tests/test.wav")
-    
-    open_mock = mock_open()
-    with patch("autotranscript.Transcriber.save_transcript", open_mock, create=True):
-        Transcriber.save_transcript(transcript, "output.txt")
 
-    open_mock.assert_called_with("output.txt", "w")
-    open_mock.return_value.write.assert_called_once_with("test-data")
+    Transcriber.save_transcript(transcript, "tests/output.txt")
+    
+    assert os.path.exists("tests/output.txt")
+
+    os.remove("tests/output.txt")
+    
+# Test Diaraization class
+
+from autotranscript import Diariser
+
+@pytest.fixture
+def diarisation():
+    """
+    Prepare Diarisation for testing
+    Returns: Diarisation Object
+    """
+
+    return Diariser.load_model("models/pyannote/speaker_diarization/config.yaml", local=True)
+
+def test_Diarisation_init(diarisation):
+    """
+    Test Diarisation initialization with a pyannote model 
+    """
+    
+    assert isinstance(diarisation, Diariser)
+
+def test_diarisation(diarisation):
+    """
+    Test diarisation
+    """
+
+    diarisation = diarisation.diarization("tests/test.wav") 
+    assert isinstance(diarisation, dict)
+
+# Test AudioProcessor
+
+from autotranscript import AudioProcessor , TorchAudioProcessor
+
+
+def test_AudioProcessor_init():
+    """
+    Test AudioProcessor initialization
+    """
+    audio = AudioProcessor("tests/test.wav")
+    assert isinstance(audio, AudioProcessor)
+
+def test_AudioProcessor_convert():
+    """
+    Test AudioProcessor convert
+    """
+    audio = AudioProcessor("tests/test.wav")
+    audio.convert_audio("tests/test.mp3", format="mp3")
+    assert os.path.exists("tests/test.mp3")
+    
+def test_TorchAudioProcessor_from_file():
+    """
+    Test TorchAudioProcessor initialization
+    """
+    audio = TorchAudioProcessor.from_file("tests/test.wav")
+    
+    assert isinstance(audio, TorchAudioProcessor)
+    
+    os.remove("tests/test.mp3")
+
+
+def test_TorchAudioProcessor_from_ffmpeg():
+    """
+    Test TorchAudioProcessor initialization
+    """
+    audio = TorchAudioProcessor.from_ffmpeg("tests/test.wav")
+    assert isinstance(audio, TorchAudioProcessor)
