@@ -1,4 +1,5 @@
 from autotranscript.__main__ import *
+from autotranscript.autotranscript import *
 from autotranscript.transcriber import *
 from autotranscript.audio import *
 from autotranscript.transcript_exporter import *
