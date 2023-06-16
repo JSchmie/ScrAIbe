@@ -31,7 +31,8 @@ class Transcript:
         annotatios = {}
 
         if len(args) != len(self.speakers):
-            raise ValueError("Number of speaker names does not match number of speakers")
+            raise ValueError("Number of speaker names "\
+                "does not match number of speakers")
         
         if args:
             for arg,ospeaker in zip(args,self.speakers):
