@@ -1,7 +1,7 @@
-from audio import AudioProcessor
-from diarisation import Diariser
-from transcriber import Transcriber, whisper
-from transcript_exporter import Transcript
+from autotranscript.audio import AudioProcessor
+from autotranscript.diarisation import Diariser
+from autotranscript.transcriber import Transcriber, whisper
+from autotranscript.transcript_exporter import Transcript
 from typing import Union , TypeVar
 from tqdm import trange
 import torch
