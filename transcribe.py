@@ -1,3 +1,7 @@
-from autotranscript import AutoTranscribe
+from autotranscript.autotranscript import AutoTranscribe
 
-AutoTranscribe(diarisation=True).transcribe()
+model = AutoTranscribe()
+
+text = model.transcribe("tests/test.wav")
+
+print(text)
