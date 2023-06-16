@@ -1,7 +1,6 @@
 import os
-from whisper import Whisper
+from whisper import Whisper, load_model
 from typing import TypeVar , Union
-from whisper import load_model
 from glob import glob
 
 whisper = TypeVar('whisper') 
