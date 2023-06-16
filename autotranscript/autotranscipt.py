@@ -86,7 +86,7 @@ class AutoTranscribe:
             final_transcript[i] = {"speaker" : diarisation["speakers"][i],
                                    "text" : transcript}
 
-        return Transcript(transcript, diarisation)
+        return Transcript(final_transcript)
     
     @staticmethod
     def get_audiofile(audiofile : Union[str, torch.Tensor],
