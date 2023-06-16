@@ -1,6 +1,3 @@
-import os
-from warnings import warn
-
 import numpy as np
 import torch
 import ffmpeg
@@ -65,8 +62,8 @@ class AudioProcessor:
         """
         Open an audio file and read as mono waveform, resampling as necessary
 
-        Changed from original function at whisper.audio.load_audio to ensure compatibility
-        with pyannote.audio
+        Changed from original function at whisper.audio.load_audio to ensure 
+        compatibility with pyannote.audio
         Parameters
         ----------
         file: str
