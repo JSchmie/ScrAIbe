@@ -15,7 +15,7 @@ class Diariser:
 
         self.model = model
 
-    def diarization(self, audiofile : Union[str, Tensor] ,
+    def diarization(self, audiofile : Union[str, Tensor, dict] ,
                     *args, **kwargs) -> Annotation:
         """
         Diarization of audio file
