@@ -44,16 +44,11 @@ class Transcriber:
         """
         
         kwargs = self._get_whisper_kwargs(**kwargs)
+        
+        if "verbose" not in kwargs:
+            kwargs["verbose"] = False    
 
-        if kwargs or args: 
-            result = self.model.transcribe(audio, *args, **kwargs)
-        else:
-            # if kwargs is empty but parsed anyway whisper
-            # will not use the default kwargs
-            
-            print("No kwargs parsed. Using default kwargs.")
-            result = self.model.transcribe(audio)
-            
+        result = self.model.transcribe(audio, *args, **kwargs)
         return result["text"]
     
     @staticmethod
