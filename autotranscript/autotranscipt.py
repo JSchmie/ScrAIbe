@@ -84,8 +84,8 @@ class AutoTranscribe:
             transcript = self.transcriber.transcribe(audio, *args , **kwargs)
             
             final_transcript[i] = {"speaker" : diarisation["speakers"][i],
+                                   "segment" : seg,
                                    "text" : transcript}
-
         return Transcript(final_transcript)
     
     @staticmethod
