@@ -55,7 +55,7 @@ class Diariser:
         ###
         
         if len(dia_list) == 1:
-            normalized_output.append([0, 0, dia_list[0]])
+            normalized_output.append([0, 0, dia_list[0][2]])
         else:
             
             for i, (_, _, speaker) in enumerate(dia_list):
@@ -158,4 +158,3 @@ class Diariser:
     
     def __str__(self):
         return f"Diarisation(model={self.model})"
-
