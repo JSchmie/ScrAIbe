@@ -1,8 +1,9 @@
-from pyannote.audio import Pipeline
+from .audio import Pipeline
 from pyannote.audio.pipelines.speaker_diarization import SpeakerDiarization
 from torch import Tensor
 import os
 from typing import TypeVar, Union
+import json
 
 Annotation = TypeVar('Annotation') 
 
@@ -87,6 +88,18 @@ class Diariser:
             diarization_output["segments"].append([start, end])
             diarization_output["speakers"].append(outp[2])
         return diarization_output
+    
+    def save(self, path : str, *args, **kwargs) -> None:
+        """
+        Save diarization output to a file
+
+        :param path: path to save file
+        :type path: str
+        """
+        with open(path, "w") as f:
+            json.dump(self.transcript, f, *args, **kwargs)
+        
+        
     
     @staticmethod
     def _get_token():
