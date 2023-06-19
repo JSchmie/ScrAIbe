@@ -82,7 +82,6 @@ class Transcript:
                 speaker = seq["speaker"]
                 
             fstring += f"{speaker}: {seq['text']}\n"
-
         return fstring
     
     def __repr__(self) -> str:
@@ -182,6 +181,29 @@ class Transcript:
     
     def to_pdf(self, path: str) -> None:
         pass
+    
+    def save(self, path: str, *args, **kwargs) -> None:
+        """
+        Save transcript to file with given path and file format
+
+        :param path: path to save file
+        :type path: str
+        :raises ValueError: if file format is unknown
+        """
+        if path.endswith(".json"):
+            self.to_json(path, *args, **kwargs)
+        elif path.endswith(".txt"):
+            self.to_txt(path, *args, **kwargs)
+        elif path.endswith(".md"):
+            self.to_md(path, *args, **kwargs)
+        elif path.endswith(".html"):
+            self.to_html(path, *args, **kwargs)
+        elif path.endswith(".tex"):
+            self.to_tex(path, *args, **kwargs)
+        elif path.endswith(".pdf"):
+            self.to_pdf(path, *args, **kwargs)
+        else:
+            raise ValueError("Unknown file format")
     
 if __name__ == "__main__":
     test = Transcript(json.load(open("tests/test.json", "r")))
