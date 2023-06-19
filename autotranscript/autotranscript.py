@@ -190,7 +190,7 @@ def cli():
     parser.add_argument("--wmodel_dir", type=str, default= WHISPER_DEFAULT_PATH,
                         help="the path to save model files; uses ./models/whisper by default")
     
-    parser.add_argument("--dia_model", type=str, default = PYANNOTE_DEFAULT_PATH)
+    parser.add_argument("--dia_dir", type=str, default = PYANNOTE_DEFAULT_PATH)
     
     parser.add_argument("--allow_download", type= bool, default=True,
                         help="whether to allow model download if model is not found locally")
@@ -237,7 +237,7 @@ def cli():
     diarisation_kwargs = {"local": local}    
     model = AutoTranscribe(whisper_model= model_name,
                            whisper_kwargs= wkwargs,
-                           dia_model= args.pop("dia_model"),
+                           dia_model= args.pop("dia_dir"),
                            dia_kwargs_kwargs= diarisation_kwargs,)
     
     if task == "transcribe":
