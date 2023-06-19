@@ -1,4 +1,4 @@
-from .audio import Pipeline
+from pyannote.audio import Pipeline
 from pyannote.audio.pipelines.speaker_diarization import SpeakerDiarization
 from torch import Tensor
 import os
