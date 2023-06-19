@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 module_name = "autotranscript"
-github_url = "https://github.com/Jaikinator/transcriptor"
+github_url = "https://github.com/JSchmie/autotranscript"
 
 file_dir = os.path.dirname(os.path.realpath(__file__))
 absdir = lambda p: os.path.join(file_dir, p)
@@ -17,7 +17,7 @@ with open(verfile, "r") as fp:
 
 ############### setup ###############
 
-build_version = "OPTB_BUILD" in os.environ
+build_version = "AUTOTRANSCRIPT_BUILD" in os.environ
 
 setup(
     name=module_name,
@@ -34,5 +34,6 @@ setup(
     author='Jacob Schmieder',
     author_email='',
     description='Transcription tool for audio files based on Whisper',
-    #entry_points={'console_scripts': ['autotranscript = autotranscript.__main__:main']}
+    entry_points={'console_scripts':
+        ['autotranscript = autotranscript.autotranscript:cli']}
 )
