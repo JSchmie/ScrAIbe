@@ -238,7 +238,7 @@ def cli():
     model = AutoTranscribe(whisper_model= model_name,
                            whisper_kwargs= wkwargs,
                            dia_model= args.pop("dia_dir"),
-                           dia_kwargs_kwargs= diarisation_kwargs,)
+                           dia_kwargs= diarisation_kwargs,)
     
     if task == "transcribe":
         for audio in args.pop("audio"):
