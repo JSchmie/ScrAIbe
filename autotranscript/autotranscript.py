@@ -5,6 +5,10 @@ from autotranscript.transcript_exporter import Transcript
 from typing import Union , TypeVar
 from tqdm import trange
 import torch
+import os
+from glob import iglob
+from subprocess import run
+from warnings import warn
 
 diarisation = TypeVar('diarisation')
 
@@ -49,11 +53,14 @@ class AutoTranscribe:
         print("AutoTranscribe initialized all models successfully loaded.")
             
     def transcribe(self, audiofile : Union[str, torch.Tensor],
+                   remove_original : bool = False,
                    *args, **kwargs) -> Transcript:
         """
         Transcribe audiofile with whisper model and pyannote diarization model
         
         :param audiofile: path to audiofile or torch.Tensor
+        :param remove_original: if True the original audiofile will be removed after
+                                transcription.
         :return: Transcript object which contains the transcript and can be used to 
                 export the transcript to differnt formats.
         """
@@ -86,7 +93,50 @@ class AutoTranscribe:
             final_transcript[i] = {"speaker" : diarisation["speakers"][i],
                                    "segment" : seg,
                                    "text" : transcript}
+            
+        if remove_original:
+            if kwargs.get("shred") is True:
+                self.remove_audio_file(audiofile, shred=True)
+            else:
+                self.remove_audio_file(audiofile, shred=False)
+            
         return Transcript(final_transcript)
+    
+    @staticmethod
+    def remove_audio_file(audiofile : str,
+                          shred : bool = False) -> None:
+        """
+        removes orginal audiofile to avoid disk space problems
+        
+        or to enshure data privacy
+        
+        :param audiofile: path to audiofile
+        :param shred: if True audiofile will be shredded and not only removed
+        
+        """
+        if not os.path.exists(audiofile):
+            raise ValueError(f"Audiofile {audiofile} does not exist.")
+        
+        if shred:
+            
+            warn("Shredding audiofile can take a long time.", RuntimeWarning)
+            
+            gen = iglob(f'{audiofile}', recursive=True)
+            cmd = ['shred', '-zvu', '-n', '10', f'{audiofile}']
+            
+            if os.path.isdir(audiofile):
+                raise ValueError(f"Audiofile {audiofile} is a directory.")
+            
+            for file in gen:
+                print(f'shredding {file} now\n')
+                
+                run(cmd , check=True)
+
+        else:
+            os.remove(audiofile)
+            print(f"Audiofile {audiofile} removed.")
+        
+        
     
     @staticmethod
     def get_audiofile(audiofile : Union[str, torch.Tensor],
@@ -111,9 +161,3 @@ class AutoTranscribe:
             raise ValueError(f'Audiofile must be of type AudioProcessor,' \
                              f'not {type(audiofile)}')     
         return audiofile
-    
-
-if __name__ == "__main__":
-    
-    AudioTranscriber = AutoTranscribe()
-    AudioTranscriber.transcribe("tests/test.wav")
