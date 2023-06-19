@@ -53,38 +53,39 @@ class Diariser:
         # Sometimes two consecutive speakers are the same
         # This loop removes these duplicates
         ###
-
-
-        for i, (_, _, speaker) in enumerate(dia_list):
+        
+        if len(dia_list) == 1:
+            normalized_output.append([0, 0, dia_list[0]])
+        else:
             
-            if i == 0:
-                current_speaker = speaker
+            for i, (_, _, speaker) in enumerate(dia_list):
+                if i == 0:
+                    current_speaker = speaker
 
-            if speaker != current_speaker:
+                if speaker != current_speaker:
 
-                index_end_speaker = i - 1
+                    index_end_speaker = i - 1
 
-                normalized_output.append([index_start_speaker,
-                                           index_end_speaker,
-                                           current_speaker])
+                    normalized_output.append([index_start_speaker,
+                                            index_end_speaker,
+                                            current_speaker])
 
-                index_start_speaker = i
-                current_speaker = speaker
+                    index_start_speaker = i
+                    current_speaker = speaker
 
-            if i == len(diarization_output["speakers"]) - 1:
+                if i == len(diarization_output["speakers"]) - 1:
 
-                index_end_speaker = i
-                normalized_output.append([index_start_speaker, 
-                                          index_end_speaker, 
-                                          current_speaker])
-       
+                    index_end_speaker = i
+                    normalized_output.append([index_start_speaker, 
+                                            index_end_speaker, 
+                                            current_speaker])
+        
         for outp in normalized_output:
             start =  dia_list[outp[0]][0].start 
             end =  dia_list[outp[1]][0].end
 
             diarization_output["segments"].append([start, end])
             diarization_output["speakers"].append(outp[2])
-
         return diarization_output
     
     @staticmethod
