@@ -33,7 +33,7 @@ setup(
     license='',
     author='Jacob Schmieder',
     author_email='',
-    description='Transcription tool for audio files based on Whisper',
+    description='Transcription tool for audio files based on Whisper and Pyannote',
     entry_points={'console_scripts':
         ['autotranscript = autotranscript.autotranscript:cli']}
 )
