@@ -2,24 +2,12 @@ import os
 from whisper import Whisper, load_model
 from typing import TypeVar , Union
 from glob import glob
-
+from .misc import WHISPER_DEFAULT_PATH
 whisper = TypeVar('whisper') 
 Tensor = TypeVar('Tensor')
 nparray = TypeVar('nparray')
 
-def get_whisper_default_path() -> str:
-    """
-    Get default path for whisper models
 
-    Returns
-    -------
-    str
-        path
-    """
-    _path = os.path.dirname(os.path.dirname(__file__))
-    return os.path.join(_path, "models", "whisper")
-
-WHISPER_DEFAULT_PATH = get_whisper_default_path()
 
 class Transcriber:
     def __init__(self, model: whisper ) -> None:
@@ -68,7 +56,7 @@ class Transcriber:
     def load_model(cls,
                     model: str = "medium", 
                     local : bool = True,
-                    download_root: str = WHISPER_DEFAULT_PATH ,
+                    download_root: str = WHISPER_DEFAULT_PATH,
                     *args, **kwargs) -> 'Transcriber':
         """
         Load whisper module

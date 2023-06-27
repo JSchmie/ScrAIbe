@@ -4,14 +4,16 @@ from torch import Tensor
 import os
 from typing import TypeVar, Union
 import json
-
+from .misc import PYANNOTE_DEFAULT_PATH
 Annotation = TypeVar('Annotation') 
 
-PYANNOTE_DEFAULT_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 
-                                     "models", "pyannote", 
-                                     "speaker_diarization", "config.yaml")
-
 class Diariser:
+    """
+    Diarisation class
+    This class is used to diarize an audio file using a pretrained model
+    from pyannote.audio.
+    :param model: model to use for diarization
+    """
     def __init__(self, model,*args,**kwargs) -> None:
 
         self.model = model
@@ -137,10 +139,11 @@ class Diariser:
         -------
         Pipeline Object
         """
-
+        
         if local:
             diarization_model =  Pipeline.from_pretrained(model,*args, **kwargs)
         else:
+            print("Loading model from HuggingFace")
             if token == "":
                 token = cls._get_token()
             diarization_model =  Pipeline.from_pretrained(model, use_auth_token = token,
