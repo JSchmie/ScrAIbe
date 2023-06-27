@@ -160,7 +160,7 @@ class Transcript:
     def to_txt(self, path: str) -> None:
         
        with open(path, "w") as f:
-            f.write(self.__str__, f)
+            f.write(self.__str__())
     
     def to_md(self, path: str) -> None:
         return self.to_html(path)
