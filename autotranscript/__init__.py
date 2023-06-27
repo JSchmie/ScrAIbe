@@ -1,4 +1,5 @@
 from .autotranscript import *
+from .app.qtfaststart import *
 from .transcriber import *
 from .audio import *
 from .transcript_exporter import *
