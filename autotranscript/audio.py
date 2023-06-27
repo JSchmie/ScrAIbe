@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from subprocess import CalledProcessError, run
-
+from typing import Union
 SAMPLE_RATE = 16000
 
 class AudioProcessor:
@@ -9,7 +9,7 @@ class AudioProcessor:
     Audio Processor using PyTorchaudio instead of PyDub
     """
     
-    def __init__(self, waveform: torch.Tensor, sr : torch.Tensor,
+    def __init__(self, waveform: torch.Tensor, sr : int = SAMPLE_RATE,
                  *args, **kwargs) -> None:
         """
         Initialise audio processor
