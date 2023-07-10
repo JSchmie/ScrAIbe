@@ -73,15 +73,15 @@ class Transcript:
         """
         fstring = ""
         
-        for id in self.transcript:
-            seq = self.transcript[id]
+        for _id in self.transcript:
+            seq = self.transcript[_id]
             
             if self.annotation:
                 speaker = self.annotation[seq["speaker"]]
             else:
                 speaker = seq["speaker"]
                 
-            fstring += f"{speaker}: {seq['text']}\n"
+            fstring += f"{speaker} {seq}: {seq['text']}\n"
         return fstring
     
     def __repr__(self) -> str:
