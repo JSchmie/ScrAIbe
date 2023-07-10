@@ -1,5 +1,7 @@
 import json
 
+from sympy import Segment
+
 ALPHABET = [*"abcdefghijklmnopqrstuvwxyz"]
 
 
@@ -80,8 +82,10 @@ class Transcript:
                 speaker = self.annotation[seq["speaker"]]
             else:
                 speaker = seq["speaker"]
-                
-            fstring += f"{speaker} {seq}: {seq['text']}\n"
+            
+            segm = seq["segment"]
+            
+            fstring += f"{speaker} {segm}: {seq['text']}\n"
         return fstring
     
     def __repr__(self) -> str:
