@@ -1,6 +1,5 @@
 import json
-
-from sympy import Segment
+import time
 
 ALPHABET = [*"abcdefghijklmnopqrstuvwxyz"]
 
@@ -84,8 +83,10 @@ class Transcript:
                 speaker = seq["speaker"]
             
             segm = seq["segment"]
+            sseg = time.strftime("%H:%M:%S",time.gmtime(segm[0]))
+            eseg = time.strftime("%H:%M:%S",time.gmtime(segm[1]))
             
-            fstring += f"{speaker} {segm}: {seq['text']}\n"
+            fstring += f"{speaker} ({sseg} ; {eseg}): {seq['text']}\n"
         return fstring
     
     def __repr__(self) -> str:
@@ -122,9 +123,8 @@ class Transcript:
         html = "<p>" + self.__str__().replace("\n", "<br>") + "</p>"
         html = "<html><body>" + html + "</body></html>"
         html = html.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
-        
-        return html
-        
+       
+        return html   
     
     def get_md(self) -> str:
         return self.get_html()
