@@ -157,7 +157,7 @@ class AutoTranscribe:
         elif isinstance(audiofile, torch.Tensor):
             audiofile = AudioProcessor(audiofile[0], audiofile[1])
         elif isinstance(audiofile, ndarray):
-            audiofile = AudioProcessor(torch.tensor(audiofile[0]),
+            audiofile = AudioProcessor(torch.Tensor(audiofile[0]),
                                        audiofile[1])
             
         if not isinstance(audiofile, AudioProcessor):
