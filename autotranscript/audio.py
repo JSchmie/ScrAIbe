@@ -1,34 +1,63 @@
+"""
+Audio Processor Module
+=======================
+
+This module provides the AudioProcessor class, utilizing PyTorchaudio for handling audio files.
+It includes functionalities to load, cut, and manage audio waveforms, offering efficient and
+flexible audio processing.
+
+Available Classes:
+- AudioProcessor: Processes audio waveforms and provides methods for loading, 
+                    cutting, and handling audio.
+
+Usage:
+    from .audio_import AudioProcessor
+
+    processor = AudioProcessor.from_file("path/to/audiofile.wav")
+    cut_waveform = processor.cut(start=1.0, end=5.0)
+
+Constants:
+- SAMPLE_RATE (int): Default sample rate for processing.
+- NORMALIZATION_FACTOR (float): Normalization factor for audio waveform.
+"""
+
+from subprocess import CalledProcessError, run
 import numpy as np
 import torch
-from subprocess import CalledProcessError, run
-from typing import Union
+
 SAMPLE_RATE = 16000
+NORMALIZATION_FACTOR = 32768.0
 
 class AudioProcessor:
     """
-    Audio Processor using PyTorchaudio instead of PyDub
+    Audio Processor class that leverages PyTorchaudio to provide functionalities
+    for loading, cutting, and handling audio waveforms.
+
+    Attributes:
+        waveform: torch.Tensor
+            The audio waveform tensor.
+        sr: int
+            The sample rate of the audio.
     """
     
     def __init__(self, waveform: torch.Tensor, sr : int = SAMPLE_RATE,
                  *args, **kwargs) -> None:
+        
         """
-        Initialise audio processor
-        :param waveform: waveform
-        :param sr: sample rate
-        :param args: additional arguments
-        :param kwargs: additional keyword arguments
-            example:
-                - device: device to use for processing
-                          if cuda is available, cuda is used 
+        Initialize the AudioProcessor object.
+
+        Args:
+            waveform (torch.Tensor): The audio waveform tensor.
+            sr (int, optional): The sample rate of the audio. Defaults to SAMPLE_RATE.
+            args: Additional arguments.
+            kwargs: Additional keyword arguments, e.g., device to use for processing. 
+            If CUDA is available, it defaults to CUDA.
+
+        Raises:
+            ValueError: If the provided sample rate is not of type int.
         """
         
-        if "device" in kwargs:
-            device = kwargs["device"]
-        else:
-            if torch.cuda.is_available():
-                device = "cuda"
-            else:
-                device = "cpu"
+        device = kwargs.get("device", "cuda" if torch.cuda.is_available() else "cpu")
                 
         self.waveform = waveform.to(device)
         self.sr = sr
@@ -40,9 +69,13 @@ class AudioProcessor:
     @classmethod
     def from_file(cls, file: str, *args, **kwargs) -> 'AudioProcessor':
         """
-        Load audio file
-        :param file: audio file
-        :return: AudioProcessor
+        Create an AudioProcessor instance from an audio file.
+
+        Args:
+            file (str): The audio file path.
+
+        Returns:
+            AudioProcessor: An instance of the AudioProcessor class containing the loaded audio.
         """
         
         audio, sr = cls.load_audio(file , *args, **kwargs)
@@ -54,42 +87,37 @@ class AudioProcessor:
     
     def cut(self, start: float, end: float) -> torch.Tensor:
         """
-        Cut audio file
-        :param start: start time in seconds
-        :param end: end time in seconds
-        :return: AudioProcessor
+        Cut a segment from the audio waveform between the specified start and end times.
+
+        Args:
+            start (float): Start time in seconds.
+            end (float): End time in seconds.
+
+        Returns:
+            torch.Tensor: The cut waveform segment.
         """
         
-        if isinstance(start, float):
-            start = torch.Tensor([start])
-        if isinstance(end, float):
-            end = torch.Tensor([end])
-        
-        sr = torch.Tensor([self.sr])
-            
-        start = int(start * sr)
-        end = torch.ceil(end * sr)
-        
-        return self.waveform[start:end.to(int)]
+        start = int(start * self.sr)
+        end = int(torch.ceil(end * self.sr))
+        return self.waveform[start:end]
 
     @staticmethod
     def load_audio(file: str, sr: int = SAMPLE_RATE):
         """
-        Open an audio file and read as mono waveform, resampling as necessary
+        Open an audio file and read it as a mono waveform, resampling if necessary.
+        This method ensures compatibility with pyannote.audio
+        and requires the ffmpeg CLI in PATH.
 
-        Changed from original function at whisper.audio.load_audio to ensure 
-        compatibility with pyannote.audio
-        Parameters
-        ----------
-        file: str
-            The audio file to open
+        Args:
+            file (str): The audio file to open.
+            sr (int, optional): The desired sample rate. Defaults to SAMPLE_RATE.
 
-        sr: int
-            The sample rate to resample the audio if necessary
+        Returns:
+            tuple: A NumPy array containing the audio waveform in float32 dtype
+                    and the sample rate.
 
-        Returns
-        -------
-        A NumPy array containing the audio waveform, in float32 dtype.
+        Raises:
+            RuntimeError: If failed to load audio.
         """
         # This launches a subprocess to decode audio while down-mixing
         # and resampling as necessary.  Requires the ffmpeg CLI in PATH.
@@ -111,18 +139,9 @@ class AudioProcessor:
         except CalledProcessError as e:
             raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
 
-        out = np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0
+        out = np.frombuffer(out, np.int16).flatten().astype(np.float32) / NORMALIZATION_FACTOR
         
         return out , sr
     
     def __repr__(self) -> str:
         return f'TorchAudioProcessor(waveform={len(self.waveform)}, sr={int(self.sr)})'
-    
-    def __str__(self) -> str:
-        return f'TorchAudioProcessor(waveform={len(self.waveform)}, sr={int(self.sr)})'
-
-    
-if __name__ == "__main__":
-    
-    print("Testing AudioProcessor")
-    print(AudioProcessor.from_file("tests/test.wav"))
