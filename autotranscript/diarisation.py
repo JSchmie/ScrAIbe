@@ -1,6 +1,6 @@
 """
 Diarisation Class
-=================
+------------------
 
 This class serves as the heart of the speaker diarization system, responsible for identifying
 and segmenting individual speakers from a given audio file. It leverages a pretrained model
