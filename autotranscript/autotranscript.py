@@ -123,8 +123,7 @@ class AutoTranscribe:
        
         print("Starting diarisation.")
         
-        diarisation = self.diariser.diarization(dia_audio,
-                                                *args , **kwargs)
+        diarisation = self.diariser.diarization(dia_audio, **kwargs)
         
         print("Diarisation finished. Starting transcription.")
         
@@ -139,7 +138,7 @@ class AutoTranscribe:
             
             audio = audio_file.cut(seg[0], seg[1])
             
-            transcript = self.transcriber.transcribe(audio, *args , **kwargs)
+            transcript = self.transcriber.transcribe(audio, **kwargs)
             
             final_transcript[i] = {"speaker" : diarisation["speakers"][i],
                                    "segment" : seg,
