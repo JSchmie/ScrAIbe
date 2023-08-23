@@ -6,12 +6,18 @@ ALPHABET = [*"abcdefghijklmnopqrstuvwxyz"]
 
 class Transcript:
     """
-    Class for storing transcript data
-    and exporting it to files in different formats
+    Class for storing transcript data, including speaker information and text segments, 
+    and exporting it to various file formats such as JSON, HTML, and LaTeX.
     """
+    
     def __init__(self, transcript: dict) -> None:
         """
-        :param transcript: formated transcript string
+        Initializes the Transcript object with the given transcript data.
+
+        Args:
+            transcript (dict): A dictionary containing the formatted transcript string.
+                              Keys should correspond to segment IDs, and values should
+                              contain speaker and segment information.
         """
         self.transcript = transcript
         self.speakers = self._extract_speakers()
@@ -20,57 +26,64 @@ class Transcript:
     
     def annotate(self, *args, **kwargs) -> dict:
         """
-        Annote transcript to define speaker names
-        
-        :param args: list of speaker names will maped sequentially to the speakers
-        :param kwargs: dict with speaker names as keys and list of segments as values
-        
-        :return: dict with speaker names as keys and list of segments as values
-        :rtype: dict
+        Annotates the transcript to associate specific names with speakers.
+
+        Args:
+            args (list): List of speaker names. These will be mapped sequentially to the speakers.
+            kwargs (dict): Dictionary with speaker names as keys and list of segments as values.
+
+        Returns:
+            dict: Dictionary with speaker names as keys and the corresponding annotation as values.
+
+        Raises:
+            ValueError: If the number of speaker names does not match the number 
+                        of speakers, or if an unknown speaker is found.
         """
         
-        annotatios = {}
-
-        if len(args) != len(self.speakers):
-            raise ValueError("Number of speaker names "\
-                "does not match number of speakers")
+        annotations = {}
+        if args and len(args) != len(self.speakers):
+            raise ValueError("Number of speaker names does not match number of speakers")
         
         if args:
-            for arg,ospeaker in zip(args,self.speakers):
-                annotatios[ospeaker] = arg
+            for arg, speaker in zip(args, self.speakers):
+                annotations[speaker] = arg
         
-        if kwargs:
-            for key in kwargs:
-                if key not in self.speakers:
-                    raise ValueError(f"{key} is not a speaker")
-                annotatios[key] = kwargs[key]
+        invalid_speakers = set(kwargs.keys()) - set(self.speakers)
+        if invalid_speakers:
+            raise ValueError(f"These keys are not speakers: {', '.join(invalid_speakers)}")
 
-        self.annotation = annotatios
-        return annotatios
+        annotations.update({key: kwargs[key] for key in self.speakers if key in kwargs})
+
+        self.annotation = annotations
+        return annotations
     
     def _extract_speakers(self) -> list:
         """
-        Extract speaker names from transcript
-        :return: list of speaker names
-        :rtype: list
+        Extracts the unique speaker names from the transcript.
+
+        Returns:
+            list: List of unique speaker names in the transcript.
         """
+        
         return list(set([self.transcript[id]["speaker"] for id in self.transcript]))
     
     def _extract_segments(self) -> list:
         """
-        Extract segments from transcript
+        Extracts all the text segments from the transcript.
 
-        :return: list of segments
-        :rtype: list
+        Returns:
+            list: List of segments, where each segment is represented
+                    by the starting and ending times.
         """
         return [self.transcript[id]["segment"] for id in self.transcript]
 
     def __str__(self) -> str:
         """
-        Get transcript as string
+        Converts the transcript to a string representation.
 
-        :return: transcript as string
-        :rtype: str
+        Returns:
+            str: String representation of the transcript, including speaker names and
+                time stamps for each segment.
         """
         fstring = ""
         
@@ -90,6 +103,11 @@ class Transcript:
         return fstring
     
     def __repr__(self) -> str:
+        """Return a string representation of the Transcript object.
+
+        Returns:
+            str: A string that provides an informative description of the object.
+        """
         return f"Transcript(speakers = {self.speakers},"\
                 f"segments = {self.segments}, annotation = {self.annotation})"
     
@@ -127,10 +145,20 @@ class Transcript:
         return html   
     
     def get_md(self) -> str:
+        """Get transcript as Markdown string, using HTML formatting.
+
+        Returns:
+            str: Transcript as a Markdown string.
+        """
         return self.get_html()
     
     def get_tex(self) -> str:
-        
+        """Get transcript as LaTeX string. If no annotations are present, the speakers will
+        be annotated with the first letters of the alphabet.
+
+        Returns:
+            str: Transcript as LaTeX string.
+        """
         if not self.annotation:
 
             self.annotate(*ALPHABET[:len(self.speakers)])
@@ -153,20 +181,30 @@ class Transcript:
         
             
     def to_json(self,path, *args, **kwargs) -> None:
-        """
-        Save transcript as json file
-        :param path: path to save file
-        :type path: str
+        """Save transcript as json file
+        
+        Args:
+            path (str): path to save file
         """
         with open(path, "w") as f:
             json.dump(self.transcript, f, *args, **kwargs)
     
     def to_txt(self, path: str) -> None:
+        """Save transcript as a LaTeX file (placeholder function, implementation needed).
+
+        Args:
+            path (str): Path to save the LaTeX file.
+        """
         
-       with open(path, "w") as f:
+        with open(path, "w") as f:
             f.write(self.__str__())
     
     def to_md(self, path: str) -> None:
+        """Get transcript as Markdown string, using HTML formatting.
+
+        Returns:
+            str: Transcript as a Markdown string.
+        """
         return self.to_html(path)
     
     def to_html(self, path: str) -> None:
@@ -181,19 +219,37 @@ class Transcript:
             file.write(self.get_html())
     
     def to_tex(self, path: str) -> None:
+        """Save transcript as a LaTeX file (placeholder function, implementation needed).
+
+        Args:
+            path (str): Path to save the LaTeX file.
+        """
         pass
     
     def to_pdf(self, path: str) -> None:
+        """Save transcript as a PDF file (placeholder function, implementation needed).
+
+        Args:
+            path (str): Path to save the PDF file.
+        """
         pass
     
     def save(self, path: str, *args, **kwargs) -> None:
-        """
-        Save transcript to file with given path and file format
+        """Save transcript to file with the given path and file format.
 
-        :param path: path to save file
-        :type path: str
-        :raises ValueError: if file format is unknown
+        This method can save the transcript in various formats including JSON, TXT,
+        MD, HTML, TEX, and PDF. The file format is determined by the extension of
+        the path.
+
+        Args:
+            path (str): Path to save the file, including the desired file extension.
+            *args: Additional positional arguments to be passed to the specific save methods.
+            **kwargs: Additional keyword arguments to be passed to the specific save methods.
+
+        Raises:
+            ValueError: If the file format specified in the path is unknown.
         """
+        
         if path.endswith(".json"):
             self.to_json(path, *args, **kwargs)
         elif path.endswith(".txt"):
@@ -208,12 +264,5 @@ class Transcript:
             self.to_pdf(path, *args, **kwargs)
         else:
             raise ValueError("Unknown file format")
-    
-if __name__ == "__main__":
-    test = Transcript(json.load(open("tests/test.json", "r")))
-    print(repr(test))
-    print(test)
-    
-    
-    
+
     
