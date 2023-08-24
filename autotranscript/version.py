@@ -1,8 +1,8 @@
 import os
 import subprocess as sp
 
-MAJOR = 1
-MINOR = 0
+MAJOR = 0
+MINOR = 1
 MICRO = 0
 MICRO_POST = 0
 ISRELEASED = False
