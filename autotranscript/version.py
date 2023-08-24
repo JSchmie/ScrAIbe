@@ -2,7 +2,7 @@ import os
 import subprocess as sp
 
 MAJOR = 0
-MINOR = 2
+MINOR = 1
 MICRO = 0
 MICRO_POST = 0
 ISRELEASED = False

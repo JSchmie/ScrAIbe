@@ -65,7 +65,7 @@ class Transcript:
             list: List of unique speaker names in the transcript.
         """
         
-        return list(set([self.transcript[id]["speaker"] for id in self.transcript]))
+        return list(set([self.transcript[id]["speakers"] for id in self.transcript]))
     
     def _extract_segments(self) -> list:
         """
@@ -75,7 +75,7 @@ class Transcript:
             list: List of segments, where each segment is represented
                     by the starting and ending times.
         """
-        return [self.transcript[id]["segment"] for id in self.transcript]
+        return [self.transcript[id]["segments"] for id in self.transcript]
 
     def __str__(self) -> str:
         """
@@ -91,11 +91,11 @@ class Transcript:
             seq = self.transcript[_id]
             
             if self.annotation:
-                speaker = self.annotation[seq["speaker"]]
+                speaker = self.annotation[seq["speakers"]]
             else:
-                speaker = seq["speaker"]
+                speaker = seq["speakers"]
             
-            segm = seq["segment"]
+            segm = seq["segments"]
             sseg = time.strftime("%H:%M:%S",time.gmtime(segm[0]))
             eseg = time.strftime("%H:%M:%S",time.gmtime(segm[1]))
             
@@ -172,7 +172,7 @@ class Transcript:
         
         for id in self.transcript:
             seq = self.transcript[id]
-            speaker = self.annotation[seq["speaker"]]
+            speaker = self.annotation[seq["speakers"]]
             fstring += f"\n\\{speaker}speaks:\n{seq['text']}"
         
         fstring += "\n\\end{drama}"
