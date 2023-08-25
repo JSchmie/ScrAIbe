@@ -32,10 +32,13 @@ if __name__ == "__main__":
                 open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
             )
         ],
+        dependency_links=[
+            'https://download.pytorch.org/whl/cu113',
+            ],
         url= github_url,
         license='',
         author='Jacob Schmieder',
-        author_email='',
+        author_email='Jacob.Schmieder@dbfz.de',
         description='Transcription tool for audio files based on Whisper and Pyannote',
         entry_points={'console_scripts':
             ['autotranscript = autotranscript.autotranscript:cli']}
