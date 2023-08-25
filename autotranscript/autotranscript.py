@@ -285,7 +285,7 @@ def cli():
     parser.add_argument("--output_directory", "-o", type=str, default=".",
                         help="Directory to save the transcription outputs.")
 
-    parser.add_argument("--output_format", "-f", type=str, default="txt",
+    parser.add_argument("--output_format", "-of", type=str, default="txt",
                         choices=["txt", "json", "md", "html"],
                         help="Format of the output file; defaults to txt.")
 
