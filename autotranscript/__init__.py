@@ -9,5 +9,7 @@ from .misc import *
 
 from .app.gradio_app import *
 from .app.qtfaststart import *
+
+from .cli import *
  
 __version__ = _get_version()

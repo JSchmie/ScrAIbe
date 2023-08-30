@@ -166,6 +166,9 @@ class Transcriber:
         _possible_kwargs = Whisper.transcribe.__code__.co_varnames
         
         whisper_kwargs = {k: v for k, v in kwargs.items() if k in _possible_kwargs}
+        
+        if (task := kwargs.get("task")):
+            whisper_kwargs["task"] = task
             
         return whisper_kwargs
     
