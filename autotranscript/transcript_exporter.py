@@ -99,7 +99,7 @@ class Transcript:
             sseg = time.strftime("%H:%M:%S",time.gmtime(segm[0]))
             eseg = time.strftime("%H:%M:%S",time.gmtime(segm[1]))
             
-            fstring += f"{speaker} ({sseg} ; {eseg}): {seq['text']}\n"
+            fstring += f"{speaker} ({sseg} ; {eseg}):\t{seq['text']}\n"
         return fstring
     
     def __repr__(self) -> str:
@@ -128,7 +128,7 @@ class Transcript:
         :rtype: str
         """
         if "indent" not in kwargs:
-            kwargs["indent"] = 4
+            kwargs["indent"] = 3
         return json.dumps(self.transcript, *args, **kwargs)
     
     def get_html(self) -> str:

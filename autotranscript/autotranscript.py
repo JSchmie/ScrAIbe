@@ -353,7 +353,7 @@ def cli():
         pass
     
     if start_server:
-        from .gradio_app import gradio_app
+        from .app.gradio_app import gradio_app
         gradio_app(model)
 
 if __name__ == "__main__":
