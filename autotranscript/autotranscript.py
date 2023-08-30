@@ -277,4 +277,3 @@ class AutoTranscribe:
             raise ValueError(f'Audiofile must be of type AudioProcessor,' \
                              f'not {type(audio_file)}')     
         return audio_file
-    
