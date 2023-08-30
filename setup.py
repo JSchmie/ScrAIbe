@@ -26,7 +26,7 @@ if __name__ == "__main__":
         name=module_name,
         version=version["get_version"](build_version),
         packages=find_packages(),
-        python_requires="~=3.9",
+        python_requires=">=3.8",
         readme="README.md",
         install_requires = [str(r) for r in pkg_resources.parse_requirements(
                 open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
