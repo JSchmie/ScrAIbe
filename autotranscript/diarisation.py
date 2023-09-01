@@ -208,6 +208,8 @@ class Diariser:
         if not os.path.exists(model) and use_auth_token is None:
             use_auth_token = cls._get_token()
             model = 'pyannote/speaker-diarization'
+        elif not os.path.exists(model) and use_auth_token is not None:
+            model = 'pyannote/speaker-diarization'
             
         _model =  Pipeline.from_pretrained(model,
                                            use_auth_token = use_auth_token,
