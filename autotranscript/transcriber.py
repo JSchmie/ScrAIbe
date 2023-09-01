@@ -120,6 +120,7 @@ class Transcriber:
                     download_root: str = WHISPER_DEFAULT_PATH,
                     device: Optional[Union[str, device]] = None,
                     in_memory: bool = False,
+                    *args, **kwargs
                     ) -> 'Transcriber':
         """
         Load whisper model.
@@ -145,6 +146,8 @@ class Transcriber:
                                         Device to load model on. Defaults to None.
             in_memory (bool, optional): Whether to load model in memory. 
                                         Defaults to False.
+            args: Additional arguments only to avoid errors.
+            kwargs: Additional keyword arguments only to avoid errors.
 
         Returns:
             Transcriber: A Transcriber object initialized with the specified model.

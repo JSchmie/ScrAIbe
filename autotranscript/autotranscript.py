@@ -26,7 +26,6 @@ Usage:
 # Standard Library Imports
 import os
 from glob import iglob
-import re
 from subprocess import run
 from typing import TypeVar, Union
 from warnings import warn
@@ -41,6 +40,7 @@ from .audio import AudioProcessor
 from .diarisation import Diariser
 from .transcriber import Transcriber, whisper
 from .transcript_exporter import Transcript
+
 
 DiarisationType = TypeVar('DiarisationType')
 
@@ -77,15 +77,16 @@ class AutoTranscribe:
                         and pyannote diarization models.
         """
         
+        
         if whisper_model is None:
-            self.transcriber = Transcriber.load_model("medium")    
+            self.transcriber = Transcriber.load_model("medium", **kwargs)    
         elif isinstance(whisper_model, str):
             self.transcriber = Transcriber.load_model(whisper_model, **kwargs)
         else:
             self.transcriber = whisper_model
 
         if dia_model is None:
-            self.diariser = Diariser.load_model()
+            self.diariser = Diariser.load_model(**kwargs)
         elif isinstance(dia_model, str):
             self.diariser = Diariser.load_model(dia_model, **kwargs)
         else:
@@ -125,16 +126,17 @@ class AutoTranscribe:
         
         diarisation = self.diariser.diarization(dia_audio, **kwargs)
         
+        
         if not diarisation["segments"]:
-            warn("No segments found. Try to run transcription without diarisation.")
+            print("No segments found. Try to run transcription without diarisation.")
+ 
             transcript = self.transcriber.transcribe(audio_file.waveform, **kwargs)
             
-            final_transcript= {"speakers" : ["speaker01"],
+            final_transcript= {0 : {"speakers" : 'SPEAKER_01',
                                    "segments" : [0, len(audio_file.waveform)],
-                                   "text" : transcript}
+                                   "text" : transcript}}
             
             return Transcript(final_transcript)
-            
         
         print("Diarisation finished. Starting transcription.")
         
@@ -142,6 +144,8 @@ class AutoTranscribe:
         
         # Transcribe each segment and store the results
         final_transcript = dict()
+        
+        
         
         for i in trange(len(diarisation["segments"]), desc= "Transcribing"):
             
@@ -277,3 +281,6 @@ class AutoTranscribe:
             raise ValueError(f'Audiofile must be of type AudioProcessor,' \
                              f'not {type(audio_file)}')     
         return audio_file
+
+    def __repr__(self):
+        return f"AutoTranscribe(transcriber={self.transcriber}, diariser={self.diariser})"

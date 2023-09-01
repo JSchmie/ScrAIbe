@@ -177,10 +177,11 @@ class Diariser:
     @classmethod
     def load_model(cls, 
                     model: str = PYANNOTE_DEFAULT_CONFIG, 
-                    token: str = None,
+                    use_auth_token: str = None,
                     cache_token: bool = False,
                     cache_dir: Union[Path, str] = PYANNOTE_DEFAULT_PATH,
-                    hparams_file: Union[str, Path] = None
+                    hparams_file: Union[str, Path] = None,
+                    *args, **kwargs
                     ) -> Pipeline:
         
         """
@@ -194,20 +195,22 @@ class Diariser:
             cache_token: Whether to cache the token locally for future use.
             cache_dir: Directory for caching models.
             hparams_file: Path to a YAML file containing hyperparameters.
+            args: Additional arguments only to avoid errors.
+            kwargs: Additional keyword arguments only to avoid errors.
 
         Returns:
             Pipeline: A pyannote.audio Pipeline object, encapsulating the loaded model.
         """
         
-        if cache_token and token is not None:
-            cls._save_token(token)
+        if cache_token and use_auth_token is not None:
+            cls._save_token(use_auth_token)
             
-        if not os.path.exists(model) and token is None:
-            token = cls._get_token()
+        if not os.path.exists(model) and use_auth_token is None:
+            use_auth_token = cls._get_token()
             model = 'pyannote/speaker-diarization'
         
         _model =  Pipeline.from_pretrained(model,
-                                           use_auth_token = token,
+                                           use_auth_token = use_auth_token,
                                            cache_dir = cache_dir,
                                            hparams_file = hparams_file,)
         
