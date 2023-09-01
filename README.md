@@ -42,11 +42,27 @@ Run the following to view all available options:
 		
 	autotranscript -h
 
+### Documentation usage
+
+To access the documentation run the following command from the docs/_build/html directory:
+
+	python -m http.server
+
+## Roadmap
+
+- Model quantization
+- Model fine-tuning
+- Implementation of LLMs
+- Executable for Windows
+
 ## Contact
+
+For queries contact Jacob Schmieder at Jacob.Schmieder@dbfz.de
 
 ## License 
 
-## Cite `AutoTranscript` : 
+## Acknowledgments
 
+Special thanks go to the colleagues of the KIDA project - especially the teams in I5 and I2 - and the BMEL (Bundesministerium für Ernährung und Landwirtschaft).
 
 
