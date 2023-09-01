@@ -152,7 +152,7 @@ class Diariser:
         Returns:
             str: The Huggingface token.
         """
-        
+    
         if os.path.exists(TOKEN_PATH):
             with open(TOKEN_PATH, 'r', encoding="utf-8") as file:
                 token = file.read()
@@ -178,7 +178,7 @@ class Diariser:
     def load_model(cls, 
                     model: str = PYANNOTE_DEFAULT_CONFIG, 
                     use_auth_token: str = None,
-                    cache_token: bool = False,
+                    cache_token: bool = True,
                     cache_dir: Union[Path, str] = PYANNOTE_DEFAULT_PATH,
                     hparams_file: Union[str, Path] = None,
                     *args, **kwargs
@@ -208,7 +208,7 @@ class Diariser:
         if not os.path.exists(model) and use_auth_token is None:
             use_auth_token = cls._get_token()
             model = 'pyannote/speaker-diarization'
-        
+            
         _model =  Pipeline.from_pretrained(model,
                                            use_auth_token = use_auth_token,
                                            cache_dir = cache_dir,
