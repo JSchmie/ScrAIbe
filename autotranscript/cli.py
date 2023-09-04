@@ -38,45 +38,45 @@ def cli():
 
     group = parser.add_mutually_exclusive_group()
     
-    parser.add_argument("-f","--audio_files", nargs="+", type=str, default=None,
+    parser.add_argument("-f","--audio-files", nargs="+", type=str, default=None,
                         help="List of audio files to transcribe.")
     
-    group.add_argument('--start_server', action='store_true',
+    group.add_argument('--start-server', action='store_true',
                         help='Start the Gradio app.')
     
     parser.add_argument("--port", type=int, default= None,
                         help="Port to run the Gradio app on. Defaults to 7860.")
     
-    parser.add_argument("--server_name", type=str, default= None,
+    parser.add_argument("--server-name", type=str, default= None,
                         help="Name of the Gradio app. If empty 127.0.0.1 or 0.0.0.0 will be used.")
                         
-    parser.add_argument("--whisper_model_name", default="medium",
+    parser.add_argument("--whisper-model-name", default="medium",
                         help="Name of the Whisper model to use.")
 
-    parser.add_argument("--whisper_model_directory", type=str, default= None,
+    parser.add_argument("--whisper-model-directory", type=str, default= None,
                         help="Path to save Whisper model files; defaults to ./models/whisper.")
 
-    parser.add_argument("--diarization_directory", type=str, default= None,
+    parser.add_argument("--diarization-directory", type=str, default= None,
                         help="Path to the diarization model directory.")
 
-    parser.add_argument("--hf_token", default= None, type=str,
+    parser.add_argument("--hf-token", default= None, type=str,
                         help="HuggingFace token for private model download.")
 
-    parser.add_argument("--inference_device",
+    parser.add_argument("--inference-device",
                         default="cuda" if is_available() else "cpu",
                         help="Device to use for PyTorch inference.")
 
-    parser.add_argument("--num_threads", type=int, default=0,
+    parser.add_argument("--num-threads", type=int, default=0,
                         help="Number of threads used by torch for CPU inference; overrides MKL_NUM_THREADS/OMP_NUM_THREADS.")
 
-    parser.add_argument("--output_directory", "-o", type=str, default=".",
+    parser.add_argument("--output-directory", "-o", type=str, default=".",
                         help="Directory to save the transcription outputs.")
 
-    parser.add_argument("--output_format", "-of", type=str, default="txt",
+    parser.add_argument("--output-format", "-of", type=str, default="txt",
                         choices=["txt", "json", "md", "html"],
                         help="Format of the output file; defaults to txt.")
 
-    parser.add_argument("--verbose_output", type=str2bool, default=True,
+    parser.add_argument("--verbose-output", type=str2bool, default=True,
                         help="Enable or disable progress and debug messages.")
 
     parser.add_argument("--task", type=str, default= 'autotranscribe', # unifinished code
