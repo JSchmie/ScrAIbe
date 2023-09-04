@@ -105,15 +105,16 @@ class Diariser:
         # Sometimes two consecutive speakers are the same
         # This loop removes these duplicates
         ###
-        
+
         if len(dia_list) == 1:
             normalized_output.append([0, 0, dia_list[0][2]])
         else:
             
             for i, (_, _, speaker) in enumerate(dia_list):
+                
                 if i == 0:
                     current_speaker = speaker
-
+                
                 if speaker != current_speaker:
 
                     index_end_speaker = i - 1
@@ -125,9 +126,11 @@ class Diariser:
                     index_start_speaker = i
                     current_speaker = speaker
 
-                if i == len(diarization_output["speakers"]) - 1:
+            
+                if i == len(dia_list) - 1:
 
                     index_end_speaker = i
+                    
                     normalized_output.append([index_start_speaker, 
                                             index_end_speaker, 
                                             current_speaker])
