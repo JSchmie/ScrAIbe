@@ -1,11 +1,21 @@
 
 # `ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment`
 
+`ScrAIbe` is a state-of-the-art,  [PyTorch](https://pytorch.org/) based multilingual speech-to-text framework to generate fully automated transcriptions. 
 
-`ScrAIbe` is a [PyTorch](https://pytorch.org/) based interface speech-to-text tool to generate fully automated transcriptions. AutoTranscript uses AI models containing speaker diarization models:
+Beyond transcription, ScrAIbe supports advanced functions, such as speaker diarization and speaker recognition.
+
+Designed as a comprehensive AI toolkit, it uses multiple AI models:
 
 - [whisper](https://github.com/openai/whisper): A general-purpose speech recognition model.
-- [payannote-audio](https://github.com/pyannote/pyannote-audio): An open-source toolkit for speaker diarization-.
+- [payannote-audio](https://github.com/pyannote/pyannote-audio): An open-source toolkit for speaker diarization.
+
+The framework utilizes a PyanNet-inspired pipeline with the `Pyannote` library for speaker diarization and `VoxCeleb` for speaker embedding.
+
+During post-diarization, each audio segment is processed by the OpenAI `Whisper` model, in a transformer encoder-decoder structure. Initially, a CNN mitigates noise and enhances speech. Before transcription, `VoxLingua` dentifies the language segment, facilitating Whisper's role in both transcription and text translation.
+
+The following graphic illustates the whole pipeline:
+
 
 ## Install `ScrAIbe` : 
 
@@ -18,9 +28,11 @@ The following command will pull and install the latest commit from this reposito
   
 ## Usage 
 
-`AutoTranscript` can be used as a command-line interface, a webserver, or as a Python API.
+We've developed ScrAIbe with several access points to cater to diverse user needs.
 
 ### Python usage
+
+It enables full control over the functionalities as well as process customization.
 
 ```python
 from autotranscript import AutoTranscribe
@@ -37,7 +49,6 @@ Refer to [whisper](https://github.com/openai/whisper) and [payannote-audio](http
 
 ### Command-line usage
 
-
 You can also run ScrAIbe in a [Gradio App](https://github.com/gradio-app/gradio)  interface using the following command-line:
 
 	autotranscript audio.wav
@@ -45,8 +56,10 @@ You can also run ScrAIbe in a [Gradio App](https://github.com/gradio-app/gradio)
 Some example of important functionalities are:
 
 -  `--task`: Task to be performed, either transcription, diarization or translation into English. Default is transcription.
-- `--hf-token`: To download the models, a Hugging Face token must be generated. Check [Hugging Face](https://huggingface.co/docs/hub/security-tokens) for further information on how to do that.
-- `--server-name`: Name of the Web Server. If empty 127.0.0.1 or 0.0.0.0 will be used
+- `--hf-token`: To download the models, a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens) must be generated. Check [Hugging Face](https://huggingface.co/docs/hub/models) for further information on how to access the models.
+- `--server-name`: Name of the Web Server. If empty 127.0.0.1 or 0.0.0.0 will be used.
+-  `--port`: To run the Gradio app. The default is 7860.
+
 - `--whisper-model-name`: Name of the [whisper](https://github.com/openai/whisper) model to be used. Default is `medium`.
 
 
@@ -64,7 +77,7 @@ We are happy for any interest in contributing: In order to do that, fork the rep
 
 ## Roadmap
 
-The following milestones are planned for the further development of ScrAIbe:
+The following milestones are planned for further releases of ScrAIbe:
 
 - Model quantization   
 Quantization to empower memory and computational efficiency.
