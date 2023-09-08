@@ -91,9 +91,8 @@ ScrAIbe is licensed under (tbd).
 
 ## Acknowledgments
 
-<!--add KIDA, MRI, DBFZ, BMEL logos-->
-
 Special thanks go to the KIDA project and the BMEL (Bundesministerium für Ernährung und Landwirtschaft), especially to the AI Consultancy Team and the Infrastructure Team.
 
+![KIDA](kida_dark.png#gh-dark-mode-only)    &nbsp;    ![BMEL](BMEL_dark.png#gh-dark-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](DBFZ_dark.png#gh-dark-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](MRI.png#gh-dark-mode-only)   
 
-
+![KIDA](kida.png#gh-light-mode-only)    &nbsp;    ![BMEL](BMEL.jpg#gh-light-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](DBFZ.png#gh-light-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](MRI.png#gh-light-mode-only)  
