@@ -98,7 +98,10 @@ class AudioProcessor:
         """
         
         start = int(start * self.sr)
-        end = int(torch.ceil(end * self.sr))
+        if (isinstance(end, float) or isinstance(end, int)) and isinstance(self.sr, int):
+            end = int(np.ceil(end * self.sr))
+        else:
+            end = int(torch.ceil(end * self.sr))
         return self.waveform[start:end]
 
     @staticmethod
