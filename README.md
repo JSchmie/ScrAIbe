@@ -16,6 +16,8 @@ During post-diarization, each audio segment is processed by the OpenAI `Whisper`
 
 The following graphic illustates the whole pipeline:
 
+![Pipeline](pipeline.png#gh-dark-mode-only) 
+![Pipeline](pipeline_light.png#gh-light-mode-only) 
 
 ## Install `ScrAIbe` : 
 
