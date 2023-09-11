@@ -27,7 +27,12 @@ The following command will pull and install the latest commit from this reposito
 
 - **Python version**: Python 3.9
 - **PyTorch version**: Python 1.11.0
-  
+
+Important: For the `Pyannote` model you need to be granted access in Hugging Face.
+Check the [Pyannote model page](https://huggingface.co/pyannote/speaker-diarization) to get access to the model.
+
+Additionally, you need to generate a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens). 
+
 ## Usage 
 
 We've developed ScrAIbe with several access points to cater to diverse user needs.
@@ -58,7 +63,7 @@ You can also run ScrAIbe in a [Gradio App](https://github.com/gradio-app/gradio)
 Some example of important functionalities are:
 
 -  `--task`: Task to be performed, either transcription, diarization or translation into English. Default is transcription.
-- `--hf-token`: To download the models, a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens) must be generated. Check [Hugging Face](https://huggingface.co/docs/hub/models) for further information on how to access the models.
+- `--hf-token`: Personal `Hugging Face` token.
 - `--server-name`: Name of the Web Server. If empty 127.0.0.1 or 0.0.0.0 will be used.
 -  `--port`: To run the Gradio app. The default is 7860.
 
@@ -68,6 +73,21 @@ Some example of important functionalities are:
 Run the following to view all available options:
 		
 	autotranscript -h
+
+### Running a Docker container
+
+After you have installed Docker, you can execute the following commands in the terminal.
+
+```
+sudo docker build . --build-arg="hf_token=[enter your HuggingFace token] " --no-cache -t [image name] 
+
+sudo docker run --rm -it  -p 7860:7860  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
+
+```
+Then click the following link to run the app:
+
+http://0.0.0.0:7860
+
 
 ## Documentation 
 
