@@ -160,8 +160,8 @@ def cli():
                 
     
     if start_server: # unfinished code
-        from .app.gradio_app import gradio_Interface
-        gradio_Interface(model).queue().launch(server_port=args.port, server_name=args.server_name)
+        from .app.gradio_app import gradio_server
+        gradio_server(model) #.queue().launch(server_port=args.port, server_name=args.server_name)
         
 
 if __name__ == "__main__":

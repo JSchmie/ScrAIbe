@@ -92,8 +92,8 @@ def gradio_server(model : AutoTranscribe):
         description="Upload an audio file to transcribe its content. Powered by AutoTranscribe!",
         theme="soft",       # Example of a more modern theme
         server_port=7860,
-        server_name="autotranscribe",   
-    ).queue().launch() 
+        server_name="0.0.0.0",   
+    ).queue().launch(server_port=7860, server_name="0.0.0.0") 
     
     
 if __name__ == "__main__":

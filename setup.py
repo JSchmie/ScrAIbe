@@ -41,5 +41,5 @@ if __name__ == "__main__":
         author_email='Jacob.Schmieder@dbfz.de',
         description='Transcription tool for audio files based on Whisper and Pyannote',
         entry_points={'console_scripts':
-            ['autotranscript = autotranscript.autotranscript:cli']}
+            ['autotranscript = autotranscript.cli:cli']}
     )
