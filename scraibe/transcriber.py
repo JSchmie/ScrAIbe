@@ -173,6 +173,9 @@ class Transcriber:
         if (task := kwargs.get("task")):
             whisper_kwargs["task"] = task
             
+        if (language := kwargs.get("language")):
+            whisper_kwargs["language"] = language 
+        
         return whisper_kwargs
     
     def __repr__(self) -> str:
