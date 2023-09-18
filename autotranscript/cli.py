@@ -11,6 +11,7 @@ import json
 from sympy import use
 
 from .autotranscript import AutoTranscribe
+from .app.gradio_app import gradio_Interface
 
 from whisper.tokenizer import LANGUAGES , TO_LANGUAGE_CODE
 from torch.cuda import is_available
@@ -160,7 +161,7 @@ def cli():
                 
     
     if start_server: # unfinished code
-        from .app.gradio_app import gradio_Interface
+        
         gradio_Interface(model).queue().launch(server_port=args.port, server_name=args.server_name)
         
 

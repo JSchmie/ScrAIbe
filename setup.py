@@ -40,6 +40,7 @@ if __name__ == "__main__":
         author='Jacob Schmieder',
         author_email='Jacob.Schmieder@dbfz.de',
         description='Transcription tool for audio files based on Whisper and Pyannote',
+        package_data={ "header" : ["app/header.html"], "logo" : ["app/Logo_KIDA_bmel_green.svg"]},
         entry_points={'console_scripts':
-            ['autotranscript = autotranscript.autotranscript:cli']}
+            ['autotranscript = autotranscript.cli:cli']}
     )

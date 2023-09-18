@@ -1,5 +1,6 @@
 import json
 import time
+from traceback import print_stack
 
 
 from typing import Union
@@ -50,6 +51,7 @@ class Transcript:
         
         if args:
             for arg, speaker in zip(args, sorted(self.speakers)):
+                
                 annotations[speaker] = arg
         
         invalid_speakers = set(kwargs.keys()) - set(self.speakers)
