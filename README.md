@@ -42,7 +42,7 @@ We've developed ScrAIbe with several access points to cater to diverse user need
 It enables full control over the functionalities as well as process customization.
 
 ```python
-from autotranscript import AutoTranscribe
+from scraibe import AutoTranscribe
 
 model = AutoTranscribe()
 
@@ -58,7 +58,7 @@ Refer to [whisper](https://github.com/openai/whisper) and [payannote-audio](http
 
 You can also run ScrAIbe in a [Gradio App](https://github.com/gradio-app/gradio)  interface using the following command-line:
 
-	autotranscript audio.wav
+	scraibe audio.wav
 
 Some example of important functionalities are:
 
@@ -72,7 +72,7 @@ Some example of important functionalities are:
 
 Run the following to view all available options:
 		
-	autotranscript -h
+	scraibe -h
 
 ### Running a Docker container
 
@@ -95,7 +95,7 @@ For further insights check the [documentation page](https://cristinaortizcruz.gi
 
 ## Contributions
 
-We are happy for any interest in contributing: In order to do that, fork the repo and use merge requests to incorporate your contribution.
+We are happy for any interest in contributing and about feedback: In order to do that, create an issue with your feedback or feel free to contact us.
 
 ## Roadmap
 
@@ -121,8 +121,7 @@ For queries contact [Jacob Schmieder](Jacob.Schmieder@dbfz.de)
 
 ## License 
 
-<!-- licensing  missing? Apache 2.0 -->
-ScrAIbe is licensed under (tbd).
+ScrAIbe is licensed under GNU General Public License.
 
 ## Acknowledgments
 
