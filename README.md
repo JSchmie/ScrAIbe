@@ -25,8 +25,10 @@ The following command will pull and install the latest commit from this reposito
 
     pip install git+https://github.com/JSchmie/autotranscript.git
 
-- **Python version**: Python 3.9
+- **Python version**: Python 3.8
 - **PyTorch version**: Python 1.11.0
+- **CUDA version**: Cuda-toolkit 11.3.1
+
 
 Important: For the `Pyannote` model you need to be granted access in Hugging Face.
 Check the [Pyannote model page](https://huggingface.co/pyannote/speaker-diarization) to get access to the model.
@@ -41,6 +43,10 @@ We've developed ScrAIbe with several access points to cater to diverse user need
 
 It enables full control over the functionalities as well as process customization.
 
+Some usage examples:
+
+- Usage of `AutoTranscribe`, core of the transcription system, for performing trancription and diarization of audio files.
+
 ```python
 from scraibe import AutoTranscribe
 
@@ -51,6 +57,30 @@ text = model.transcribe("audio.wav")
 print(f"Transcription: \n{text}")
 
 ```
+- Usage of `Diariser`, responsible for identifying
+and segmenting individual speakers from a given audio file.
+ 
+```python
+ from scraibe import Diariser
+
+model = Diariser.load_model()
+
+diarisation_output  = model.diarization("audio.wav")
+
+```
+- Usage of `Transcriber`, for transcribing audio files and saving the transcription afterwards.
+
+```python
+ from scraibe import Transcriber
+
+transcriber = Transcriber.load_model()
+
+transcript  = transcriber.transcribe("audio.wav")
+
+transcriber.save_transcript(transcript, "path/to/save.txt")
+
+```
+
 
 Refer to [whisper](https://github.com/openai/whisper) and [payannote-audio](https://github.com/pyannote/pyannote-audio) for further options.
 
