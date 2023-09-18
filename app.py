@@ -1,12 +1,12 @@
 from dash import Dash, dcc, html, dash_table, Input, Output, State, callback
 
 import base64
-from autotranscript.app.qtfaststart import process
-from autotranscript import AutoTranscribe
+from scraibe.app.qtfaststart import process
+from scraibe import AutoTranscribe
 import io
 import subprocess as sp
 import numpy as np
-from autotranscript.audio import SAMPLE_RATE
+from scraibe.audio import SAMPLE_RATE
 
 # Setup auto-transcript
 autot = AutoTranscribe() # whisper_model="tiny", whisper_kwargs={"local" : False}

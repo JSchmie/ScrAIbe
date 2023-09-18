@@ -35,7 +35,7 @@ Usage:
 import json
 
 import gradio as gr
-from autotranscript import AutoTranscribe, Transcript
+from scraibe import AutoTranscribe, Transcript
 
 
 theme = gr.themes.Soft(

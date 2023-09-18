@@ -2,7 +2,7 @@ import pkg_resources
 import os
 from setuptools import setup, find_packages
 
-module_name = "autotranscript"
+module_name = "scraibe"
 github_url = "https://github.com/JSchmie/autotranscript"
 
 file_dir = os.path.dirname(os.path.realpath(__file__))
@@ -18,7 +18,7 @@ with open(verfile, "r") as fp:
 
 ############### setup ###############
 
-build_version = "AUTOTRANSCRIPT_BUILD" in os.environ
+build_version = "SCRAIBE_BUILD" in os.environ
 
 if __name__ == "__main__":
 
@@ -42,5 +42,5 @@ if __name__ == "__main__":
         description='Transcription tool for audio files based on Whisper and Pyannote',
         package_data={ "header" : ["app/header.html"], "logo" : ["app/Logo_KIDA_bmel_green.svg"]},
         entry_points={'console_scripts':
-            ['autotranscript = autotranscript.cli:cli']}
+            ['scraibe = scraibe.cli:cli']}
     )

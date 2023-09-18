@@ -18,15 +18,13 @@
 # os.environ['HF_HOME'] = os.path.expanduser("~/PycharmProjects/autotranscript/autotranscript/models")
 
 
-from autotranscript import AutoTranscribe
-
+from scraibe import AutoTranscribe
 model = AutoTranscribe()
 
-text = model.transcribe("test.mp4")
+text = model.autotranscribe('kida.mp4', num_speakers=2)
 
 print("Transcription:\n")
 print(text)
-
 
 # from autotranscript.misc import *
 # import os

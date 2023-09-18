@@ -126,7 +126,6 @@ class AutoTranscribe:
         
         diarisation = self.diariser.diarization(dia_audio, **kwargs)
         
-        
         if not diarisation["segments"]:
             print("No segments found. Try to run transcription without diarisation.")
  
@@ -144,8 +143,6 @@ class AutoTranscribe:
         
         # Transcribe each segment and store the results
         final_transcript = dict()
-        
-        
         
         for i in trange(len(diarisation["segments"]), desc= "Transcribing"):
             
