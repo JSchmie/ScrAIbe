@@ -1,14 +1,14 @@
-.. AutoTranscript documentation master file, created by
-   sphinx-quickstart on Thu Aug 31 08:17:31 2023.
+.. ScrAIbe documentation master file, created by
+   sphinx-quickstart on Mon Sep 18 18:17:08 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to AutoTranscript's documentation!
-==========================================
+Welcome to ScrAIbe's documentation!
+===================================
 
-`AutoTranscript`: Fully Automated Transcription using AI 
+`ScrAIbe` is a state-of-the-art,  PyTorch based multilingual speech-to-text framework to generate fully automated transcriptions. 
 
-`AutoTranscript` is a PyTorch based interface speech-to-text tool to generate fully automated transcriptions. AutoTranscript uses AI models containing speaker diarization models:
+Beyond transcription, ScrAIbe supports advanced functions, such as speaker diarization and speaker recognition.
 
 
 .. toctree::
@@ -19,9 +19,3 @@ Welcome to AutoTranscript's documentation!
 
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

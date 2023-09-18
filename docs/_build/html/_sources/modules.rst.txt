@@ -6,7 +6,6 @@ autotranscript
 
    app
    autotranscript
-   gradio_app
    setup
    test_autotranscript
    transcribe

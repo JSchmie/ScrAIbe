@@ -28,6 +28,14 @@ autotranscript.autotranscript module
    :undoc-members:
    :show-inheritance:
 
+autotranscript.cli module
+-------------------------
+
+.. automodule:: autotranscript.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 autotranscript.diarisation module
 ---------------------------------
 

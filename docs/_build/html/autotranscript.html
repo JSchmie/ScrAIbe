@@ -16,6 +16,8 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="autotranscript.app package" href="autotranscript.app.html" />
+    <link rel="prev" title="app module" href="app.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -40,6 +42,10 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="autotranscript.app.html">autotranscript.app package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="autotranscript.app.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autotranscript.app.html#module-autotranscript.app.gradio_app">autotranscript.app.gradio_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autotranscript.app.html#gradio-audio-transcription-app">Gradio Audio Transcription App.</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="autotranscript.app.html#module-autotranscript.app.qtfaststart">autotranscript.app.qtfaststart module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="autotranscript.app.html#module-autotranscript.app">Module contents</a></li>
 </ul>
@@ -216,6 +222,54 @@ get_audio_file: Gets an audio file as an AudioProcessor object.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="autotranscript.autotranscript.AutoTranscribe.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#autotranscript.autotranscript.AutoTranscribe.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autotranscript.autotranscript.AutoTranscribe.autotranscribe">
+<span class="sig-name descname"><span class="pre">autotranscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_original</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#autotranscript.transcript_exporter.Transcript" title="autotranscript.transcript_exporter.Transcript"><span class="pre">Transcript</span></a></span></span><a class="headerlink" href="#autotranscript.autotranscript.AutoTranscribe.autotranscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transcribes an audio file using the whisper model and pyannote diarization model.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>audio_file (Union[str, torch.Tensor, ndarray]): </dt><dd><p>Path to audio file or a tensor representing the audio.</p>
+</dd>
+<dt>remove_original (bool, optional): If True, the original audio file will</dt><dd><p>be removed after transcription.</p>
+</dd>
+</dl>
+<p><a href="#id3"><span class="problematic" id="id4">*</span></a>args: Additional positional arguments for diarization and transcription.
+<a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: Additional keyword arguments for diarization and transcription.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Transcript: A Transcript object containing the transcription,</dt><dd><p>which can be exported to different formats.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autotranscript.autotranscript.AutoTranscribe.diarization">
+<span class="sig-name descname"><span class="pre">diarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#autotranscript.autotranscript.AutoTranscribe.diarization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform diarization on an audio file using the pyannote diarization model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>audio_file (Union[str, torch.Tensor, ndarray]):</dt><dd><p>The audio source which can either be a path to the audio file or a tensor representation.</p>
+</dd>
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: </dt><dd><p>Additional keyword arguments for diarization.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>dict: </dt><dd><p>A dictionary containing the results of the diarization process.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="autotranscript.autotranscript.AutoTranscribe.get_audio_file">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_audio_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#autotranscript.audio.AudioProcessor" title="autotranscript.audio.AudioProcessor"><span class="pre">AudioProcessor</span></a></span></span><a class="headerlink" href="#autotranscript.autotranscript.AutoTranscribe.get_audio_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets an audio file as TorchAudioProcessor.</p>
@@ -224,8 +278,8 @@ get_audio_file: Gets an audio file as an AudioProcessor object.</p>
 <dt>audio_file (Union[str, torch.Tensor, ndarray]): Path to the audio file or </dt><dd><p>a tensor representing the audio.</p>
 </dd>
 </dl>
-<p><a href="#id3"><span class="problematic" id="id4">*</span></a>args: Additional positional arguments.
-<a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: Additional keyword arguments.</p>
+<p><a href="#id9"><span class="problematic" id="id10">*</span></a>args: Additional positional arguments.
+<a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: Additional keyword arguments.</p>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>AudioProcessor: An object containing the waveform and sample rate in</dt><dd><p>torch.Tensor format.</p>
@@ -251,20 +305,18 @@ shred (bool, optional): If True, the audio file will be shredded,</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="autotranscript.autotranscript.AutoTranscribe.transcribe">
-<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_original</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#autotranscript.transcript_exporter.Transcript" title="autotranscript.transcript_exporter.Transcript"><span class="pre">Transcript</span></a></span></span><a class="headerlink" href="#autotranscript.autotranscript.AutoTranscribe.transcribe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transcribes an audio file using the whisper model and pyannote diarization model.</p>
-<dl>
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#autotranscript.autotranscript.AutoTranscribe.transcribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transcribe the provided audio file.</p>
+<dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
-<dt>audio_file (Union[str, torch.Tensor, ndarray]): </dt><dd><p>Path to audio file or a tensor representing the audio.</p>
+<dt>audio_file (Union[str, torch.Tensor, ndarray]):</dt><dd><p>The audio source, which can either be a path or a tensor representation.</p>
 </dd>
-<dt>remove_original (bool, optional): If True, the original audio file will</dt><dd><p>be removed after transcription.</p>
+<dt><a href="#id13"><span class="problematic" id="id14">**</span></a>kwargs: </dt><dd><p>Additional keyword arguments for transcription.</p>
 </dd>
 </dl>
-<p><a href="#id7"><span class="problematic" id="id8">*</span></a>args: Additional positional arguments for diarization and transcription.
-<a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: Additional keyword arguments for diarization and transcription.</p>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
-<dt>Transcript: A Transcript object containing the transcription,</dt><dd><p>which can be exported to different formats.</p>
+<dt>str:</dt><dd><p>The transcribed text from the audio source.</p>
 </dd>
 </dl>
 </dd>
@@ -273,9 +325,17 @@ shred (bool, optional): If True, the audio file will be shredded,</p>
 
 </dd></dl>
 
+</section>
+</section>
+<section id="module-autotranscript.cli">
+<span id="autotranscript-cli-module"></span><h2>autotranscript.cli module<a class="headerlink" href="#module-autotranscript.cli" title="Permalink to this heading">¶</a></h2>
+<p>Command-Line Interface (CLI) for the AutoTranscribe class,
+allowing for user interaction to transcribe and diarize audio files. 
+The function includes arguments for specifying the audio files, model paths,
+output formats, and other options necessary for transcription.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="autotranscript.autotranscript.cli">
-<span class="sig-name descname"><span class="pre">cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#autotranscript.autotranscript.cli" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="autotranscript.cli.cli">
+<span class="sig-name descname"><span class="pre">cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#autotranscript.cli.cli" title="Permalink to this definition">¶</a></dt>
 <dd><p>Command-Line Interface (CLI) for the AutoTranscribe class, allowing for user interaction to transcribe 
 and diarize audio files. The function includes arguments for specifying the audio files, model paths, 
 output formats, and other options necessary for transcription.</p>
@@ -283,7 +343,6 @@ output formats, and other options necessary for transcription.</p>
 user-friendly way to access the AutoTranscribe class functionalities.</p>
 </dd></dl>
 
-</section>
 </section>
 <section id="module-autotranscript.diarisation">
 <span id="autotranscript-diarisation-module"></span><h2>autotranscript.diarisation module<a class="headerlink" href="#module-autotranscript.diarisation" title="Permalink to this heading">¶</a></h2>
@@ -372,7 +431,7 @@ to the diarization process.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="autotranscript.diarisation.Diariser.load_model">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ortizcruzc/.cache/torch/models/pyannote/config.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ortizcruzc/.cache/torch/models/pyannote'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hparams_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyannote.audio.Pipeline</span></span></span><a class="headerlink" href="#autotranscript.diarisation.Diariser.load_model" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ortizcruzc/.cache/torch/models/pyannote/config.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_auth_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ortizcruzc/.cache/torch/models/pyannote'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hparams_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyannote.audio.Pipeline</span></span></span><a class="headerlink" href="#autotranscript.diarisation.Diariser.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a pretrained model from pyannote.audio, 
 either from a local cache or online repository.</p>
 <dl>
@@ -383,7 +442,9 @@ either from a local cache or online repository.</p>
 <p>token: Optional HUGGINGFACE_TOKEN for authenticated access.
 cache_token: Whether to cache the token locally for future use.
 cache_dir: Directory for caching models.
-hparams_file: Path to a YAML file containing hyperparameters.</p>
+hparams_file: Path to a YAML file containing hyperparameters.
+args: Additional arguments only to avoid errors.
+kwargs: Additional keyword arguments only to avoid errors.</p>
 </dd>
 <dt>Returns:</dt><dd><p>Pipeline: A pyannote.audio Pipeline object, encapsulating the loaded model.</p>
 </dd>
@@ -483,9 +544,9 @@ the load_model method for available options.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="autotranscript.transcriber.Transcriber.load_model">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ortizcruzc/.cache/torch/models/whisper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.device</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_memory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#autotranscript.transcriber.Transcriber" title="autotranscript.transcriber.Transcriber"><span class="pre">Transcriber</span></a></span></span><a class="headerlink" href="#autotranscript.transcriber.Transcriber.load_model" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/ortizcruzc/.cache/torch/models/whisper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.device</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_memory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#autotranscript.transcriber.Transcriber" title="autotranscript.transcriber.Transcriber"><span class="pre">Transcriber</span></a></span></span><a class="headerlink" href="#autotranscript.transcriber.Transcriber.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load whisper model.</p>
-<dl class="simple">
+<dl>
 <dt>Args:</dt><dd><dl class="simple">
 <dt>model (str): Whisper model. Available models include:</dt><dd><ul class="simple">
 <li><p>‘tiny.en’</p></li>
@@ -508,6 +569,8 @@ the load_model method for available options.</p>
 <dt>in_memory (bool, optional): Whether to load model in memory. </dt><dd><p>Defaults to False.</p>
 </dd>
 </dl>
+<p>args: Additional arguments only to avoid errors.
+kwargs: Additional keyword arguments only to avoid errors.</p>
 </dd>
 <dt>Returns:</dt><dd><p>Transcriber: A Transcriber object initialized with the specified model.</p>
 </dd>
@@ -533,8 +596,8 @@ save_path (str): The path to save the transcript.</p>
 <dd><p>Transcribe an audio file.</p>
 <dl>
 <dt>Args:</dt><dd><p>audio (Union[str, Tensor, nparray]): The audio file to transcribe.
-<a href="#id11"><span class="problematic" id="id12">*</span></a>args: Additional arguments.
-<a href="#id13"><span class="problematic" id="id14">**</span></a>kwargs: Additional keyword arguments,</p>
+<a href="#id15"><span class="problematic" id="id16">*</span></a>args: Additional arguments.
+<a href="#id17"><span class="problematic" id="id18">**</span></a>kwargs: Additional keyword arguments,</p>
 <blockquote>
 <div><p>such as the language of the audio file.</p>
 </div></blockquote>
@@ -601,12 +664,24 @@ contain speaker and segment information.</p>
 <dt>Args:</dt><dd><p>args (list): List of speaker names. These will be mapped sequentially to the speakers.
 kwargs (dict): Dictionary with speaker names as keys and list of segments as values.</p>
 </dd>
-<dt>Returns:</dt><dd><p>dict: Dictionary with speaker names as keys and the corresponding annotation as values.</p>
+<dt>Returns:</dt><dd><p>dict: Dictionary with speaker names as keys and list of segments as values.</p>
 </dd>
 <dt>Raises:</dt><dd><dl class="simple">
 <dt>ValueError: If the number of speaker names does not match the number </dt><dd><p>of speakers, or if an unknown speaker is found.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="autotranscript.transcript_exporter.Transcript.from_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#autotranscript.transcript_exporter.Transcript" title="autotranscript.transcript_exporter.Transcript"><span class="pre">Transcript</span></a></span></span><a class="headerlink" href="#autotranscript.transcript_exporter.Transcript.from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load transcript from json file</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>path (str): path to json file</p>
+</dd>
+<dt>Returns:</dt><dd><p>Transcript: Transcript object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -641,7 +716,7 @@ kwargs (dict): Dictionary with speaker names as keys and list of segments as val
 
 <dl class="py method">
 <dt class="sig sig-object py" id="autotranscript.transcript_exporter.Transcript.get_json">
-<span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#autotranscript.transcript_exporter.Transcript.get_json" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#autotranscript.transcript_exporter.Transcript.get_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get transcript as json string
 :return: transcript as json string
 :rtype: str</p>
@@ -677,8 +752,8 @@ MD, HTML, TEX, and PDF. The file format is determined by the extension of
 the path.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>path (str): Path to save the file, including the desired file extension.
-<a href="#id15"><span class="problematic" id="id16">*</span></a>args: Additional positional arguments to be passed to the specific save methods.
-<a href="#id17"><span class="problematic" id="id18">**</span></a>kwargs: Additional keyword arguments to be passed to the specific save methods.</p>
+<a href="#id19"><span class="problematic" id="id20">*</span></a>args: Additional positional arguments to be passed to the specific save methods.
+<a href="#id21"><span class="problematic" id="id22">**</span></a>kwargs: Additional keyword arguments to be passed to the specific save methods.</p>
 </dd>
 <dt>Raises:</dt><dd><p>ValueError: If the file format specified in the path is unknown.</p>
 </dd>
@@ -784,11 +859,26 @@ the path.</p>
 
 
 <h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">autotranscript</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="app.html">app module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">autotranscript package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_autotranscript.html">test_autotranscript module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transcribe.html">transcribe module</a></li>
+</ul>
+</li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">autotranscript</a><ul>
+      <li>Previous: <a href="app.html" title="previous chapter">app module</a></li>
+      <li>Next: <a href="autotranscript.app.html" title="next chapter">autotranscript.app package</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

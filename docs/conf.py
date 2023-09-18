@@ -25,7 +25,7 @@ author = 'Jacob Schmieder'
 # -- General configuration ---------------------------------------------------
 
 # Mock unavailable library modules
-autodoc_mock_imports = ["dash", "torch", "pytest", "numpy", "tqdm", "pyannote", "yaml", "whisper"]
+autodoc_mock_imports = ["dash", "torch", "pytest", "numpy", "tqdm", "pyannote", "yaml", "whisper", "gradio"]
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
