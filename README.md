@@ -125,7 +125,7 @@ http://0.0.0.0:7860
 - Enabling GPU usage
 
 ```
-sudo docker run -it  -p 7860:7860 --gpus all  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
+sudo docker run -it  -p 7860:7860 --gpus 'all,capabilities=utility'  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
 ```
 For further guidance check: https://blog.roboflow.com/use-the-gpu-in-docker/ 
 
