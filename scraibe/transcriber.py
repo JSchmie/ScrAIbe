@@ -90,8 +90,8 @@ class Transcriber:
         
         kwargs = self._get_whisper_kwargs(**kwargs)
         
-        if "verbose" not in kwargs:
-            kwargs["verbose"] = False    
+        if not kwargs.get("verbose"):
+            kwargs["verbose"] = None 
 
         result = self.model.transcribe(audio, *args, **kwargs)
         return result["text"]
@@ -173,6 +173,9 @@ class Transcriber:
         if (task := kwargs.get("task")):
             whisper_kwargs["task"] = task
             
+        if (language := kwargs.get("language")):
+            whisper_kwargs["language"] = language 
+        
         return whisper_kwargs
     
     def __repr__(self) -> str:

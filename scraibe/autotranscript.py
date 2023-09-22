@@ -1,5 +1,5 @@
 """
-AutoTranscribe Class
+Scraibe Class
 --------------------
 
 This class serves as the core of the transcription system, responsible for handling
@@ -12,15 +12,15 @@ By encapsulating the complexities of underlying models, it allows for straightfo
 integration into various applications, ranging from transcription services to voice assistants.
 
 Available Classes:
-- AutoTranscribe: Main class for performing transcription and diarization.
+- Scraibe: Main class for performing transcription and diarization.
                   Includes methods for loading models, processing audio files,
                   and formatting the transcription output.
 
 Usage:
-    from .autotranscribe import AutoTranscribe
+    from scraibe import Scraibe
 
-    model = AutoTranscribe(whisper_model="path/to/whisper/model", dia_model="path/to/diarisation/model")
-    transcript = model.transcribe("path/to/audiofile.wav")
+    model = Scraibe()
+    transcript = model.autotranscribe("path/to/audiofile.wav")
 """
 
 # Standard Library Imports
@@ -45,9 +45,9 @@ from .transcript_exporter import Transcript
 DiarisationType = TypeVar('DiarisationType')
 
 
-class AutoTranscribe:
+class Scraibe:
     """
-    AutoTranscribe is a class responsible for managing the transcription and diarization of audio files.
+    Scraibe is a class responsible for managing the transcription and diarization of audio files.
     It serves as the core of the transcription system, incorporating pretrained models
     for speech-to-text (such as Whisper) and speaker diarization (such as pyannote.audio),
     allowing for comprehensive audio processing.
@@ -57,7 +57,7 @@ class AutoTranscribe:
         diariser (Diariser): The diariser object to handle diarization.
     
     Methods:
-        __init__: Initializes the AutoTranscribe class with appropriate models.
+        __init__: Initializes the Scraibe class with appropriate models.
         transcribe: Transcribes an audio file using the whisper model and pyannote diarization model.
         remove_audio_file: Removes the original audio file to avoid disk space issues or ensure data privacy.
         get_audio_file: Gets an audio file as an AudioProcessor object.
@@ -66,7 +66,7 @@ class AutoTranscribe:
                 whisper_model: Union[bool, str, whisper] = None,
                 dia_model : Union[bool, str, DiarisationType] = None,
                 **kwargs) -> None:
-        """Initializes the AutoTranscribe class.
+        """Initializes the Scraibe class.
 
         Args:
             whisper_model (Union[bool, str, whisper], optional): 
@@ -92,7 +92,11 @@ class AutoTranscribe:
         else:
             self.diariser = dia_model
 
-        print("AutoTranscribe initialized all models successfully loaded.")
+        if kwargs.get("verbose"):
+            print("Scraibe initialized all models successfully loaded.")
+            self.verbose = True
+        else:
+            self.verbose = False
             
     def autotranscribe(self, audio_file : Union[str, torch.Tensor, ndarray],
                    remove_original : bool = False,
@@ -112,7 +116,8 @@ class AutoTranscribe:
             Transcript: A Transcript object containing the transcription,
                         which can be exported to different formats.
         """
-        
+        if kwargs.get("verbose"):
+            self.verbose = kwargs.get("verbose")
         # Get audio file as an AudioProcessor object
         audio_file = self.get_audio_file(audio_file)
         
@@ -121,11 +126,11 @@ class AutoTranscribe:
             "waveform" : audio_file.waveform.reshape(1,len(audio_file.waveform)), 
             "sample_rate": audio_file.sr
             }
-       
-        print("Starting diarisation.")
+
+        if self.verbose:
+            print("Starting diarisation.")
         
         diarisation = self.diariser.diarization(dia_audio, **kwargs)
-        
         
         if not diarisation["segments"]:
             print("No segments found. Try to run transcription without diarisation.")
@@ -138,16 +143,15 @@ class AutoTranscribe:
             
             return Transcript(final_transcript)
         
-        print("Diarisation finished. Starting transcription.")
+        if self.verbose:
+            print("Diarisation finished. Starting transcription.")
         
         audio_file.sr = torch.Tensor([audio_file.sr]).to(audio_file.waveform.device)
         
         # Transcribe each segment and store the results
         final_transcript = dict()
         
-        
-        
-        for i in trange(len(diarisation["segments"]), desc= "Transcribing"):
+        for i in trange(len(diarisation["segments"]), desc= "Transcribing", disable = not self.verbose):
             
             seg = diarisation["segments"][i]
             
@@ -283,4 +287,4 @@ class AutoTranscribe:
         return audio_file
 
     def __repr__(self):
-        return f"AutoTranscribe(transcriber={self.transcriber}, diariser={self.diariser})"
+        return f"Scraibe(transcriber={self.transcriber}, diariser={self.diariser})"

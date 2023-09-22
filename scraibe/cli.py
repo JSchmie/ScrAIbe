@@ -1,5 +1,5 @@
 """
-Command-Line Interface (CLI) for the AutoTranscribe class,
+Command-Line Interface (CLI) for the Scraibe class,
 allowing for user interaction to transcribe and diarize audio files. 
 The function includes arguments for specifying the audio files, model paths,
 output formats, and other options necessary for transcription.
@@ -8,9 +8,7 @@ import os
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import json
 
-from sympy import use
-
-from .autotranscript import AutoTranscribe
+from .autotranscript import Scraibe
 from .app.gradio_app import gradio_Interface
 
 from whisper.tokenizer import LANGUAGES , TO_LANGUAGE_CODE
@@ -20,12 +18,12 @@ from torch import set_num_threads
 
 def cli():
     """
-    Command-Line Interface (CLI) for the AutoTranscribe class, allowing for user interaction to transcribe 
+    Command-Line Interface (CLI) for the Scraibe class, allowing for user interaction to transcribe 
     and diarize audio files. The function includes arguments for specifying the audio files, model paths, 
     output formats, and other options necessary for transcription.
 
     This function can be executed from the command line to perform transcription tasks, providing a 
-    user-friendly way to access the AutoTranscribe class functionalities.
+    user-friendly way to access the Scraibe class functionalities.
     """
  
     def str2bool(string):
@@ -115,7 +113,7 @@ def cli():
     if arg_dict["whisper_model_directory"]:
         class_kwargs["download_root"] = arg_dict.pop("whisper_model_directory")
 
-    model = AutoTranscribe(**class_kwargs)
+    model = Scraibe(**class_kwargs)
 
     
     if arg_dict["audio_files"]:

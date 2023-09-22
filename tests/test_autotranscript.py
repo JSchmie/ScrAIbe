@@ -1,5 +1,5 @@
 import pytest
-from autotranscript import Transcriber
+from scraibe import Transcriber
 from unittest.mock import patch, mock_open
 import os
 
@@ -55,7 +55,7 @@ def test_save_transcript_to_file(transcriber):
     
 # Test Diaraization class
 
-from autotranscript import Diariser
+from scraibe import Diariser
 
 @pytest.fixture
 def diarisation():
@@ -83,7 +83,7 @@ def test_diarisation(diarisation):
 
 # Test AudioProcessor
 
-from autotranscript import AudioProcessor , TorchAudioProcessor
+from scraibe import AudioProcessor , TorchAudioProcessor
 
 
 def test_AudioProcessor_init():

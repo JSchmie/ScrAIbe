@@ -1,8 +1,9 @@
+from calendar import c
 import pkg_resources
 import os
 from setuptools import setup, find_packages
 
-module_name = "autotranscript"
+module_name = "scraibe"
 github_url = "https://github.com/JSchmie/autotranscript"
 
 file_dir = os.path.dirname(os.path.realpath(__file__))
@@ -18,7 +19,7 @@ with open(verfile, "r") as fp:
 
 ############### setup ###############
 
-build_version = "AUTOTRANSCRIPT_BUILD" in os.environ
+build_version = "SCRAIBE_BUILD" in os.environ
 
 if __name__ == "__main__":
 
@@ -36,11 +37,24 @@ if __name__ == "__main__":
             'https://download.pytorch.org/whl/cu113',
             ],
         url= github_url,
-        license='',
+        
+        license='GPL-3',
         author='Jacob Schmieder',
         author_email='Jacob.Schmieder@dbfz.de',
         description='Transcription tool for audio files based on Whisper and Pyannote',
-        package_data={ "header" : ["app/header.html"], "logo" : ["app/Logo_KIDA_bmel_green.svg"]},
+        classifiers=[
+            'Development Status :: 3 - Alpha',
+            'Environment :: GPU :: NVIDIA CUDA :: 11.2',
+            'License :: OSI Approved :: Open Software License 3.0 (OSL-3.0)',
+            'Topic :: Scientific/Engineering :: Artificial Intelligence',
+            'Programming Language :: Python :: 3.8',
+            'Programming Language :: Python :: 3.9',
+            'Programming Language :: Python :: 3.10'],
+        keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio',
+                    'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
+                    'voice-to-speech'],
+        package_data={'scraibe.app' : ["*.html", "*.svg"]},
         entry_points={'console_scripts':
-            ['autotranscript = autotranscript.cli:cli']}
+            ['scraibe = scraibe.cli:cli']}
+        
     )
