@@ -105,7 +105,6 @@ sudo docker run -it  -p 7860:7860 --gpus 'all,capabilities=utility'  --name [con
 ```
 For further guidance check: https://blog.roboflow.com/use-the-gpu-in-docker/ 
 
-
 ## Documentation 
 
 For further insights check the [documentation page](https://cristinaortizcruz.github.io/Test/).
