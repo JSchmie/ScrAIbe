@@ -4,7 +4,7 @@ import os
 from setuptools import setup, find_packages
 
 module_name = "scraibe"
-github_url = "https://github.com/JSchmie/autotranscript"
+github_url = "https://github.com/JSchmie/ScAIbe"
 
 file_dir = os.path.dirname(os.path.realpath(__file__))
 absdir = lambda p: os.path.join(file_dir, p)
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio',
                     'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
                     'voice-to-speech'],
-        package_data={'scraibe.app' : ["*.html", "*.svg"]},
+        package_data={'' : ["*.html", "*.svg"]},
         entry_points={'console_scripts':
             ['scraibe = scraibe.cli:cli']}
         
