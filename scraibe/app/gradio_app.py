@@ -33,6 +33,8 @@ Usage:
 """
 
 import json
+import os
+from tkinter import CURRENT
 
 import gradio as gr
 from tqdm import tqdm
@@ -59,6 +61,8 @@ LANGUAGES = [
     "Tamil", "Thai", "Turkish", "Ukrainian", "Urdu",
     "Vietnamese", "Welsh"
 ]
+
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 class GradioTranscriptionInterface:
     """
@@ -348,7 +352,8 @@ def gradio_Interface(model : Scraibe = None):
     with gr.Blocks(theme=theme,title='ScrAIbe: Automatic Audio Transcription') as demo:
             
         # Define components
-        header = open("header.html", "r").read()
+        hname = os.path.join(CURRENT_PATH, "header.html")
+        header = open(hname, "r").read()
         gr.HTML(header, visible= True, show_label=False)
         
         with gr.Row():
