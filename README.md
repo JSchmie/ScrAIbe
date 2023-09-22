@@ -25,8 +25,10 @@ The following command will pull and install the latest commit from this reposito
 
     pip install git+https://github.com/JSchmie/autotranscript.git
 
-- **Python version**: Python 3.9
+- **Python version**: Python 3.8
 - **PyTorch version**: Python 1.11.0
+- **CUDA version**: Cuda-toolkit 11.3.1
+
 
 Important: For the `Pyannote` model you need to be granted access in Hugging Face.
 Check the [Pyannote model page](https://huggingface.co/pyannote/speaker-diarization) to get access to the model.
@@ -40,6 +42,10 @@ We've developed ScrAIbe with several access points to cater to diverse user need
 ### Python usage
 
 It enables full control over the functionalities as well as process customization.
+
+Some usage examples:
+
+- Usage of `AutoTranscribe`, core of the transcription system, for performing trancription and diarization of audio files.
 
 ```python
 from scraibe import AutoTranscribe
@@ -79,14 +85,25 @@ Run the following to view all available options:
 After you have installed Docker, you can execute the following commands in the terminal.
 
 ```
-sudo docker build . --build-arg="hf_token=[enter your HuggingFace token] " --no-cache -t [image name] 
+sudo docker build . --build-arg="hf_token=[enter your HuggingFace token] " -t [image name] 
 
-sudo docker run --rm -it  -p 7860:7860  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
+sudo docker run -it  -p 7860:7860  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
 
 ```
+-  `-p`: Flag for connecting the container interal port to the port on your local machine.
+-  `--hf_token`: Flag for entering your personal HuggingFace token in the container.
+- `--start_server`: Command to start the Gradio App.
+
 Then click the following link to run the app:
 
 http://0.0.0.0:7860
+
+- Enabling GPU usage
+
+```
+sudo docker run -it  -p 7860:7860 --gpus 'all,capabilities=utility'  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
+```
+For further guidance check: https://blog.roboflow.com/use-the-gpu-in-docker/ 
 
 
 ## Documentation 
