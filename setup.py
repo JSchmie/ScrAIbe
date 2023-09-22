@@ -53,7 +53,7 @@ if __name__ == "__main__":
         keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio',
                     'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
                     'voice-to-speech'],
-        package_data={ "header" : ["app/header.html"], "logo" : ["app/Logo_KIDA_bmel_green.svg"]},
+        package_data={'scraibe.app' : ["*.html", "*.svg"]},
         entry_points={'console_scripts':
             ['scraibe = scraibe.cli:cli']}
         
