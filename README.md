@@ -29,6 +29,11 @@ The following command will pull and install the latest commit from this reposito
 - **PyTorch version**: Python 1.11.0
 - **CUDA version**: Cuda-toolkit 11.3.1
 
+In order to run `scraibe` properly, it is recommended to reinstall `pytoch` using:
+
+    pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+
+This ensures that the right torchaudio version is installed.
 
 Important: For the `Pyannote` model, you need to be granted access to Hugging Face.
 Check the [Pyannote model page](https://huggingface.co/pyannote/speaker-diarization) to get access to the model.
