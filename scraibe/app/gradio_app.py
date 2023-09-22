@@ -3,7 +3,7 @@ Gradio Audio Transcription App.
 --------------------------------
 
 This module provides an interface to transcribe audio files using the 
-AutoTranscribe model. Users can either upload an audio file or record their speech 
+Scraibe model. Users can either upload an audio file or record their speech 
 live for transcription. The application supports multiple languages and provides 
 options to specify the number of speakers and the language of the audio.
 
@@ -20,7 +20,7 @@ Gradio Audio Transcription App.
 --------------------------------
 
 This module provides an interface to transcribe audio files using the 
-AutoTranscribe model. Users can either upload an audio file or record their speech 
+Scraibe model. Users can either upload an audio file or record their speech 
 live for transcription. The application supports multiple languages and provides 
 options to specify the number of speakers and the language of the audio.
 
@@ -37,7 +37,7 @@ import json
 import gradio as gr
 from tqdm import tqdm
 
-from scraibe import AutoTranscribe, Transcript
+from scraibe import Scraibe, Transcript
 
 theme = gr.themes.Soft(
     primary_hue="green",
@@ -65,12 +65,12 @@ class GradioTranscriptionInterface:
     Interface handling the interaction between Gradio UI and the Audio Transcription system.
     """
 
-    def __init__(self, model: AutoTranscribe):
+    def __init__(self, model: Scraibe):
         """
         Initializes the GradioTranscriptionInterface with a transcription model.
 
         Args:
-            model (AutoTranscribe): Model responsible for audio transcription tasks.
+            model (Scraibe): Model responsible for audio transcription tasks.
         """
         self.model = model
 
@@ -79,7 +79,7 @@ class GradioTranscriptionInterface:
                         translation : bool,
                         language : str):
         """
-        Shortcut method for the AutoTranscribe task.
+        Shortcut method for the Scraibe task.
 
         Returns:
             tuple: Transcribed text (str), JSON output (dict)
@@ -209,10 +209,10 @@ class GradioTranscriptionInterface:
 # Gradio Interface
 ####
 
-def gradio_Interface(model : AutoTranscribe = None):
+def gradio_Interface(model : Scraibe = None):
     
     if model is None:
-        model = AutoTranscribe()
+        model = Scraibe()
         
     pipe = GradioTranscriptionInterface(model)
 
