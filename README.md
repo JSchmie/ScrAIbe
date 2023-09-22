@@ -55,8 +55,19 @@ model = AutoTranscribe()
 text = model.transcribe("audio.wav")
 
 print(f"Transcription: \n{text}")
+```
+To have advanced control of the usage you can use the following options:
+
+- Number of speakers in the file: `num_speakers`
+- Specify the language: `language`, 
+- Task to process :`task`
+
+For example
 
 ```
+text = model.transcribe("audio.wav", language="german", task="transcribe")
+```
+
 
 Refer to [whisper](https://github.com/openai/whisper) and [payannote-audio](https://github.com/pyannote/pyannote-audio) for further options.
 
@@ -64,7 +75,7 @@ Refer to [whisper](https://github.com/openai/whisper) and [payannote-audio](http
 
 You can also run ScrAIbe in a [Gradio App](https://github.com/gradio-app/gradio)  interface using the following command-line:
 
-	scraibe audio.wav
+	scraibe --audio-files "audio.wav" --port 7860 --hf-token "your personal Hugging Face token" --server-name "name of the server" --task "translate"
 
 Some example of important functionalities are:
 
@@ -72,9 +83,7 @@ Some example of important functionalities are:
 - `--hf-token`: Personal `Hugging Face` token.
 - `--server-name`: Name of the Web Server. If empty 127.0.0.1 or 0.0.0.0 will be used.
 -  `--port`: To run the Gradio app. The default is 7860.
-
 - `--whisper-model-name`: Name of the [whisper](https://github.com/openai/whisper) model to be used. Default is `medium`.
-
 
 Run the following to view all available options:
 		
