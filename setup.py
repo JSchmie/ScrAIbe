@@ -4,7 +4,7 @@ import os
 from setuptools import setup, find_packages
 
 module_name = "scraibe"
-github_url = "https://github.com/JSchmie/autotranscript"
+github_url = "https://github.com/JSchmie/ScAIbe"
 
 file_dir = os.path.dirname(os.path.realpath(__file__))
 absdir = lambda p: os.path.join(file_dir, p)
