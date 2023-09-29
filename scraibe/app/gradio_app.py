@@ -353,6 +353,10 @@ def gradio_Interface(model : Scraibe = None):
         # Define components
         hname = os.path.join(CURRENT_PATH, "header.html")
         header = open(hname, "r").read()
+        
+        # ugly hack to get the logo to work
+        header = header.replace("/file=logo.svg", f"/file={CURRENT_PATH}/logo.svg" )
+        
         gr.HTML(header, visible= True, show_label=False)
         
         with gr.Row():
@@ -384,7 +388,7 @@ def gradio_Interface(model : Scraibe = None):
                                     interactive= True, visible= False)
                 video1 = gr.Video(source="upload", type="filepath", label="Upload Video",
                                     interactive= True, visible= False)
-                video2 = gr.Video(source="webcam", label="Record Video", type="filepath",
+                video2 = gr.Video(source="webcam", label="Record Video", type="filepath",include_audio= True,
                                     interactive= True, visible= False)
                 file_in = gr.Files(label="Upload File or Files", interactive= True, visible= False)
                 
