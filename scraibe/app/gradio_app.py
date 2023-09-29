@@ -117,7 +117,7 @@ class GradioTranscriptionInterface:
             out = ''
             out_dict = {}
             for i, r in enumerate(result):
-                out += f"TRANSCRIPT {i} FOR ({source_names[i]}):\n\n"
+                out += f"TRANSCRIPT FOR {source_names[i]}:\n\n"
                 out += str(r)
                 out += "\n\n"
                 
@@ -158,7 +158,7 @@ class GradioTranscriptionInterface:
             
             out = ''
             for i, res in enumerate(result):
-                out += f"TRANSCRIPT {i} FOR ({source_names[i]}):\n\n"
+                out += f"TRANSCRIPT FOR {source_names[i]}:\n\n"
                 out += str(res)
                 out += "\n\n"
             
