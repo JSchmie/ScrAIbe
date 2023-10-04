@@ -50,7 +50,7 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
             'Programming Language :: Python :: 3.10'],
-        keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio',
+        keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio', 'ScrAIbe', 'scraibe',
                     'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
                     'voice-to-speech'],
         package_data={'scraibe.app' : ["*.html", "*.svg"]},
