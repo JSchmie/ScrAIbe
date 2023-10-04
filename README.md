@@ -28,17 +28,23 @@ The following command will pull and install the latest commit from this reposito
 - **Python version**: Python 3.8
 - **PyTorch version**: Python 1.11.0
 - **CUDA version**: Cuda-toolkit 11.3.1
+- **OS**: Linux
 
-In order to run `scraibe` properly, it is recommended to reinstall `pytoch` using:
+In order to run `scraibe` properly, it is recommended to install `pytoch` using:
 
     pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
 
 This ensures that the right torchaudio version is installed.
 
+We recommend using the CPU Version of Pytorch for a smooth ScrAIbe installation across both Windows and MacOS platforms. Should you face any issues, please contact us.
+
+    pip install torch==1.11.0+cpu torchvision==0.12.0+cpu torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cpu
+
 Important: For the `Pyannote` model, you need to be granted access to Hugging Face.
 Check the [Pyannote model page](https://huggingface.co/pyannote/speaker-diarization) to get access to the model.
 
 Additionally, you need to generate a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens). 
+
 
 ## Usage 
 
@@ -101,6 +107,8 @@ For the full list of options, run:
 
     scraibe -h
 
+The HuggingFace token will be saved after its initial run and can be found at `path/to/scraibe/.pyannotetoken`. It does not need to be called each time you execute `scraibe`.
+
 ### Gradio App
 
 The Gradio App is a user-friendly interface for ScrAIbe. It enables you to run the model without any coding knowledge. Therefore, you can run the app in your browser and upload your audio file, or you can make the Framework avail on your network and run it on your local machine.
@@ -110,12 +118,12 @@ The Gradio App is a user-friendly interface for ScrAIbe. It enables you to run t
 To run the Gradio App on your local machine, just use the following command:
 
 ```
-scraibe --start_server --port 7860 --hf_token hf_yourhftoken
+scraibe --start-server --port 7860 --hf-token hf_yourhftoken
 ```
 
-- `--start_server`: Command to start the Gradio App.
+- `--start-server`: Command to start the Gradio App.
 - `--port`: Flag for connecting the container internal port to the port on your local machine.
-- `--hf_token`: Flag for entering your personal HuggingFace token in the container.
+- `--hf-token`: Flag for entering your personal HuggingFace token in the container.
 
 When the app is running, it will show you at which address you can access it.
 The default address is: http://127.0.0.1:7860 or http://0.0.0.0:7860
@@ -129,25 +137,31 @@ An example is shown below:
 ### Running a Docker container
 
 Another option to run ScrAIbe is to use a Docker container. This option is especially useful if you want to run the model on a server or if you would like to use the GPU without dealing with CUDA.
-After you have installed Docker, you can execute the following commands in the terminal.
-
-First, you need to build the Docker image. Therefore, you need to enter your HuggingFace token and the image name.
+To get our Container, you can pull it from Docker Hub:
 
 ```
-docker build . --build-arg="hf_token=[enter your HuggingFace token] " -t scraibe
+docker pull hadr0n/scraibe:tagname
+```
+We provide different tags for different versions of ScrAIbe, including different whisper models. 
+The current tags are:
+
+| Tagname | Description |
+| --- | --- |
+|`0.1.1.dev-large`|Uses ScrAibe Verison 0.1.1 and the whisper model `large-v2`|
+|`0.1.1.dev-medium`|Uses ScrAibe Verison 0.1.1 and the whisper model `medium`|
+|`0.1.1.dev-small`|Uses ScrAibe Verison 0.1.1 and the whisper model `small`|
+|`0.1.1.dev-base`|Uses ScrAibe Verison 0.1.1 and the whisper model `base`|
+|`0.1.1.dev-tiny`|Uses ScrAibe Verison 0.1.1 and the whisper model `tiny`|
+
+By running the container, you get access to the CLI and the Gradio App.
+Here an example command for running the container with the Gradio App:
+
+```
+docker run -p 7860:7860 --name [container name] hadr0n/scraibe:tagname --start-server --server-name 0.0.0.0 
 ```
 
-After the image is built, you can run the container with the following command:
-
-```
-sudo docker run -it  -p 7860:7860  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
-
-```
 -  `-p`: Flag for connecting the container internal port to the port on your local machine.
--  `--hf_token`: Flag for entering your personal HuggingFace token in the container.
-- `--start_server`: Command to start the Gradio App.
-
-Inside the container, the `cli` is used. Therefore, you can use the same commands as in the command-line interface.
+- `--server-name 0.0.0.0` is used to make the Gradio App available on your network.
 
 #### Enabling GPU usage
 
@@ -156,7 +170,7 @@ For further information, check: https://docs.nvidia.com/datacenter/cloud-native/
 To enable GPU usage, you need to add the following flag to the `docker run` command:
 
 ```
-docker run -it  -p 7860:7860 --gpus 'all,capabilities=utility'  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
+docker run -it  -p 7860:7860 --gpus all --name [container name]hadr0n/scraibe:tagname --start-server --server-name 0.0.0.0 
 ```
 
 For further guidance, check: https://blog.roboflow.com/use-the-gpu-in-docker/ 
