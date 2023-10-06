@@ -23,7 +23,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/sphinx_action' }}
         with:
-          publish_branch: est_shinx_actions
+          publish_branch: test_sphinx_actions
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _build/
           force_orphan: true
