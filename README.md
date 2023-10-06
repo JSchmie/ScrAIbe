@@ -163,7 +163,7 @@ For further guidance, check: https://blog.roboflow.com/use-the-gpu-in-docker/
 
 ## Documentation 
 
-For further insights, check the [documentation page]().
+For further insights, check the [documentation page](https://jschmie.github.io/ScrAIbe/).
 
 ## Contributions
 

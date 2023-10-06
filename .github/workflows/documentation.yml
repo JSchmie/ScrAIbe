@@ -17,7 +17,7 @@ jobs:
       - name: Sphinx build
         run: |
           sphinx-apidoc -o source scraibe/  
-          sphinx-build source docs
+          sphinx-build -M html source docs
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/sphinx_action' }}
