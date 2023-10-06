@@ -24,6 +24,6 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/sphinx_action' }}
         with:
           publish_branch: gh-pages
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN_GH }}
           publish_dir: _build/
           force_orphan: true
