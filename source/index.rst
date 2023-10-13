@@ -7,7 +7,7 @@ Welcome to ScrAIbe: Streamlined Conversation Recording with Automated Intelligen
    :maxdepth: 2
    :caption: Contents:
 
-   ../README.md
+   . ./README.md
    modules
 
 
