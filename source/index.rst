@@ -4,7 +4,6 @@ Welcome to ScrAIbe: Streamlined Conversation Recording with Automated Intelligen
 Readme File
 ===========
 
-.. include:: ../README.md
 
 
 .. automodule:: scraibe
@@ -12,6 +11,11 @@ Readme File
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   .. include:: ../README.md
+   :parser: myst_parser.sphinx_
+
+   modules
 
 Indices and tables
 ==================
