@@ -13,7 +13,7 @@ Readme File
    :caption: Contents:
 
    .. include:: ../README.md
-   :parser: myst_parser.sphinx_
+      :parser: myst_parser.sphinx_
 
    modules
 
