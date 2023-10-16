@@ -12,7 +12,6 @@ Welcome to ScrAIbe: Streamlined Conversation Recording with Automated Intelligen
 
    modules
 
-   ../LICENSE
 
 Indices and tables
 ==================

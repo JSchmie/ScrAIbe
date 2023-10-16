@@ -193,7 +193,7 @@ For queries contact [Jacob Schmieder](Jacob.Schmieder@dbfz.de)
 
 ## License 
 
-ScrAIbe is licensed under GNU General Public License.
+ScrAIbe is licensed under [GNU General Public License](LICENSE).
 
 ## Acknowledgments
 
