@@ -4,7 +4,7 @@ Welcome to ScrAIbe: Streamlined Conversation Recording with Automated Intelligen
 Readme File
 ===========
 
-.. mdinclude::../README.md
+.. include:: ../README.md
 
 
 .. automodule:: scraibe
