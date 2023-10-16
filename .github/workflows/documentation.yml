@@ -28,7 +28,7 @@ jobs:
         run: |
           cp README.md ./source/README.md
           cp LICENSE ./source/LICENSE
-          cp Pictures ./source/Pictures
+          cp -r Pictures ./source/Pictures
           sphinx-apidoc -o source scraibe/  
           sphinx-build -M html source docs
           make html
