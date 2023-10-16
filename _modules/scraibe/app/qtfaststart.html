@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.app.qtfaststart &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.app.qtfaststart</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.app.qtfaststart</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This file contains a modified version of qtfaststart by qtfaststart</span>
+<span class="sd">https://github.com/danielgtaylor/qtfaststart/tree/master</span>
+
+<span class="sd">All credit goes to the original author.</span>
+<span class="sd">Copyright (C) 2008 - 2013 Daniel G. Taylor &lt;dan@programmer-art.org&gt;</span>
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy of this</span>
+<span class="sd">software and associated documentation files (the &quot;Software&quot;),</span>
+<span class="sd">to deal in the Software without restriction, including without limitation the rights to </span>
+<span class="sd">use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the </span>
+<span class="sd">Software, and to permit persons to whom the Software is furnished to do so, </span>
+<span class="sd">subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in all copies</span>
+<span class="sd">or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,</span>
+<span class="sd">INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, </span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</span>
+<span class="sd">IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,</span>
+<span class="sd">DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,</span>
+<span class="sd">ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS </span>
+<span class="sd">IN THE SOFTWARE.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">io</span>
+
+<span class="c1"># define error classes</span>
+<div class="viewcode-block" id="FastStartException">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.FastStartException">[docs]</a>
+<span class="k">class</span> <span class="nc">FastStartException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when something bad happens during processing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="FastStartSetupError">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.FastStartSetupError">[docs]</a>
+<span class="k">class</span> <span class="nc">FastStartSetupError</span><span class="p">(</span><span class="n">FastStartException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rasised when asked to process a file that does not need processing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="MalformedFileError">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.MalformedFileError">[docs]</a>
+<span class="k">class</span> <span class="nc">MalformedFileError</span><span class="p">(</span><span class="n">FastStartException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when the input file is setup in an unexpected way</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="UnsupportedFormatError">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.UnsupportedFormatError">[docs]</a>
+<span class="k">class</span> <span class="nc">UnsupportedFormatError</span><span class="p">(</span><span class="n">FastStartException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a movie file is recognized as a format not supported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<span class="c1"># define constants</span>
+<span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">8192</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;qtfaststart&quot;</span><span class="p">)</span>
+
+<span class="c1"># Older versions of Python require this to be defined</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">os</span><span class="p">,</span> <span class="s1">&#39;SEEK_CUR&#39;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">SEEK_CUR</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">Atom</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Atom&#39;</span><span class="p">,</span> <span class="s1">&#39;name position size&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="read_atom">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.read_atom">[docs]</a>
+<span class="k">def</span> <span class="nf">read_atom</span><span class="p">(</span><span class="n">datastream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read an atom and return a tuple of (size, type) where size is the size</span>
+<span class="sd">        in bytes (including the 8 bytes already read) and type is a &quot;fourcc&quot;</span>
+<span class="sd">        like &quot;ftyp&quot; or &quot;moov&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;L4s&quot;</span><span class="p">,</span> <span class="n">datastream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">size</span><span class="p">,</span> <span class="nb">type</span></div>
+
+
+
+<div class="viewcode-block" id="_read_atom_ex">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart._read_atom_ex">[docs]</a>
+<span class="k">def</span> <span class="nf">_read_atom_ex</span><span class="p">(</span><span class="n">datastream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read an Atom from datastream</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">datastream</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    <span class="n">atom_size</span><span class="p">,</span> <span class="n">atom_type</span> <span class="o">=</span> <span class="n">read_atom</span><span class="p">(</span><span class="n">datastream</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">atom_size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">atom_size</span><span class="p">,</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;Q&quot;</span><span class="p">,</span> <span class="n">datastream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Atom</span><span class="p">(</span><span class="n">atom_type</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">atom_size</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_index">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.get_index">[docs]</a>
+<span class="k">def</span> <span class="nf">get_index</span><span class="p">(</span><span class="n">datastream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an index of top level atoms, their absolute byte-position in the</span>
+<span class="sd">        file and their size in a list:</span>
+
+<span class="sd">        index = [</span>
+<span class="sd">            (&quot;ftyp&quot;, 0, 24),</span>
+<span class="sd">            (&quot;moov&quot;, 25, 2658),</span>
+<span class="sd">            (&quot;free&quot;, 2683, 8),</span>
+<span class="sd">            ...</span>
+<span class="sd">        ]</span>
+
+<span class="sd">        The tuple elements will be in the order that they appear in the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Getting index of top level atoms...&quot;</span><span class="p">)</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_read_atoms</span><span class="p">(</span><span class="n">datastream</span><span class="p">))</span>
+    <span class="n">_ensure_valid_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">index</span></div>
+
+
+
+<div class="viewcode-block" id="_read_atoms">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart._read_atoms">[docs]</a>
+<span class="k">def</span> <span class="nf">_read_atoms</span><span class="p">(</span><span class="n">datastream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read atoms until an error occurs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="n">datastream</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">atom</span> <span class="o">=</span> <span class="n">_read_atom_ex</span><span class="p">(</span><span class="n">datastream</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="k">yield</span> <span class="n">atom</span>
+
+        <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;mdat&quot;</span><span class="p">:</span>
+                <span class="c1"># Some files may end in mdat with no size set, which generally</span>
+                <span class="c1"># means to seek to the end of the file. We can just stop indexing</span>
+                <span class="c1"># as no more entries will be found!</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Weird, but just continue to try to find more atoms</span>
+                <span class="k">continue</span>
+
+        <span class="n">datastream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_ensure_valid_index">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart._ensure_valid_index">[docs]</a>
+<span class="k">def</span> <span class="nf">_ensure_valid_index</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure the minimum viable atoms are present in the index.</span>
+
+<span class="sd">    Raise FastStartException if not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">top_level_atoms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">index</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;moov&quot;</span><span class="p">,</span> <span class="s2">&quot;mdat&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">top_level_atoms</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> atom not found, is this a valid MOV/MP4 file?&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FastStartException</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="find_atoms">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.find_atoms">[docs]</a>
+<span class="k">def</span> <span class="nf">find_atoms</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">datastream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compatibilty interface for _find_atoms_ex</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fake_parent</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="s1">&#39;fake&#39;</span><span class="p">,</span> <span class="n">datastream</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="n">size</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">_find_atoms_ex</span><span class="p">(</span><span class="n">fake_parent</span><span class="p">,</span> <span class="n">datastream</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span></div>
+
+
+
+<div class="viewcode-block" id="_find_atoms_ex">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart._find_atoms_ex">[docs]</a>
+<span class="k">def</span> <span class="nf">_find_atoms_ex</span><span class="p">(</span><span class="n">parent_atom</span><span class="p">,</span> <span class="n">datastream</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Yield either &quot;stco&quot; or &quot;co64&quot; Atoms from datastream.</span>
+<span class="sd">        datastream will be 8 bytes into the stco or co64 atom when the value</span>
+<span class="sd">        is yielded.</span>
+
+<span class="sd">        It is assumed that datastream will be at the end of the atom after</span>
+<span class="sd">        the value has been yielded and processed.</span>
+
+<span class="sd">        parent_atom is the parent atom, a &#39;moov&#39; or other ancestor of CO</span>
+<span class="sd">        atoms in the datastream.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="n">parent_atom</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">parent_atom</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="k">while</span> <span class="n">datastream</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">stop</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">atom</span> <span class="o">=</span> <span class="n">_read_atom_ex</span><span class="p">(</span><span class="n">datastream</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Error reading next atom!&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FastStartException</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;trak&quot;</span><span class="p">,</span> <span class="s2">&quot;mdia&quot;</span><span class="p">,</span> <span class="s2">&quot;minf&quot;</span><span class="p">,</span> <span class="s2">&quot;stbl&quot;</span><span class="p">]:</span>
+            <span class="c1"># Known ancestor atom of stco or co64, search within it!</span>
+            <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">_find_atoms_ex</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">datastream</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">res</span>
+        <span class="k">elif</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;stco&quot;</span><span class="p">,</span> <span class="s2">&quot;co64&quot;</span><span class="p">]:</span>
+            <span class="k">yield</span> <span class="n">atom</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Ignore this atom, seek to the end of it.</span>
+            <span class="n">datastream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="process">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.process">[docs]</a>
+<span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a Quicktime/MP4 file for streaming by moving the metadata to</span>
+<span class="sd">        the front of the file. This method writes a new file.</span>
+
+<span class="sd">        If limit is set to something other than zero it will be used as the</span>
+<span class="sd">        number of bytes to write of the atoms following the moov atom. This</span>
+<span class="sd">        is very useful to create a small sample of a file with full headers,</span>
+<span class="sd">        which can then be used in bug reports and such.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">datastream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="n">datastream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">infilename</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;infilename must be a filename, bytes or file-like object&quot;</span><span class="p">)</span>
+    <span class="c1"># Get the top level atom index</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">get_index</span><span class="p">(</span><span class="n">datastream</span><span class="p">)</span>
+
+    <span class="n">mdat_pos</span> <span class="o">=</span> <span class="mi">999999</span>
+    <span class="n">free_size</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Make sure moov occurs AFTER mdat, otherwise no need to run!</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+        <span class="c1"># The atoms are guaranteed to exist from get_index above!</span>
+        <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;moov&quot;</span><span class="p">:</span>
+            <span class="n">moov_atom</span> <span class="o">=</span> <span class="n">atom</span>
+            <span class="n">moov_pos</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">position</span>
+        <span class="k">elif</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;mdat&quot;</span><span class="p">:</span>
+            <span class="n">mdat_pos</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">position</span>
+        <span class="k">elif</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;free&quot;</span> <span class="ow">and</span> <span class="n">atom</span><span class="o">.</span><span class="n">position</span> <span class="o">&lt;</span> <span class="n">mdat_pos</span><span class="p">:</span>
+            <span class="c1"># This free atom is before the mdat!</span>
+            <span class="n">free_size</span> <span class="o">+=</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Removing free atom at </span><span class="si">%d</span><span class="s2"> (</span><span class="si">%d</span><span class="s2"> bytes)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\x00\x00\x00\x00</span><span class="s2">&quot;</span> <span class="ow">and</span> <span class="n">atom</span><span class="o">.</span><span class="n">position</span> <span class="o">&lt;</span> <span class="n">mdat_pos</span><span class="p">:</span>
+            <span class="c1"># This is some strange zero atom with incorrect size</span>
+            <span class="n">free_size</span> <span class="o">+=</span> <span class="mi">8</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Removing strange zero atom at </span><span class="si">%s</span><span class="s2"> (8 bytes)&quot;</span> <span class="o">%</span> <span class="n">atom</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+
+    <span class="c1"># Offset to shift positions</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">moov_atom</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">free_size</span>
+
+    <span class="k">if</span> <span class="n">moov_pos</span> <span class="o">&lt;</span> <span class="n">mdat_pos</span><span class="p">:</span>
+        <span class="c1"># moov appears to be in the proper place, don&#39;t shift by moov size</span>
+        <span class="n">offset</span> <span class="o">-=</span> <span class="n">moov_atom</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">free_size</span><span class="p">:</span>
+            <span class="c1"># No free atoms and moov is correct, we are done!</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;This file appears to already be setup for streaming!&quot;</span><span class="p">)</span>
+            <span class="c1"># Stupid hack to retrun the non-processed file:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">infilename</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">infilename</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            
+    <span class="c1"># Read and fix moov</span>
+    <span class="n">moov</span> <span class="o">=</span> <span class="n">_patch_moov</span><span class="p">(</span><span class="n">datastream</span><span class="p">,</span> <span class="n">moov_atom</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing output...&quot;</span><span class="p">)</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># Write ftype</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;ftyp&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Writing ftyp... (</span><span class="si">%d</span><span class="s2"> bytes)&quot;</span> <span class="o">%</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="n">datastream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+            <span class="n">outfile</span> <span class="o">+=</span> <span class="n">datastream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="c1"># Write moov</span>
+    <span class="n">_bytes</span> <span class="o">=</span> <span class="n">moov</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Writing moov... (</span><span class="si">%d</span><span class="s2"> bytes)&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">_bytes</span><span class="p">))</span>
+    <span class="n">outfile</span> <span class="o">+=</span> <span class="n">_bytes</span>
+
+    <span class="c1"># Write the rest</span>
+    <span class="n">atoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">index</span> <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ftyp&quot;</span><span class="p">,</span> <span class="s2">&quot;moov&quot;</span><span class="p">,</span> <span class="s2">&quot;free&quot;</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Writing </span><span class="si">%s</span><span class="s2">... (</span><span class="si">%d</span><span class="s2"> bytes)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+        <span class="n">datastream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+
+        <span class="c1"># for compatability, allow &#39;0&#39; to mean no limit</span>
+        <span class="n">cur_limit</span> <span class="o">=</span> <span class="n">limit</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">cur_limit</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cur_limit</span><span class="p">,</span> <span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">get_chunks</span><span class="p">(</span><span class="n">datastream</span><span class="p">,</span> <span class="n">CHUNK_SIZE</span><span class="p">,</span> <span class="n">cur_limit</span><span class="p">):</span>
+            <span class="n">outfile</span> <span class="o">+=</span> <span class="n">chunk</span>
+
+    <span class="k">return</span> <span class="n">outfile</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_patch_moov</span><span class="p">(</span><span class="n">datastream</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+    <span class="n">datastream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+    <span class="n">moov</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">datastream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+
+    <span class="c1"># reload the atom from the fixed stream</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">_read_atom_ex</span><span class="p">(</span><span class="n">moov</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">_find_atoms_ex</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">moov</span><span class="p">):</span>
+        <span class="c1"># Read either 32-bit or 64-bit offsets</span>
+        <span class="n">ctype</span><span class="p">,</span> <span class="n">csize</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">stco</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="n">co64</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+        <span class="p">)[</span><span class="n">atom</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="c1"># Get number of entries</span>
+        <span class="n">version</span><span class="p">,</span> <span class="n">entry_count</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;2L&quot;</span><span class="p">,</span> <span class="n">moov</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Patching </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%d</span><span class="s2"> entries&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">entry_count</span><span class="p">))</span>
+
+        <span class="n">entries_pos</span> <span class="o">=</span> <span class="n">moov</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+
+        <span class="n">struct_fmt</span> <span class="o">=</span> <span class="s2">&quot;&gt;</span><span class="si">%(entry_count)s%(ctype)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">vars</span><span class="p">()</span>
+
+        <span class="c1"># Read entries</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">struct_fmt</span><span class="p">,</span> <span class="n">moov</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">csize</span> <span class="o">*</span> <span class="n">entry_count</span><span class="p">))</span>
+
+        <span class="c1"># Patch and write entries</span>
+        <span class="n">offset_entries</span> <span class="o">=</span> <span class="p">[</span><span class="n">entry</span> <span class="o">+</span> <span class="n">offset</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">]</span>
+        <span class="n">moov</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">entries_pos</span><span class="p">)</span>
+        <span class="n">moov</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">struct_fmt</span><span class="p">,</span> <span class="o">*</span><span class="n">offset_entries</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">moov</span>
+
+<div class="viewcode-block" id="get_chunks">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.qtfaststart.get_chunks">[docs]</a>
+<span class="k">def</span> <span class="nf">get_chunks</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
+    <span class="n">remaining</span> <span class="o">=</span> <span class="n">limit</span>
+    <span class="k">while</span> <span class="n">remaining</span><span class="p">:</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">remaining</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">remaining</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">chunk</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.transcriber &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.transcriber</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.transcriber</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Transcriber Module</span>
+<span class="sd">------------------</span>
+
+<span class="sd">This module provides the Transcriber class, a comprehensive tool for working with Whisper models.</span>
+<span class="sd">The Transcriber class offers functionalities such as loading different Whisper models, transcribing audio files,</span>
+<span class="sd">and saving transcriptions to text files. It acts as an interface between various Whisper models and the user,</span>
+<span class="sd">simplifying the process of audio transcription.</span>
+
+<span class="sd">Main Features:</span>
+<span class="sd">    - Loading different sizes and versions of Whisper models.</span>
+<span class="sd">    - Transcribing audio in various formats including str, Tensor, and nparray.</span>
+<span class="sd">    - Saving the transcriptions to the specified paths.</span>
+<span class="sd">    - Adaptable to various language specifications.</span>
+<span class="sd">    - Options to control the verbosity of the transcription process.</span>
+<span class="sd">    </span>
+<span class="sd">Constants:</span>
+<span class="sd">    WHISPER_DEFAULT_PATH: Default path for downloading and loading Whisper models.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    &gt;&gt;&gt; from your_package import Transcriber</span>
+<span class="sd">    &gt;&gt;&gt; transcriber = Transcriber.load_model(model=&quot;medium&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; transcript = transcriber.transcribe(audio=&quot;path/to/audio.wav&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; transcriber.save_transcript(transcript, &quot;path/to/save.txt&quot;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">whisper</span> <span class="kn">import</span> <span class="n">Whisper</span><span class="p">,</span> <span class="n">load_model</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span> <span class="p">,</span> <span class="n">Union</span> <span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">device</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
+
+
+<span class="kn">from</span> <span class="nn">.misc</span> <span class="kn">import</span> <span class="n">WHISPER_DEFAULT_PATH</span>
+<span class="n">whisper</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;whisper&#39;</span><span class="p">)</span> 
+
+
+
+
+<div class="viewcode-block" id="Transcriber">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcriber.Transcriber">[docs]</a>
+<span class="k">class</span> <span class="nc">Transcriber</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transcriber Class</span>
+<span class="sd">    -----------------</span>
+
+<span class="sd">    The Transcriber class serves as a wrapper around Whisper models for efficient audio</span>
+<span class="sd">    transcription. By encapsulating the intricacies of loading models, processing audio,</span>
+<span class="sd">    and saving transcripts, it offers an easy-to-use interface</span>
+<span class="sd">    for users to transcribe audio files.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        model (whisper): The Whisper model used for transcription.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        transcribe: Transcribes the given audio file.</span>
+<span class="sd">        save_transcript: Saves the transcript to a file.</span>
+<span class="sd">        load_model: Loads a specific Whisper model.</span>
+<span class="sd">        _get_whisper_kwargs: Private method to get valid keyword arguments for the whisper model.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; transcriber = Transcriber.load_model(model=&quot;medium&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; transcript = transcriber.transcribe(audio=&quot;path/to/audio.wav&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; transcriber.save_transcript(transcript, &quot;path/to/save.txt&quot;)</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The class supports various sizes and versions of Whisper models. Please refer to</span>
+<span class="sd">        the load_model method for available options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Transcriber.__init__">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcriber.Transcriber.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">whisper</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Transcriber class with a Whisper model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (whisper): The Whisper model to use for transcription.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span></div>
+
+
+<div class="viewcode-block" id="Transcriber.transcribe">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcriber.Transcriber.transcribe">[docs]</a>
+    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span> <span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">]</span> <span class="p">,</span>
+                   <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transcribe an audio file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            audio (Union[str, Tensor, nparray]): The audio file to transcribe.</span>
+<span class="sd">            *args: Additional arguments.</span>
+<span class="sd">            **kwargs: Additional keyword arguments, </span>
+<span class="sd">                        such as the language of the audio file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The transcript as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_whisper_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose&quot;</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> 
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span></div>
+
+    
+<div class="viewcode-block" id="Transcriber.save_transcript">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcriber.Transcriber.save_transcript">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">save_transcript</span><span class="p">(</span><span class="n">transcript</span> <span class="p">:</span> <span class="nb">str</span> <span class="p">,</span> <span class="n">save_path</span> <span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save a transcript to a file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transcript (str): The transcript as a string.</span>
+<span class="sd">            save_path (str): The path to save the transcript.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">transcript</span><span class="p">)</span>
+            
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Transcript saved to </span><span class="si">{</span><span class="n">save_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Transcriber.load_model">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcriber.Transcriber.load_model">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
+                    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;medium&quot;</span><span class="p">,</span> 
+                    <span class="n">download_root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">WHISPER_DEFAULT_PATH</span><span class="p">,</span>
+                    <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">device</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">in_memory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Transcriber&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load whisper model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (str): Whisper model. Available models include:</span>
+<span class="sd">                        - &#39;tiny.en&#39;</span>
+<span class="sd">                        - &#39;tiny&#39;</span>
+<span class="sd">                        - &#39;base.en&#39;</span>
+<span class="sd">                        - &#39;base&#39;</span>
+<span class="sd">                        - &#39;small.en&#39;</span>
+<span class="sd">                        - &#39;small&#39;</span>
+<span class="sd">                        - &#39;medium.en&#39;</span>
+<span class="sd">                        - &#39;medium&#39;</span>
+<span class="sd">                        - &#39;large-v1&#39;</span>
+<span class="sd">                        - &#39;large-v2&#39;</span>
+<span class="sd">                        - &#39;large&#39;</span>
+<span class="sd">                        </span>
+<span class="sd">            download_root (str, optional): Path to download the model.</span>
+<span class="sd">                                            Defaults to WHISPER_DEFAULT_PATH.</span>
+<span class="sd">                                            </span>
+<span class="sd">            device (Optional[Union[str, torch.device]], optional): </span>
+<span class="sd">                                        Device to load model on. Defaults to None.</span>
+<span class="sd">            in_memory (bool, optional): Whether to load model in memory. </span>
+<span class="sd">                                        Defaults to False.</span>
+<span class="sd">            args: Additional arguments only to avoid errors.</span>
+<span class="sd">            kwargs: Additional keyword arguments only to avoid errors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Transcriber: A Transcriber object initialized with the specified model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">download_root</span><span class="o">=</span><span class="n">download_root</span><span class="p">,</span>
+                            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">in_memory</span><span class="o">=</span><span class="n">in_memory</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">_model</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Transcriber._get_whisper_kwargs">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcriber.Transcriber._get_whisper_kwargs">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_whisper_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get kwargs for whisper model. Ensure that kwargs are valid.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Keyword arguments for whisper model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_possible_kwargs</span> <span class="o">=</span> <span class="n">Whisper</span><span class="o">.</span><span class="n">transcribe</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_varnames</span>
+        
+        <span class="n">whisper_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_possible_kwargs</span><span class="p">}</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">task</span> <span class="o">:=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">)):</span>
+            <span class="n">whisper_kwargs</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+            
+        <span class="k">if</span> <span class="p">(</span><span class="n">language</span> <span class="o">:=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">)):</span>
+            <span class="n">whisper_kwargs</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span> 
+        
+        <span class="k">return</span> <span class="n">whisper_kwargs</span></div>
+
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Transcriber(model=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

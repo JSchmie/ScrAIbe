@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.cli &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.cli</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.cli</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Command-Line Interface (CLI) for the Scraibe class,</span>
+<span class="sd">allowing for user interaction to transcribe and diarize audio files. </span>
+<span class="sd">The function includes arguments for specifying the audio files, model paths,</span>
+<span class="sd">output formats, and other options necessary for transcription.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span><span class="p">,</span> <span class="n">ArgumentDefaultsHelpFormatter</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">.autotranscript</span> <span class="kn">import</span> <span class="n">Scraibe</span>
+<span class="kn">from</span> <span class="nn">.app.gradio_app</span> <span class="kn">import</span> <span class="n">gradio_Interface</span>
+
+<span class="kn">from</span> <span class="nn">whisper.tokenizer</span> <span class="kn">import</span> <span class="n">LANGUAGES</span> <span class="p">,</span> <span class="n">TO_LANGUAGE_CODE</span>
+<span class="kn">from</span> <span class="nn">torch.cuda</span> <span class="kn">import</span> <span class="n">is_available</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">set_num_threads</span>
+
+
+<div class="viewcode-block" id="cli">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.cli.cli">[docs]</a>
+<span class="k">def</span> <span class="nf">cli</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Command-Line Interface (CLI) for the Scraibe class, allowing for user interaction to transcribe </span>
+<span class="sd">    and diarize audio files. The function includes arguments for specifying the audio files, model paths, </span>
+<span class="sd">    output formats, and other options necessary for transcription.</span>
+
+<span class="sd">    This function can be executed from the command line to perform transcription tasks, providing a </span>
+<span class="sd">    user-friendly way to access the Scraibe class functionalities.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+ 
+    <span class="k">def</span> <span class="nf">str2bool</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+        <span class="n">str2val</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;True&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">str2val</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">str2val</span><span class="p">[</span><span class="n">string</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected one of </span><span class="si">{</span><span class="nb">set</span><span class="p">(</span><span class="n">str2val</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">formatter_class</span> <span class="o">=</span> <span class="n">ArgumentDefaultsHelpFormatter</span><span class="p">)</span>
+
+    <span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+    
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span><span class="s2">&quot;--audio-files&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;List of audio files to transcribe.&quot;</span><span class="p">)</span>
+    
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--start-server&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Start the Gradio app.&#39;</span><span class="p">)</span>
+    
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Port to run the Gradio app on. Defaults to 7860.&quot;</span><span class="p">)</span>
+    
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--server-name&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of the Gradio app. If empty 127.0.0.1 or 0.0.0.0 will be used.&quot;</span><span class="p">)</span>
+                        
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--whisper-model-name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of the Whisper model to use.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--whisper-model-directory&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to save Whisper model files; defaults to ./models/whisper.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--diarization-directory&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the diarization model directory.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hf-token&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;HuggingFace token for private model download.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--inference-device&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Device to use for PyTorch inference.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num-threads&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Number of threads used by torch for CPU inference; overrides MKL_NUM_THREADS/OMP_NUM_THREADS.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output-directory&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory to save the transcription outputs.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output-format&quot;</span><span class="p">,</span> <span class="s2">&quot;-of&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;txt&quot;</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;txt&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="s2">&quot;md&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">],</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Format of the output file; defaults to txt.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--verbose-output&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">str2bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Enable or disable progress and debug messages.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--task&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span> <span class="s1">&#39;autotranscribe&#39;</span><span class="p">,</span> <span class="c1"># unifinished code</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;autotranscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;diarization&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;autotranscribe+translate&quot;</span><span class="p">,</span> <span class="s2">&quot;translate&quot;</span><span class="p">,</span> <span class="s1">&#39;transcribe&#39;</span><span class="p">],</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Choose to perform transcription, diarization, or translation. </span><span class="se">\</span>
+<span class="s2">                        If set to translate, the output will be translated to English.&quot;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--language&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">LANGUAGES</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">k</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">TO_LANGUAGE_CODE</span><span class="o">.</span><span class="n">keys</span><span class="p">()]),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Language spoken in the audio. Specify None to perform language detection.&quot;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    
+    <span class="n">arg_dict</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    
+    <span class="c1"># configure output</span>
+    <span class="n">out_folder</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;output_directory&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">out_format</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;output_format&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># seup server arg: </span>
+    <span class="n">start_server</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;start_server&quot;</span><span class="p">)</span>
+    
+    <span class="n">task</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">num_threads</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">set_num_threads</span><span class="p">(</span><span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;num_threads&quot;</span><span class="p">))</span>
+    
+    <span class="n">class_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;whisper_model&#39;</span> <span class="p">:</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;whisper_model_name&quot;</span><span class="p">),</span>
+                    <span class="s1">&#39;dia_model&#39;</span><span class="p">:</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;diarization_directory&quot;</span><span class="p">),</span>
+                    <span class="s1">&#39;use_auth_token&#39;</span> <span class="p">:</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;hf_token&quot;</span><span class="p">)}</span>
+    
+    <span class="k">if</span> <span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;whisper_model_directory&quot;</span><span class="p">]:</span>
+        <span class="n">class_kwargs</span><span class="p">[</span><span class="s2">&quot;download_root&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;whisper_model_directory&quot;</span><span class="p">)</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Scraibe</span><span class="p">(</span><span class="o">**</span><span class="n">class_kwargs</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;audio_files&quot;</span><span class="p">]:</span>
+        <span class="n">audio_files</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;audio_files&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;autotranscribe&quot;</span> <span class="ow">or</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;autotranscribe+translate&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">audio</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;autotranscribe+translate&quot;</span><span class="p">:</span>
+                    <span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;translate&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">task</span> <span class="o">=</span> <span class="s2">&quot;transcribe&quot;</span>
+                    
+                <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">autotranscribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span><span class="n">task</span> <span class="o">=</span> <span class="n">task</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">),</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;verbose_output&quot;</span><span class="p">))</span>
+                <span class="n">basename</span> <span class="o">=</span> <span class="n">audio</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saving </span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">out_folder</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+                
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;diarization&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">audio</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;verbose_output&quot;</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Verbose not implemented for diarization.&quot;</span><span class="p">)</span>
+                    
+                <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">diarization</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+                <span class="n">basename</span> <span class="o">=</span> <span class="n">audio</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saving </span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">out_folder</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span> <span class="mi">1</span><span class="p">),</span> <span class="n">f</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;transcribe&quot;</span> <span class="ow">or</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">&quot;translate&quot;</span><span class="p">:</span>
+            
+            <span class="k">for</span> <span class="n">audio</span> <span class="ow">in</span> <span class="n">audio_files</span><span class="p">:</span>
+ 
+                <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">task</span> <span class="o">=</span> <span class="n">task</span><span class="p">,</span>
+                                       <span class="n">language</span><span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">),</span>
+                                       <span class="n">verbose</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;verbose_output&quot;</span><span class="p">))</span>
+                <span class="n">basename</span> <span class="o">=</span> <span class="n">audio</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_folder</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">out_format</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>  
+                
+    
+    <span class="k">if</span> <span class="n">start_server</span><span class="p">:</span> <span class="c1"># unfinished code</span>
+        
+        <span class="n">gradio_Interface</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">queue</span><span class="p">()</span><span class="o">.</span><span class="n">launch</span><span class="p">(</span><span class="n">server_port</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">server_name</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">server_name</span><span class="p">)</span></div>
+
+        
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">cli</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe package &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scraibe.app package" href="scraibe.app.html" />
+    <link rel="prev" title="scraibe" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">scraibe</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">scraibe package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html">scraibe.app package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.audio">scraibe.audio module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#audio-processor-module">Audio Processor Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.audio.AudioProcessor"><code class="docutils literal notranslate"><span class="pre">AudioProcessor</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.autotranscript">scraibe.autotranscript module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe-class">Scraibe Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.autotranscript.Scraibe"><code class="docutils literal notranslate"><span class="pre">Scraibe</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.cli">scraibe.cli module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.cli.cli"><code class="docutils literal notranslate"><span class="pre">cli()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.diarisation">scraibe.diarisation module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diarisation-class">Diarisation Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.diarisation.Diariser"><code class="docutils literal notranslate"><span class="pre">Diariser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.misc">scraibe.misc module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.misc.config_diarization_yaml"><code class="docutils literal notranslate"><span class="pre">config_diarization_yaml()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.transcriber">scraibe.transcriber module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#transcriber-module">Transcriber Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.transcriber.Transcriber"><code class="docutils literal notranslate"><span class="pre">Transcriber</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.transcript_exporter">scraibe.transcript_exporter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.transcript_exporter.Transcript"><code class="docutils literal notranslate"><span class="pre">Transcript</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe.version">scraibe.version module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.version.get_version"><code class="docutils literal notranslate"><span class="pre">get_version()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scraibe.version.git_version"><code class="docutils literal notranslate"><span class="pre">git_version()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-scraibe">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">scraibe</a></li>
+      <li class="breadcrumb-item active">scraibe package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/scraibe.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scraibe-package">
+<h1>scraibe package<a class="headerlink" href="#scraibe-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scraibe.app.html">scraibe.app package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scraibe.app.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scraibe.app.html#module-scraibe.app.gradio_app">scraibe.app.gradio_app module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#gradio-audio-transcription-app">Gradio Audio Transcription App.</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.LANGUAGES"><code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface"><code class="docutils literal notranslate"><span class="pre">GradioTranscriptionInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.__init__"><code class="docutils literal notranslate"><span class="pre">GradioTranscriptionInterface.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.auto_transcribe"><code class="docutils literal notranslate"><span class="pre">GradioTranscriptionInterface.auto_transcribe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.perform_diarisation"><code class="docutils literal notranslate"><span class="pre">GradioTranscriptionInterface.perform_diarisation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.transcribe"><code class="docutils literal notranslate"><span class="pre">GradioTranscriptionInterface.transcribe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.gradio_app.gradio_Interface"><code class="docutils literal notranslate"><span class="pre">gradio_Interface()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scraibe.app.html#module-scraibe.app.qtfaststart">scraibe.app.qtfaststart module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.Atom"><code class="docutils literal notranslate"><span class="pre">Atom</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.Atom.name"><code class="docutils literal notranslate"><span class="pre">Atom.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.Atom.position"><code class="docutils literal notranslate"><span class="pre">Atom.position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.Atom.size"><code class="docutils literal notranslate"><span class="pre">Atom.size</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.FastStartException"><code class="docutils literal notranslate"><span class="pre">FastStartException</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.FastStartSetupError"><code class="docutils literal notranslate"><span class="pre">FastStartSetupError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.MalformedFileError"><code class="docutils literal notranslate"><span class="pre">MalformedFileError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.UnsupportedFormatError"><code class="docutils literal notranslate"><span class="pre">UnsupportedFormatError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart._ensure_valid_index"><code class="docutils literal notranslate"><span class="pre">_ensure_valid_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart._find_atoms_ex"><code class="docutils literal notranslate"><span class="pre">_find_atoms_ex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart._read_atom_ex"><code class="docutils literal notranslate"><span class="pre">_read_atom_ex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart._read_atoms"><code class="docutils literal notranslate"><span class="pre">_read_atoms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.find_atoms"><code class="docutils literal notranslate"><span class="pre">find_atoms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.get_chunks"><code class="docutils literal notranslate"><span class="pre">get_chunks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.get_index"><code class="docutils literal notranslate"><span class="pre">get_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.process"><code class="docutils literal notranslate"><span class="pre">process()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scraibe.app.html#scraibe.app.qtfaststart.read_atom"><code class="docutils literal notranslate"><span class="pre">read_atom()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scraibe.app.html#module-scraibe.app">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-scraibe.audio">
+<span id="scraibe-audio-module"></span><h2>scraibe.audio module<a class="headerlink" href="#module-scraibe.audio" title="Link to this heading"></a></h2>
+<section id="audio-processor-module">
+<h3>Audio Processor Module<a class="headerlink" href="#audio-processor-module" title="Link to this heading"></a></h3>
+<p>This module provides the AudioProcessor class, utilizing PyTorchaudio for handling audio files.
+It includes functionalities to load, cut, and manage audio waveforms, offering efficient and
+flexible audio processing.</p>
+<p>Available Classes:
+- AudioProcessor: Processes audio waveforms and provides methods for loading,</p>
+<blockquote>
+<div><p>cutting, and handling audio.</p>
+</div></blockquote>
+<dl>
+<dt>Usage:</dt><dd><p>from .audio_import AudioProcessor</p>
+<p>processor = AudioProcessor.from_file(“path/to/audiofile.wav”)
+cut_waveform = processor.cut(start=1.0, end=5.0)</p>
+</dd>
+</dl>
+<p>Constants:
+- SAMPLE_RATE (int): Default sample rate for processing.
+- NORMALIZATION_FACTOR (float): Normalization factor for audio waveform.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scraibe.audio.</span></span><span class="sig-name descname"><span class="pre">AudioProcessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waveform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/audio.html#AudioProcessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.audio.AudioProcessor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Audio Processor class that leverages PyTorchaudio to provide functionalities
+for loading, cutting, and handling audio waveforms.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor.waveform">
+<span class="sig-name descname"><span class="pre">waveform</span></span><a class="headerlink" href="#scraibe.audio.AudioProcessor.waveform" title="Link to this definition"></a></dt>
+<dd><p>torch.Tensor
+The audio waveform tensor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor.sr">
+<span class="sig-name descname"><span class="pre">sr</span></span><a class="headerlink" href="#scraibe.audio.AudioProcessor.sr" title="Link to this definition"></a></dt>
+<dd><p>int
+The sample rate of the audio.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waveform</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/audio.html#AudioProcessor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.audio.AudioProcessor.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the AudioProcessor object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>waveform</strong> (<em>torch.Tensor</em>) – The audio waveform tensor.</p></li>
+<li><p><strong>sr</strong> (<em>int</em><em>, </em><em>optional</em>) – The sample rate of the audio. Defaults to SAMPLE_RATE.</p></li>
+<li><p><strong>args</strong> – Additional arguments.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments, e.g., device to use for processing.</p></li>
+<li><p><strong>available</strong> (<em>If CUDA is</em>) – </p></li>
+<li><p><strong>CUDA.</strong> (<em>it defaults to</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the provided sample rate is not of type int.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor.cut">
+<span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/scraibe/audio.html#AudioProcessor.cut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.audio.AudioProcessor.cut" title="Link to this definition"></a></dt>
+<dd><p>Cut a segment from the audio waveform between the specified start and end times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>float</em>) – Start time in seconds.</p></li>
+<li><p><strong>end</strong> (<em>float</em>) – End time in seconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cut waveform segment.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor.from_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scraibe.audio.AudioProcessor" title="scraibe.audio.AudioProcessor"><span class="pre">AudioProcessor</span></a></span></span><a class="reference internal" href="_modules/scraibe/audio.html#AudioProcessor.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.audio.AudioProcessor.from_file" title="Link to this definition"></a></dt>
+<dd><p>Create an AudioProcessor instance from an audio file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – The audio file path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the AudioProcessor class containing the loaded audio.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.audio.AudioProcessor" title="scraibe.audio.AudioProcessor">AudioProcessor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.audio.AudioProcessor.load_audio">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/audio.html#AudioProcessor.load_audio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.audio.AudioProcessor.load_audio" title="Link to this definition"></a></dt>
+<dd><p>Open an audio file and read it as a mono waveform, resampling if necessary.
+This method ensures compatibility with pyannote.audio
+and requires the ffmpeg CLI in PATH.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – The audio file to open.</p></li>
+<li><p><strong>sr</strong> (<em>int</em><em>, </em><em>optional</em>) – The desired sample rate. Defaults to SAMPLE_RATE.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A NumPy array containing the audio waveform in float32 dtype</dt><dd><p>and the sample rate.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If failed to load audio.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-scraibe.autotranscript">
+<span id="scraibe-autotranscript-module"></span><h2>scraibe.autotranscript module<a class="headerlink" href="#module-scraibe.autotranscript" title="Link to this heading"></a></h2>
+<section id="scraibe-class">
+<h3>Scraibe Class<a class="headerlink" href="#scraibe-class" title="Link to this heading"></a></h3>
+<p>This class serves as the core of the transcription system, responsible for handling
+transcription and diarization of audio files. It leverages pretrained models for
+speech-to-text (such as Whisper) and speaker diarization (such as pyannote.audio),
+providing an accessible interface for audio processing tasks such as transcription,
+speaker separation, and timestamping.</p>
+<p>By encapsulating the complexities of underlying models, it allows for straightforward
+integration into various applications, ranging from transcription services to voice assistants.</p>
+<p>Available Classes:
+- Scraibe: Main class for performing transcription and diarization.</p>
+<blockquote>
+<div><p>Includes methods for loading models, processing audio files,
+and formatting the transcription output.</p>
+</div></blockquote>
+<dl>
+<dt>Usage:</dt><dd><p>from scraibe import Scraibe</p>
+<p>model = Scraibe()
+transcript = model.autotranscribe(“path/to/audiofile.wav”)</p>
+</dd>
+</dl>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scraibe.autotranscript.</span></span><span class="sig-name descname"><span class="pre">Scraibe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">whisper_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">whisper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dia_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DiarisationType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Scraibe is a class responsible for managing the transcription and diarization of audio files.
+It serves as the core of the transcription system, incorporating pretrained models
+for speech-to-text (such as Whisper) and speaker diarization (such as pyannote.audio),
+allowing for comprehensive audio processing.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.transcriber">
+<span class="sig-name descname"><span class="pre">transcriber</span></span><a class="headerlink" href="#scraibe.autotranscript.Scraibe.transcriber" title="Link to this definition"></a></dt>
+<dd><p>The transcriber object to handle transcription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.transcriber.Transcriber" title="scraibe.transcriber.Transcriber">Transcriber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.diariser">
+<span class="sig-name descname"><span class="pre">diariser</span></span><a class="headerlink" href="#scraibe.autotranscript.Scraibe.diariser" title="Link to this definition"></a></dt>
+<dd><p>The diariser object to handle diarization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.diarisation.Diariser" title="scraibe.diarisation.Diariser">Diariser</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initializes the Scraibe class with appropriate models.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.transcribe">
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.transcribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe.transcribe" title="Link to this definition"></a></dt>
+<dd><p>Transcribes an audio file using the whisper model and pyannote diarization model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.remove_audio_file">
+<span class="sig-name descname"><span class="pre">remove_audio_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.remove_audio_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe.remove_audio_file" title="Link to this definition"></a></dt>
+<dd><p>Removes the original audio file to avoid disk space issues or ensure data privacy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.get_audio_file">
+<span class="sig-name descname"><span class="pre">get_audio_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.get_audio_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe.get_audio_file" title="Link to this definition"></a></dt>
+<dd><p>Gets an audio file as an AudioProcessor object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">whisper_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">whisper</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dia_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">DiarisationType</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Initializes the Scraibe class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>whisper_model</strong> (<em>Union</em><em>[</em><em>bool</em><em>, </em><em>str</em><em>, </em><em>whisper</em><em>]</em><em>, </em><em>optional</em>) – Path to whisper model or whisper model itself.</p></li>
+<li><p><strong>diarisation_model</strong> (<em>Union</em><em>[</em><em>bool</em><em>, </em><em>str</em><em>, </em><em>DiarisationType</em><em>]</em><em>, </em><em>optional</em>) – Path to pyannote diarization model or model itself.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for whisper
+and pyannote diarization models.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.autotranscribe">
+<span class="sig-name descname"><span class="pre">autotranscribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_original</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scraibe.transcript_exporter.Transcript" title="scraibe.transcript_exporter.Transcript"><span class="pre">Transcript</span></a></span></span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.autotranscribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe.autotranscribe" title="Link to this definition"></a></dt>
+<dd><p>Transcribes an audio file using the whisper model and pyannote diarization model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>torch.Tensor</em><em>, </em><em>ndarray</em><em>]</em>) – Path to audio file or a tensor representing the audio.</p></li>
+<li><p><strong>remove_original</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the original audio file will
+be removed after transcription.</p></li>
+<li><p><strong>*args</strong> – Additional positional arguments for diarization and transcription.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for diarization and transcription.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A Transcript object containing the transcription,</dt><dd><p>which can be exported to different formats.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.transcript_exporter.Transcript" title="scraibe.transcript_exporter.Transcript">Transcript</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.autotranscript.Scraibe.diarization">
+<span class="sig-name descname"><span class="pre">diarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.diarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.autotranscript.Scraibe.diarization" title="Link to this definition"></a></dt>
+<dd><p>Perform diarization on an audio file using the pyannote diarization model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>torch.Tensor</em><em>, </em><em>ndarray</em><em>]</em>) – The audio source which can either be a path to the audio file or a tensor representation.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for diarization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the results of the diarization process.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_audio_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scraibe.audio.AudioProcessor" title="scraibe.audio.AudioProcessor"><span class="pre">AudioProcessor</span></a></span></span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.get_audio_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Gets an audio file as TorchAudioProcessor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>torch.Tensor</em><em>, </em><em>ndarray</em><em>]</em>) – Path to the audio file or
+a tensor representing the audio.</p></li>
+<li><p><strong>*args</strong> – Additional positional arguments.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>An object containing the waveform and sample rate in</dt><dd><p>torch.Tensor format.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.audio.AudioProcessor" title="scraibe.audio.AudioProcessor">AudioProcessor</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove_audio_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.remove_audio_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Removes the original audio file to avoid disk space issues or ensure data privacy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio_file_path</strong> (<em>str</em>) – Path to the audio file.</p></li>
+<li><p><strong>shred</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the audio file will be shredded,
+not just removed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/autotranscript.html#Scraibe.transcribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Transcribe the provided audio file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>torch.Tensor</em><em>, </em><em>ndarray</em><em>]</em>) – The audio source, which can either be a path or a tensor representation.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for transcription.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transcribed text from the audio source.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-scraibe.cli">
+<span id="scraibe-cli-module"></span><h2>scraibe.cli module<a class="headerlink" href="#module-scraibe.cli" title="Link to this heading"></a></h2>
+<p>Command-Line Interface (CLI) for the Scraibe class,
+allowing for user interaction to transcribe and diarize audio files.
+The function includes arguments for specifying the audio files, model paths,
+output formats, and other options necessary for transcription.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="scraibe.cli.cli">
+<span class="sig-prename descclassname"><span class="pre">scraibe.cli.</span></span><span class="sig-name descname"><span class="pre">cli</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/cli.html#cli"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.cli.cli" title="Link to this definition"></a></dt>
+<dd><p>Command-Line Interface (CLI) for the Scraibe class, allowing for user interaction to transcribe
+and diarize audio files. The function includes arguments for specifying the audio files, model paths,
+output formats, and other options necessary for transcription.</p>
+<p>This function can be executed from the command line to perform transcription tasks, providing a
+user-friendly way to access the Scraibe class functionalities.</p>
+</dd></dl>
+
+</section>
+<section id="module-scraibe.diarisation">
+<span id="scraibe-diarisation-module"></span><h2>scraibe.diarisation module<a class="headerlink" href="#module-scraibe.diarisation" title="Link to this heading"></a></h2>
+<section id="diarisation-class">
+<h3>Diarisation Class<a class="headerlink" href="#diarisation-class" title="Link to this heading"></a></h3>
+<p>This class serves as the heart of the speaker diarization system, responsible for identifying
+and segmenting individual speakers from a given audio file. It leverages a pretrained model
+from pyannote.audio, providing an accessible interface for audio processing tasks such as
+speaker separation, and timestamping.</p>
+<p>By encapsulating the complexities of the underlying model, it allows for straightforward
+integration into various applications, ranging from transcription services to voice assistants.</p>
+<p>Available Classes:
+- Diariser: Main class for performing speaker diarization.</p>
+<blockquote>
+<div><p>Includes methods for loading models, processing audio files,
+and formatting the diarization output.</p>
+</div></blockquote>
+<p>Constants:
+- TOKEN_PATH (str): Path to the Pyannote token.
+- PYANNOTE_DEFAULT_PATH (str): Default path to Pyannote models.
+- PYANNOTE_DEFAULT_CONFIG (str): Default configuration for Pyannote models.</p>
+<dl>
+<dt>Usage:</dt><dd><p>from .diarisation import Diariser</p>
+<p>model = Diariser.load_model(model=”path/to/model/config.yaml”)
+diarisation_output = model.diarization(“path/to/audiofile.wav”)</p>
+</dd>
+</dl>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scraibe.diarisation.</span></span><span class="sig-name descname"><span class="pre">Diariser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles the diarization process of an audio file using a pretrained model
+from pyannote.audio. Diarization is the task of determining “who spoke when.”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – The pretrained model to use for diarization.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser._get_diarisation_kwargs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_get_diarisation_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser._get_diarisation_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser._get_diarisation_kwargs" title="Link to this definition"></a></dt>
+<dd><p>Validates and extracts the keyword arguments for the pyannote diarization model.</p>
+<p>Ensures that the provided keyword arguments match the expected parameters,
+filtering out any invalid or unnecessary arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the validated keyword arguments.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser._get_token">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_get_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser._get_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser._get_token" title="Link to this definition"></a></dt>
+<dd><p>Retrieves the Huggingface token from a local file. This token is required
+for accessing certain online resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the token is not found.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Huggingface token.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser._save_token">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_save_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser._save_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser._save_token" title="Link to this definition"></a></dt>
+<dd><p>Saves the provided Huggingface token to a local file. This facilitates future
+access to online resources without needing to repeatedly authenticate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>token</strong> – The Huggingface token to save.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser.diarization">
+<span class="sig-name descname"><span class="pre">diarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audiofile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Annotation</span></span></span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser.diarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser.diarization" title="Link to this definition"></a></dt>
+<dd><p>Perform speaker diarization on the provided audio file,
+effectively separating different speakers
+and providing a timestamp for each segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audiofile</strong> – The path to the audio file or a torch.Tensor
+containing the audio data.</p></li>
+<li><p><strong>args</strong> – Additional arguments for the diarization model.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments for the diarization model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A dictionary containing speaker names,</dt><dd><p>segments, and other information related
+to the diarization process.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser.format_diarization_output">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_diarization_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dia</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotation</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser.format_diarization_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser.format_diarization_output" title="Link to this definition"></a></dt>
+<dd><p>Formats the raw diarization output into a more usable structure for this project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dia</strong> – Raw diarization output.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A structured representation of the diarization, with speaker names</dt><dd><p>as keys and a list of tuples representing segments as values.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.diarisation.Diariser.load_model">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/runner/.cache/torch/models/pyannote/config.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_auth_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/runner/.cache/torch/models/pyannote'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hparams_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pipeline</span></span></span><a class="reference internal" href="_modules/scraibe/diarisation.html#Diariser.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.diarisation.Diariser.load_model" title="Link to this definition"></a></dt>
+<dd><p>Loads a pretrained model from pyannote.audio,
+either from a local cache or online repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – Path or identifier for the pyannote model.
+default: /models/pyannote/speaker_diarization/config.yaml</p></li>
+<li><p><strong>token</strong> – Optional HUGGINGFACE_TOKEN for authenticated access.</p></li>
+<li><p><strong>cache_token</strong> – Whether to cache the token locally for future use.</p></li>
+<li><p><strong>cache_dir</strong> – Directory for caching models.</p></li>
+<li><p><strong>hparams_file</strong> – Path to a YAML file containing hyperparameters.</p></li>
+<li><p><strong>args</strong> – Additional arguments only to avoid errors.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments only to avoid errors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pyannote.audio Pipeline object, encapsulating the loaded model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pipeline</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-scraibe.misc">
+<span id="scraibe-misc-module"></span><h2>scraibe.misc module<a class="headerlink" href="#module-scraibe.misc" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="scraibe.misc.config_diarization_yaml">
+<span class="sig-prename descclassname"><span class="pre">scraibe.misc.</span></span><span class="sig-name descname"><span class="pre">config_diarization_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_segmentation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/misc.html#config_diarization_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.misc.config_diarization_yaml" title="Link to this definition"></a></dt>
+<dd><p>Configure diarization pipeline from a YAML file.</p>
+<p>This function updates the YAML file to use the given segmentation model
+offline, and avoids manual file manipulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – Path to the YAML file.</p></li>
+<li><p><strong>path_to_segmentation</strong> (<em>str</em><em>, </em><em>optional</em>) – Optional path to the segmentation model.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the segmentation model file is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-scraibe.transcriber">
+<span id="scraibe-transcriber-module"></span><h2>scraibe.transcriber module<a class="headerlink" href="#module-scraibe.transcriber" title="Link to this heading"></a></h2>
+<section id="transcriber-module">
+<h3>Transcriber Module<a class="headerlink" href="#transcriber-module" title="Link to this heading"></a></h3>
+<p>This module provides the Transcriber class, a comprehensive tool for working with Whisper models.
+The Transcriber class offers functionalities such as loading different Whisper models, transcribing audio files,
+and saving transcriptions to text files. It acts as an interface between various Whisper models and the user,
+simplifying the process of audio transcription.</p>
+<dl>
+<dt>Main Features:</dt><dd><ul class="simple">
+<li><p>Loading different sizes and versions of Whisper models.</p></li>
+<li><p>Transcribing audio in various formats including str, Tensor, and nparray.</p></li>
+<li><p>Saving the transcriptions to the specified paths.</p></li>
+<li><p>Adaptable to various language specifications.</p></li>
+<li><p>Options to control the verbosity of the transcription process.</p></li>
+</ul>
+</dd>
+<dt>Constants:</dt><dd><p>WHISPER_DEFAULT_PATH: Default path for downloading and loading Whisper models.</p>
+</dd>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">your_package</span> <span class="kn">import</span> <span class="n">Transcriber</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcriber</span> <span class="o">=</span> <span class="n">Transcriber</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcript</span> <span class="o">=</span> <span class="n">transcriber</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="o">=</span><span class="s2">&quot;path/to/audio.wav&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcriber</span><span class="o">.</span><span class="n">save_transcript</span><span class="p">(</span><span class="n">transcript</span><span class="p">,</span> <span class="s2">&quot;path/to/save.txt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scraibe.transcriber.</span></span><span class="sig-name descname"><span class="pre">Transcriber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">whisper</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcriber.Transcriber" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="transcriber-class">
+<h3>Transcriber Class<a class="headerlink" href="#transcriber-class" title="Link to this heading"></a></h3>
+<p>The Transcriber class serves as a wrapper around Whisper models for efficient audio
+transcription. By encapsulating the intricacies of loading models, processing audio,
+and saving transcripts, it offers an easy-to-use interface
+for users to transcribe audio files.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#scraibe.transcriber.Transcriber.model" title="Link to this definition"></a></dt>
+<dd><p>The Whisper model used for transcription.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>whisper</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber.transcribe">
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.transcribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcriber.Transcriber.transcribe" title="Link to this definition"></a></dt>
+<dd><p>Transcribes the given audio file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber.save_transcript">
+<span class="sig-name descname"><span class="pre">save_transcript</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.save_transcript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcriber.Transcriber.save_transcript" title="Link to this definition"></a></dt>
+<dd><p>Saves the transcript to a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcriber.Transcriber.load_model" title="Link to this definition"></a></dt>
+<dd><p>Loads a specific Whisper model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber._get_whisper_kwargs">
+<span class="sig-name descname"><span class="pre">_get_whisper_kwargs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber._get_whisper_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcriber.Transcriber._get_whisper_kwargs" title="Link to this definition"></a></dt>
+<dd><p>Private method to get valid keyword arguments for the whisper model.</p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transcriber</span> <span class="o">=</span> <span class="n">Transcriber</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcript</span> <span class="o">=</span> <span class="n">transcriber</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">audio</span><span class="o">=</span><span class="s2">&quot;path/to/audio.wav&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcriber</span><span class="o">.</span><span class="n">save_transcript</span><span class="p">(</span><span class="n">transcript</span><span class="p">,</span> <span class="s2">&quot;path/to/save.txt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The class supports various sizes and versions of Whisper models. Please refer to
+the load_model method for available options.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcriber.Transcriber.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">whisper</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcriber.Transcriber.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the Transcriber class with a Whisper model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<em>whisper</em>) – The Whisper model to use for transcription.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_get_whisper_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber._get_whisper_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Get kwargs for whisper model. Ensure that kwargs are valid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Keyword arguments for whisper model.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'medium'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/home/runner/.cache/torch/models/whisper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">device</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_memory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scraibe.transcriber.Transcriber" title="scraibe.transcriber.Transcriber"><span class="pre">Transcriber</span></a></span></span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Load whisper model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>str</em>) – Whisper model. Available models include:
+- ‘tiny.en’
+- ‘tiny’
+- ‘base.en’
+- ‘base’
+- ‘small.en’
+- ‘small’
+- ‘medium.en’
+- ‘medium’
+- ‘large-v1’
+- ‘large-v2’
+- ‘large’</p></li>
+<li><p><strong>download_root</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to download the model.
+Defaults to WHISPER_DEFAULT_PATH.</p></li>
+<li><p><strong>device</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>torch.device</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Device to load model on. Defaults to None.</p></li>
+<li><p><strong>in_memory</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to load model in memory.
+Defaults to False.</p></li>
+<li><p><strong>args</strong> – Additional arguments only to avoid errors.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments only to avoid errors.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Transcriber object initialized with the specified model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.transcriber.Transcriber" title="scraibe.transcriber.Transcriber">Transcriber</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_transcript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transcript</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.save_transcript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Save a transcript to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transcript</strong> (<em>str</em>) – The transcript as a string.</p></li>
+<li><p><strong>save_path</strong> (<em>str</em>) – The path to save the transcript.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcriber.html#Transcriber.transcribe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Transcribe an audio file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audio</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Tensor</em><em>, </em><em>nparray</em><em>]</em>) – The audio file to transcribe.</p></li>
+<li><p><strong>*args</strong> – Additional arguments.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments,
+such as the language of the audio file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transcript as a string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-scraibe.transcript_exporter">
+<span id="scraibe-transcript-exporter-module"></span><h2>scraibe.transcript_exporter module<a class="headerlink" href="#module-scraibe.transcript_exporter" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scraibe.transcript_exporter.</span></span><span class="sig-name descname"><span class="pre">Transcript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transcript</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for storing transcript data, including speaker information and text segments,
+and exporting it to various file formats such as JSON, HTML, and LaTeX.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transcript</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initializes the Transcript object with the given transcript data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>transcript</strong> (<em>dict</em>) – A dictionary containing the formatted transcript string.
+Keys should correspond to segment IDs, and values should
+contain speaker and segment information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return a string representation of the Transcript object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string that provides an informative description of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.__str__" title="Link to this definition"></a></dt>
+<dd><p>Converts the transcript to a string representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>String representation of the transcript, including speaker names and</dt><dd><p>time stamps for each segment.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript._extract_segments">
+<span class="sig-name descname"><span class="pre">_extract_segments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript._extract_segments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript._extract_segments" title="Link to this definition"></a></dt>
+<dd><p>Extracts all the text segments from the transcript.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>List of segments, where each segment is represented</dt><dd><p>by the starting and ending times.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript._extract_speakers">
+<span class="sig-name descname"><span class="pre">_extract_speakers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript._extract_speakers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript._extract_speakers" title="Link to this definition"></a></dt>
+<dd><p>Extracts the unique speaker names from the transcript.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of unique speaker names in the transcript.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.annotate">
+<span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.annotate" title="Link to this definition"></a></dt>
+<dd><p>Annotates the transcript to associate specific names with speakers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>list</em>) – List of speaker names. These will be mapped sequentially to the speakers.</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Dictionary with speaker names as keys and list of segments as values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with speaker names as keys and list of segments as values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the number of speaker names does not match the number
+    of speakers, or if an unknown speaker is found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.from_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scraibe.transcript_exporter.Transcript" title="scraibe.transcript_exporter.Transcript"><span class="pre">Transcript</span></a></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.from_json" title="Link to this definition"></a></dt>
+<dd><p>Load transcript from json file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to json file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transcript object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#scraibe.transcript_exporter.Transcript" title="scraibe.transcript_exporter.Transcript">Transcript</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.get_dict">
+<span class="sig-name descname"><span class="pre">get_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.get_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.get_dict" title="Link to this definition"></a></dt>
+<dd><p>Get transcript as dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>transcript as dict</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.get_html">
+<span class="sig-name descname"><span class="pre">get_html</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.get_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.get_html" title="Link to this definition"></a></dt>
+<dd><p>Get transcript as html string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>transcript as html string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.get_json">
+<span class="sig-name descname"><span class="pre">get_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.get_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.get_json" title="Link to this definition"></a></dt>
+<dd><p>Get transcript as json string
+:return: transcript as json string
+:rtype: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.get_md">
+<span class="sig-name descname"><span class="pre">get_md</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.get_md"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.get_md" title="Link to this definition"></a></dt>
+<dd><p>Get transcript as Markdown string, using HTML formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Transcript as a Markdown string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.get_tex">
+<span class="sig-name descname"><span class="pre">get_tex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.get_tex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.get_tex" title="Link to this definition"></a></dt>
+<dd><p>Get transcript as LaTeX string. If no annotations are present, the speakers will
+be annotated with the first letters of the alphabet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Transcript as LaTeX string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.save" title="Link to this definition"></a></dt>
+<dd><p>Save transcript to file with the given path and file format.</p>
+<p>This method can save the transcript in various formats including JSON, TXT,
+MD, HTML, TEX, and PDF. The file format is determined by the extension of
+the path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to save the file, including the desired file extension.</p></li>
+<li><p><strong>*args</strong> – Additional positional arguments to be passed to the specific save methods.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments to be passed to the specific save methods.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the file format specified in the path is unknown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.to_html">
+<span class="sig-name descname"><span class="pre">to_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.to_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.to_html" title="Link to this definition"></a></dt>
+<dd><p>Save transcript as html file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to save file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.to_json" title="Link to this definition"></a></dt>
+<dd><p>Save transcript as json file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – path to save file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.to_md">
+<span class="sig-name descname"><span class="pre">to_md</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.to_md"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.to_md" title="Link to this definition"></a></dt>
+<dd><p>Get transcript as Markdown string, using HTML formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Transcript as a Markdown string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.to_pdf">
+<span class="sig-name descname"><span class="pre">to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Save transcript as a PDF file (placeholder function, implementation needed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to save the PDF file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.to_tex">
+<span class="sig-name descname"><span class="pre">to_tex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.to_tex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.to_tex" title="Link to this definition"></a></dt>
+<dd><p>Save transcript as a LaTeX file (placeholder function, implementation needed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to save the LaTeX file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scraibe.transcript_exporter.Transcript.to_txt">
+<span class="sig-name descname"><span class="pre">to_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scraibe/transcript_exporter.html#Transcript.to_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.transcript_exporter.Transcript.to_txt" title="Link to this definition"></a></dt>
+<dd><p>Save transcript as a LaTeX file (placeholder function, implementation needed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to save the LaTeX file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-scraibe.version">
+<span id="scraibe-version-module"></span><h2>scraibe.version module<a class="headerlink" href="#module-scraibe.version" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="scraibe.version.get_version">
+<span class="sig-prename descclassname"><span class="pre">scraibe.version.</span></span><span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">build_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/version.html#get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.version.get_version" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="scraibe.version.git_version">
+<span class="sig-prename descclassname"><span class="pre">scraibe.version.</span></span><span class="sig-name descname"><span class="pre">git_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/scraibe/version.html#git_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scraibe.version.git_version" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-scraibe">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-scraibe" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="scraibe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scraibe.app.html" class="btn btn-neutral float-right" title="scraibe.app package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

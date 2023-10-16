@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.audio &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.audio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.audio</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Audio Processor Module</span>
+<span class="sd">=======================</span>
+
+<span class="sd">This module provides the AudioProcessor class, utilizing PyTorchaudio for handling audio files.</span>
+<span class="sd">It includes functionalities to load, cut, and manage audio waveforms, offering efficient and</span>
+<span class="sd">flexible audio processing.</span>
+
+<span class="sd">Available Classes:</span>
+<span class="sd">- AudioProcessor: Processes audio waveforms and provides methods for loading, </span>
+<span class="sd">                    cutting, and handling audio.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    from .audio_import AudioProcessor</span>
+
+<span class="sd">    processor = AudioProcessor.from_file(&quot;path/to/audiofile.wav&quot;)</span>
+<span class="sd">    cut_waveform = processor.cut(start=1.0, end=5.0)</span>
+
+<span class="sd">Constants:</span>
+<span class="sd">- SAMPLE_RATE (int): Default sample rate for processing.</span>
+<span class="sd">- NORMALIZATION_FACTOR (float): Normalization factor for audio waveform.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">CalledProcessError</span><span class="p">,</span> <span class="n">run</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="n">SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">16000</span>
+<span class="n">NORMALIZATION_FACTOR</span> <span class="o">=</span> <span class="mf">32768.0</span>
+
+<div class="viewcode-block" id="AudioProcessor">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.audio.AudioProcessor">[docs]</a>
+<span class="k">class</span> <span class="nc">AudioProcessor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Audio Processor class that leverages PyTorchaudio to provide functionalities</span>
+<span class="sd">    for loading, cutting, and handling audio waveforms.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        waveform: torch.Tensor</span>
+<span class="sd">            The audio waveform tensor.</span>
+<span class="sd">        sr: int</span>
+<span class="sd">            The sample rate of the audio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="AudioProcessor.__init__">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.audio.AudioProcessor.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">waveform</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">sr</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">SAMPLE_RATE</span><span class="p">,</span>
+                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the AudioProcessor object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            waveform (torch.Tensor): The audio waveform tensor.</span>
+<span class="sd">            sr (int, optional): The sample rate of the audio. Defaults to SAMPLE_RATE.</span>
+<span class="sd">            args: Additional arguments.</span>
+<span class="sd">            kwargs: Additional keyword arguments, e.g., device to use for processing. </span>
+<span class="sd">            If CUDA is available, it defaults to CUDA.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the provided sample rate is not of type int.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">device</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">,</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span> <span class="o">=</span> <span class="n">waveform</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sr</span> <span class="o">=</span> <span class="n">sr</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sample rate should be a single value of type int,&quot;</span> \
+                             <span class="sa">f</span><span class="s2">&quot;not </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span><span class="si">}</span><span class="s2"> and type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="AudioProcessor.from_file">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.audio.AudioProcessor.from_file">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;AudioProcessor&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create an AudioProcessor instance from an audio file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file (str): The audio file path.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            AudioProcessor: An instance of the AudioProcessor class containing the loaded audio.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">audio</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load_audio</span><span class="p">(</span><span class="n">file</span> <span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">audio</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">audio</span><span class="p">,</span> <span class="n">sr</span><span class="p">)</span></div>
+
+    
+    
+<div class="viewcode-block" id="AudioProcessor.cut">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.audio.AudioProcessor.cut">[docs]</a>
+    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cut a segment from the audio waveform between the specified start and end times.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            start (float): Start time in seconds.</span>
+<span class="sd">            end (float): End time in seconds.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: The cut waveform segment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">end</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">end</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="AudioProcessor.load_audio">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.audio.AudioProcessor.load_audio">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_audio</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">SAMPLE_RATE</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open an audio file and read it as a mono waveform, resampling if necessary.</span>
+<span class="sd">        This method ensures compatibility with pyannote.audio</span>
+<span class="sd">        and requires the ffmpeg CLI in PATH.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file (str): The audio file to open.</span>
+<span class="sd">            sr (int, optional): The desired sample rate. Defaults to SAMPLE_RATE.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A NumPy array containing the audio waveform in float32 dtype</span>
+<span class="sd">                    and the sample rate.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: If failed to load audio.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This launches a subprocess to decode audio while down-mixing</span>
+        <span class="c1"># and resampling as necessary.  Requires the ffmpeg CLI in PATH.</span>
+        <span class="c1"># fmt: off</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;ffmpeg&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-nostdin&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-threads&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span>
+            <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;s16le&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-ac&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s2">&quot;pcm_s16le&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-ar&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sr</span><span class="p">),</span>
+            <span class="s2">&quot;-&quot;</span>
+        <span class="p">]</span>
+        <span class="c1"># fmt: on</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="k">except</span> <span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load audio: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="n">NORMALIZATION_FACTOR</span>
+        
+        <span class="k">return</span> <span class="n">out</span> <span class="p">,</span> <span class="n">sr</span></div>
+
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;TorchAudioProcessor(waveform=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waveform</span><span class="p">)</span><span class="si">}</span><span class="s1">, sr=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

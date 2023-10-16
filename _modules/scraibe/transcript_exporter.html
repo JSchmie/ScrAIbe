@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.transcript_exporter &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.transcript_exporter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.transcript_exporter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">traceback</span> <span class="kn">import</span> <span class="n">print_stack</span>
+
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+ 
+<span class="n">ALPHABET</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="s2">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Transcript">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript">[docs]</a>
+<span class="k">class</span> <span class="nc">Transcript</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for storing transcript data, including speaker information and text segments, </span>
+<span class="sd">    and exporting it to various file formats such as JSON, HTML, and LaTeX.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="Transcript.__init__">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcript</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Transcript object with the given transcript data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transcript (dict): A dictionary containing the formatted transcript string.</span>
+<span class="sd">                              Keys should correspond to segment IDs, and values should</span>
+<span class="sd">                              contain speaker and segment information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span> <span class="o">=</span> <span class="n">transcript</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speakers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_speakers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_segments</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.annotate">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.annotate">[docs]</a>
+    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Annotates the transcript to associate specific names with speakers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            args (list): List of speaker names. These will be mapped sequentially to the speakers.</span>
+<span class="sd">            kwargs (dict): Dictionary with speaker names as keys and list of segments as values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Dictionary with speaker names as keys and list of segments as values.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the number of speaker names does not match the number </span>
+<span class="sd">                        of speakers, or if an unknown speaker is found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speakers</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of speaker names does not match number of speakers&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">speaker</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speakers</span><span class="p">)):</span>
+                
+                <span class="n">annotations</span><span class="p">[</span><span class="n">speaker</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span>
+        
+        <span class="n">invalid_speakers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speakers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">invalid_speakers</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;These keys are not speakers: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">invalid_speakers</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">annotations</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">speakers</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span> <span class="o">=</span> <span class="n">annotations</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    
+<div class="viewcode-block" id="Transcript._extract_speakers">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript._extract_speakers">[docs]</a>
+    <span class="k">def</span> <span class="nf">_extract_speakers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts the unique speaker names from the transcript.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of unique speaker names in the transcript.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;speakers&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">]))</span></div>
+
+    
+<div class="viewcode-block" id="Transcript._extract_segments">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript._extract_segments">[docs]</a>
+    <span class="k">def</span> <span class="nf">_extract_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracts all the text segments from the transcript.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of segments, where each segment is represented</span>
+<span class="sd">                    by the starting and ending times.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s2">&quot;segments&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Transcript.__str__">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.__str__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the transcript to a string representation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: String representation of the transcript, including speaker names and</span>
+<span class="sd">                time stamps for each segment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fstring</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="k">for</span> <span class="n">_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">:</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">:</span>
+                <span class="n">speaker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">[</span><span class="n">seq</span><span class="p">[</span><span class="s2">&quot;speakers&quot;</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">speaker</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[</span><span class="s2">&quot;speakers&quot;</span><span class="p">]</span>
+            
+            <span class="n">segm</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[</span><span class="s2">&quot;segments&quot;</span><span class="p">]</span>
+            <span class="n">sseg</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">segm</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">eseg</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">segm</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            
+            <span class="n">fstring</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">speaker</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sseg</span><span class="si">}</span><span class="s2"> ; </span><span class="si">{</span><span class="n">eseg</span><span class="si">}</span><span class="s2">):</span><span class="se">\t</span><span class="si">{</span><span class="n">seq</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        
+        <span class="k">return</span> <span class="n">fstring</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.__repr__">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a string representation of the Transcript object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A string that provides an informative description of the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Transcript(speakers = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">speakers</span><span class="si">}</span><span class="s2">,&quot;</span>\
+                <span class="sa">f</span><span class="s2">&quot;segments = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">segments</span><span class="si">}</span><span class="s2">, annotation = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.get_dict">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.get_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get transcript as dict</span>
+
+<span class="sd">        :return: transcript as dict</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.get_json">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.get_json">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">use_annotation</span> <span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get transcript as json string</span>
+<span class="sd">        :return: transcript as json string</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;indent&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;indent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+        
+        <span class="k">if</span> <span class="n">use_annotation</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">:</span>
+                <span class="n">seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">[</span><span class="n">_id</span><span class="p">]</span>
+                <span class="n">seq</span><span class="p">[</span><span class="s2">&quot;speakers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">[</span><span class="n">seq</span><span class="p">[</span><span class="s2">&quot;speakers&quot;</span><span class="p">]]</span>
+            
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.get_html">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.get_html">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_html</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get transcript as html string</span>
+
+<span class="sd">        :return: transcript as html string</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&lt;p&gt;&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&lt;/p&gt;&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&lt;html&gt;&lt;body&gt;&quot;</span> <span class="o">+</span> <span class="n">html</span> <span class="o">+</span> <span class="s2">&quot;&lt;/body&gt;&lt;/html&gt;&quot;</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&quot;</span><span class="p">)</span>
+       
+        <span class="k">return</span> <span class="n">html</span>   </div>
+
+    
+<div class="viewcode-block" id="Transcript.get_md">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.get_md">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_md</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get transcript as Markdown string, using HTML formatting.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Transcript as a Markdown string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_html</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.get_tex">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.get_tex">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_tex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get transcript as LaTeX string. If no annotations are present, the speakers will</span>
+<span class="sd">        be annotated with the first letters of the alphabet.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Transcript as LaTeX string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="o">*</span><span class="n">ALPHABET</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speakers</span><span class="p">)])</span>
+        
+        <span class="n">fstring</span> <span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">begin</span><span class="si">{drama}</span><span class="s2">&quot;</span>
+        
+        <span class="k">for</span> <span class="n">speaker</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">speakers</span><span class="p">:</span>
+            
+            <span class="n">fstring</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\t\\</span><span class="s2">Character{&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">[</span><span class="n">speaker</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span> \
+                <span class="s2">&quot;{&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">[</span><span class="n">speaker</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
+        
+        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">:</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+            <span class="n">speaker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="p">[</span><span class="n">seq</span><span class="p">[</span><span class="s2">&quot;speakers&quot;</span><span class="p">]]</span>
+            <span class="n">fstring</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\\</span><span class="si">{</span><span class="n">speaker</span><span class="si">}</span><span class="s2">speaks:</span><span class="se">\n</span><span class="si">{</span><span class="n">seq</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+        <span class="n">fstring</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\\</span><span class="s2">end</span><span class="si">{drama}</span><span class="s2">&quot;</span>
+        
+        <span class="k">return</span> <span class="n">fstring</span></div>
+
+        
+            
+<div class="viewcode-block" id="Transcript.to_json">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.to_json">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save transcript as json file</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): path to save file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transcript</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.to_txt">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.to_txt">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save transcript as a LaTeX file (placeholder function, implementation needed).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to save the LaTeX file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.to_md">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.to_md">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_md</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get transcript as Markdown string, using HTML formatting.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Transcript as a Markdown string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.to_html">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.to_html">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save transcript as html file</span>
+
+<span class="sd">        :param path: path to save file</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_html</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.to_tex">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.to_tex">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_tex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save transcript as a LaTeX file (placeholder function, implementation needed).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to save the LaTeX file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.to_pdf">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.to_pdf">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save transcript as a PDF file (placeholder function, implementation needed).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to save the PDF file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    
+<div class="viewcode-block" id="Transcript.save">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.save">[docs]</a>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save transcript to file with the given path and file format.</span>
+
+<span class="sd">        This method can save the transcript in various formats including JSON, TXT,</span>
+<span class="sd">        MD, HTML, TEX, and PDF. The file format is determined by the extension of</span>
+<span class="sd">        the path.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): Path to save the file, including the desired file extension.</span>
+<span class="sd">            *args: Additional positional arguments to be passed to the specific save methods.</span>
+<span class="sd">            **kwargs: Additional keyword arguments to be passed to the specific save methods.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the file format specified in the path is unknown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_txt</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_md</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.html&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.tex&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_tex</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">to_pdf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown file format&quot;</span><span class="p">)</span></div>
+
+        
+<div class="viewcode-block" id="Transcript.from_json">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.transcript_exporter.Transcript.from_json">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;Transcript&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load transcript from json file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): path to json file</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Transcript: Transcript object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">transcript</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">transcript</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">transcript</span><span class="p">)</span></div>
+</div>
+
+
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

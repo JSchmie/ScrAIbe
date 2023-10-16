@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scraibe" href="modules.html" />
+    <link rel="prev" title="Welcome to ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-scraibe">Install <code class="docutils literal notranslate"><span class="pre">ScrAIbe</span></code> :</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-usage">Python usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-usage">Command-line usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gradio-app">Gradio App</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-gradio-app-on-your-local-machine">Running the Gradio App on your local machine</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-docker-container">Running a Docker container</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enabling-gpu-usage">Enabling GPU usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributions">Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#roadmap">Roadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact">Contact</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scraibe-streamlined-conversation-recording-with-automated-intelligence-based-environment">
+<h1><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code><a class="headerlink" href="#scraibe-streamlined-conversation-recording-with-automated-intelligence-based-environment" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">ScrAIbe</span></code> is a state-of-the-art,  <a class="reference external" href="https://pytorch.org/">PyTorch</a> based multilingual speech-to-text framework to generate fully automated transcriptions.</p>
+<p>Beyond transcription, ScrAIbe supports advanced functions, such as speaker diarization and speaker recognition.</p>
+<p>Designed as a comprehensive AI toolkit, it uses multiple AI models:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/openai/whisper">whisper</a>: A general-purpose speech recognition model.</p></li>
+<li><p><a class="reference external" href="https://github.com/pyannote/pyannote-audio">payannote-audio</a>: An open-source toolkit for speaker diarization.</p></li>
+</ul>
+<p>The framework utilizes a PyanNet-inspired pipeline, with the <code class="docutils literal notranslate"><span class="pre">Pyannote</span></code> library for speaker diarization and <code class="docutils literal notranslate"><span class="pre">VoxCeleb</span></code> for speaker embedding.</p>
+<p>During post-diarization, each audio segment is processed by the OpenAI <code class="docutils literal notranslate"><span class="pre">Whisper</span></code> model, in a transformer encoder-decoder structure. Initially, a CNN mitigates noise and enhances speech. Before transcription, <code class="docutils literal notranslate"><span class="pre">VoxLingua</span></code> identifies the language segment, facilitating Whisper’s role in both transcription and text translation.</p>
+<p>The following graphic illustrates the whole pipeline:</p>
+<p><img alt="Pipeline" src="Pictures/pipeline.png#gh-dark-mode-only" />
+<img alt="Pipeline" src="Pictures/pipeline_light.png#gh-light-mode-only" /></p>
+<section id="install-scraibe">
+<h2>Install <code class="docutils literal notranslate"><span class="pre">ScrAIbe</span></code> :<a class="headerlink" href="#install-scraibe" title="Link to this heading"></a></h2>
+<p>The following command will pull and install the latest commit from this repository, along with its Python dependencies.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install scraibe
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Python version</strong>: Python 3.8</p></li>
+<li><p><strong>PyTorch version</strong>: Python 1.11.0</p></li>
+<li><p><strong>CUDA version</strong>: Cuda-toolkit 11.3.1</p></li>
+</ul>
+<p>In order to run <code class="docutils literal notranslate"><span class="pre">scraibe</span></code> properly, it is recommended to reinstall <code class="docutils literal notranslate"><span class="pre">pytoch</span></code> using:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0+cu113 --extra-index-url https://download.pytorch.org/whl/cu113
+</pre></div>
+</div>
+<p>This ensures that the right torchaudio version is installed.</p>
+<p>Important: For the <code class="docutils literal notranslate"><span class="pre">Pyannote</span></code> model, you need to be granted access to Hugging Face.
+Check the <a class="reference external" href="https://huggingface.co/pyannote/speaker-diarization">Pyannote model page</a> to get access to the model.</p>
+<p>Additionally, you need to generate a <a class="reference external" href="https://huggingface.co/docs/hub/security-tokens">Hugging Face token</a>.</p>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<p>We’ve developed ScrAIbe with several access points to cater to diverse user needs.</p>
+<section id="python-usage">
+<h3>Python usage<a class="headerlink" href="#python-usage" title="Link to this heading"></a></h3>
+<p>It enables full control over the functionalities as well as process customization.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scraibe</span> <span class="kn">import</span> <span class="n">Scraibe</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Scraibe</span><span class="p">(</span><span class="n">use_auth_token</span> <span class="o">=</span> <span class="s2">&quot;hf_yourhftoken&quot;</span><span class="p">)</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">autotranscribe</span><span class="p">(</span><span class="s2">&quot;audio.wav&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transcription: </span><span class="se">\n</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Scraibe</span></code> Class is taking care of the models being properly loaded. Therefore, you can choose the other <a class="reference external" href="https://github.com/openai/whisper/blob/main/model-card.md">whisper</a> models using the <code class="docutils literal notranslate"><span class="pre">whisper_model</span></code> keyword.
+You can also change the <code class="docutils literal notranslate"><span class="pre">pyannote</span></code> diarization model using the <code class="docutils literal notranslate"><span class="pre">dia_model</span></code> keyword.</p>
+<p>As input, <code class="docutils literal notranslate"><span class="pre">autoranscribe</span></code> accepts every format which is compatible with <a class="reference external" href="https://ffmpeg.org/ffmpeg-formats.html">ffmgeg</a>. Examples therefore are <code class="docutils literal notranslate"><span class="pre">.mp4</span> <span class="pre">.mp3</span> <span class="pre">.wav</span> <span class="pre">.ogg</span> <span class="pre">.flac</span></code> and many more.</p>
+<p>To further control the pipeline of <code class="docutils literal notranslate"><span class="pre">ScrAIbe</span></code> you can parse almost any keyword you also cloud parsed towards <code class="docutils literal notranslate"><span class="pre">whisper</span></code> or <code class="docutils literal notranslate"><span class="pre">pyannote</span></code> if you need more option, try to check out the documentations  tows two Frameworks, you might have a good chance that these keywords will work here as well.
+Here’s are some examples regarding the <code class="docutils literal notranslate"><span class="pre">diarization</span></code> (which relies on the <code class="docutils literal notranslate"><span class="pre">pyannote</span></code> pipeline):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num_speakers</span></code> Number of speakers in the audio file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_speakers</span></code> Minimal Number of speakers in the audio file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_speakers</span></code> maximal Number of speakers in the audio file</p></li>
+</ul>
+<p>Then there are arguments about the transcription process, which uses the “whisper” model.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">language</span></code> Specify the language (<a class="reference external" href="https://github.com/openai/whisper/blob/main/language-breakdown.svg">list to supported languages</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">task</span></code> can be just <code class="docutils literal notranslate"><span class="pre">transcribe</span></code> or <code class="docutils literal notranslate"><span class="pre">translate</span></code>. If <code class="docutils literal notranslate"><span class="pre">translate</span></code> is selected, the transcribed audio will be translated to English.</p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">autotranscribe</span><span class="p">(</span><span class="s2">&quot;audio.wav&quot;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;german&quot;</span><span class="p">,</span> <span class="n">num_speakers</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Scraibe</span></code> also contains the option to just do a transcription</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transcription</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;audio.wav&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or just do a diarization:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diarization</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">diarize</span><span class="p">(</span><span class="s2">&quot;audio.wav&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="command-line-usage">
+<h3>Command-line usage<a class="headerlink" href="#command-line-usage" title="Link to this heading"></a></h3>
+<p>Next to the Pyhton interface, you can also run ScrAIbe using the command-line interface:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>scraibe -f &quot;audio.wav&quot; --hf-token &quot;hf_yourhftoken&quot; --language &quot;german&quot; --num_speakers 2
+</pre></div>
+</div>
+<p>For the full list of options, run:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>scraibe -h
+</pre></div>
+</div>
+</section>
+<section id="gradio-app">
+<h3>Gradio App<a class="headerlink" href="#gradio-app" title="Link to this heading"></a></h3>
+<p>The Gradio App is a user-friendly interface for ScrAIbe. It enables you to run the model without any coding knowledge. Therefore, you can run the app in your browser and upload your audio file, or you can make the Framework avail on your network and run it on your local machine.</p>
+<section id="running-the-gradio-app-on-your-local-machine">
+<h4>Running the Gradio App on your local machine<a class="headerlink" href="#running-the-gradio-app-on-your-local-machine" title="Link to this heading"></a></h4>
+<p>To run the Gradio App on your local machine, just use the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scraibe</span> <span class="o">--</span><span class="n">start_server</span> <span class="o">--</span><span class="n">port</span> <span class="mi">7860</span> <span class="o">--</span><span class="n">hf_token</span> <span class="n">hf_yourhftoken</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--start_server</span></code>: Command to start the Gradio App.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--port</span></code>: Flag for connecting the container internal port to the port on your local machine.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hf_token</span></code>: Flag for entering your personal HuggingFace token in the container.</p></li>
+</ul>
+<p>When the app is running, it will show you at which address you can access it.
+The default address is: http://127.0.0.1:7860 or http://0.0.0.0:7860</p>
+<p>After the app is running, you can upload your audio file and select the desired options.
+An example is shown below:</p>
+<p><img alt="Gradio App" src="_images/gradio_app.png" /></p>
+</section>
+</section>
+<section id="running-a-docker-container">
+<h3>Running a Docker container<a class="headerlink" href="#running-a-docker-container" title="Link to this heading"></a></h3>
+<p>Another option to run ScrAIbe is to use a Docker container. This option is especially useful if you want to run the model on a server or if you would like to use the GPU without dealing with CUDA.
+After you have installed Docker, you can execute the following commands in the terminal.</p>
+<p>First, you need to build the Docker image. Therefore, you need to enter your HuggingFace token and the image name.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">.</span> <span class="o">--</span><span class="n">build</span><span class="o">-</span><span class="n">arg</span><span class="o">=</span><span class="s2">&quot;hf_token=[enter your HuggingFace token] &quot;</span> <span class="o">-</span><span class="n">t</span> <span class="n">scraibe</span>
+</pre></div>
+</div>
+<p>After the image is built, you can run the container with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span>  <span class="o">-</span><span class="n">p</span> <span class="mi">7860</span><span class="p">:</span><span class="mi">7860</span>  <span class="o">--</span><span class="n">name</span> <span class="p">[</span><span class="n">container</span> <span class="n">name</span><span class="p">][</span><span class="n">image</span> <span class="n">name</span><span class="p">]</span>  <span class="o">--</span><span class="n">hf_token</span> <span class="p">[</span><span class="n">enter</span> <span class="n">your</span> <span class="n">HuggingFace</span> <span class="n">token</span><span class="p">]</span> <span class="o">--</span><span class="n">start_server</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span></code>: Flag for connecting the container internal port to the port on your local machine.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hf_token</span></code>: Flag for entering your personal HuggingFace token in the container.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--start_server</span></code>: Command to start the Gradio App.</p></li>
+</ul>
+<p>Inside the container, the <code class="docutils literal notranslate"><span class="pre">cli</span></code> is used. Therefore, you can use the same commands as in the command-line interface.</p>
+<section id="enabling-gpu-usage">
+<h4>Enabling GPU usage<a class="headerlink" href="#enabling-gpu-usage" title="Link to this heading"></a></h4>
+<p>To use the GPU, ensure your Docker installation supports GPU usage.
+For further information, check: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
+To enable GPU usage, you need to add the following flag to the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span>  <span class="o">-</span><span class="n">p</span> <span class="mi">7860</span><span class="p">:</span><span class="mi">7860</span> <span class="o">--</span><span class="n">gpus</span> <span class="s1">&#39;all,capabilities=utility&#39;</span>  <span class="o">--</span><span class="n">name</span> <span class="p">[</span><span class="n">container</span> <span class="n">name</span><span class="p">][</span><span class="n">image</span> <span class="n">name</span><span class="p">]</span>  <span class="o">--</span><span class="n">hf_token</span> <span class="p">[</span><span class="n">enter</span> <span class="n">your</span> <span class="n">HuggingFace</span> <span class="n">token</span><span class="p">]</span> <span class="o">--</span><span class="n">start_server</span>
+</pre></div>
+</div>
+<p>For further guidance, check: https://blog.roboflow.com/use-the-gpu-in-docker/</p>
+</section>
+</section>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<p>For further insights, check the <a class="reference external" href="https://jschmie.github.io/ScrAIbe/">documentation page</a>.</p>
+</section>
+<section id="contributions">
+<h2>Contributions<a class="headerlink" href="#contributions" title="Link to this heading"></a></h2>
+<p>We are happy to have any interest in contributing and about feedback: In order to do that, create an issue with your feedback or feel free to contact us.</p>
+</section>
+<section id="roadmap">
+<h2>Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading"></a></h2>
+<p>The following milestones are planned for further releases of ScrAIbe:</p>
+<ul class="simple">
+<li><p>Model quantization<br />
+Quantization to empower memory and computational efficiency.</p></li>
+<li><p>Model fine-tuning<br />
+In order to be able to cover a variety of linguistic phenomena.</p></li>
+</ul>
+<p>For example, currently ScrAIbe is able to transcribe word by word, but ignores filler words or speech pauses.
+These phenomena can be addressed by fine-tuning with the corresponding data.</p>
+<ul class="simple">
+<li><p>Implementation of LLMs<br />
+One example is the implementation of a summarization or extraction model, which enables ScrAIbe to automatically summarize or retrieve the key information out of a generated transcription, which could be the minutes of a meeting.</p></li>
+<li><p>Executable for Windows</p></li>
+</ul>
+</section>
+<section id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Link to this heading"></a></h2>
+<p>For queries contact <a class="reference internal" href="#Jacob.Schmieder&#64;dbfz.de"><span class="xref myst">Jacob Schmieder</span></a></p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p>ScrAIbe is licensed under <a class="reference download internal" download="" href="_downloads/9879d6db96fd29134fc802214163b95a/LICENSE"><span class="xref download myst">GNU General Public License</span></a>.</p>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading"></a></h2>
+<p>Special thanks go to the KIDA project and the BMEL (Bundesministerium für Ernährung und Landwirtschaft), especially to the AI Consultancy Team.</p>
+<p><img alt="KIDA" src="Pictures/kida_dark.png#gh-dark-mode-only" />         <img alt="BMEL" src="Pictures/BMEL_dark.png#gh-dark-mode-only" />      <img alt="DBFZ" src="Pictures/DBFZ_dark.png#gh-dark-mode-only" />             <img alt="MRI" src="Pictures/MRI.png#gh-dark-mode-only" /></p>
+<p><img alt="KIDA" src="Pictures/kida.png#gh-light-mode-only" />         <img alt="BMEL" src="Pictures/BMEL.jpg#gh-light-mode-only" />      <img alt="DBFZ" src="Pictures/DBFZ.png#gh-light-mode-only" />             <img alt="MRI" src="Pictures/MRI.png#gh-light-mode-only" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="scraibe" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

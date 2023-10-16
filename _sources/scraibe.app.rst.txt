@@ -1,0 +1,29 @@
+scraibe.app package
+===================
+
+Submodules
+----------
+
+scraibe.app.gradio\_app module
+------------------------------
+
+.. automodule:: scraibe.app.gradio_app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.app.qtfaststart module
+------------------------------
+
+.. automodule:: scraibe.app.qtfaststart
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: scraibe.app
+   :members:
+   :undoc-members:
+   :show-inheritance:

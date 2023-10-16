@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.diarisation &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.diarisation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.diarisation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Diarisation Class</span>
+<span class="sd">------------------</span>
+
+<span class="sd">This class serves as the heart of the speaker diarization system, responsible for identifying</span>
+<span class="sd">and segmenting individual speakers from a given audio file. It leverages a pretrained model</span>
+<span class="sd">from pyannote.audio, providing an accessible interface for audio processing tasks such as</span>
+<span class="sd">speaker separation, and timestamping.</span>
+
+<span class="sd">By encapsulating the complexities of the underlying model, it allows for straightforward</span>
+<span class="sd">integration into various applications, ranging from transcription services to voice assistants.</span>
+
+<span class="sd">Available Classes:</span>
+<span class="sd">- Diariser: Main class for performing speaker diarization. </span>
+<span class="sd">            Includes methods for loading models, processing audio files,</span>
+<span class="sd">            and formatting the diarization output.</span>
+
+<span class="sd">Constants:</span>
+<span class="sd">- TOKEN_PATH (str): Path to the Pyannote token.</span>
+<span class="sd">- PYANNOTE_DEFAULT_PATH (str): Default path to Pyannote models.</span>
+<span class="sd">- PYANNOTE_DEFAULT_CONFIG (str): Default configuration for Pyannote models.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    from .diarisation import Diariser</span>
+
+<span class="sd">    model = Diariser.load_model(model=&quot;path/to/model/config.yaml&quot;)</span>
+<span class="sd">    diarisation_output = model.diarization(&quot;path/to/audiofile.wav&quot;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">pyannote.audio</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">pyannote.audio.pipelines.speaker_diarization</span> <span class="kn">import</span> <span class="n">SpeakerDiarization</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
+
+<span class="kn">from</span> <span class="nn">.misc</span> <span class="kn">import</span> <span class="n">PYANNOTE_DEFAULT_PATH</span><span class="p">,</span> <span class="n">PYANNOTE_DEFAULT_CONFIG</span>
+<span class="n">Annotation</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;Annotation&#39;</span><span class="p">)</span> 
+
+<span class="n">TOKEN_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s1">&#39;.pyannotetoken&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Diariser">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser">[docs]</a>
+<span class="k">class</span> <span class="nc">Diariser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles the diarization process of an audio file using a pretrained model</span>
+<span class="sd">    from pyannote.audio. Diarization is the task of determining &quot;who spoke when.&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model: The pretrained model to use for diarization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+<div class="viewcode-block" id="Diariser.diarization">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser.diarization">[docs]</a>
+    <span class="k">def</span> <span class="nf">diarization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audiofile</span> <span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="p">,</span>
+                    <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Annotation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform speaker diarization on the provided audio file, </span>
+<span class="sd">        effectively separating different speakers</span>
+<span class="sd">        and providing a timestamp for each segment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            audiofile: The path to the audio file or a torch.Tensor</span>
+<span class="sd">                        containing the audio data.</span>
+<span class="sd">            args: Additional arguments for the diarization model.</span>
+<span class="sd">            kwargs: Additional keyword arguments for the diarization model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary containing speaker names,</span>
+<span class="sd">                    segments, and other information related</span>
+<span class="sd">                    to the diarization process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_diarisation_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+        <span class="n">diarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">audiofile</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_diarization_output</span><span class="p">(</span><span class="n">diarization</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="Diariser.format_diarization_output">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser.format_diarization_output">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_diarization_output</span><span class="p">(</span><span class="n">dia</span> <span class="p">:</span> <span class="n">Annotation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Formats the raw diarization output into a more usable structure for this project.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dia: Raw diarization output.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A structured representation of the diarization, with speaker names</span>
+<span class="sd">                  as keys and a list of tuples representing segments as values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dia_list</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dia</span><span class="o">.</span><span class="n">itertracks</span><span class="p">(</span><span class="n">yield_label</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">diarization_output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;speakers&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;segments&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="n">normalized_output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index_start_speaker</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">index_end_speaker</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">current_speaker</span> <span class="o">=</span> <span class="nb">str</span><span class="p">()</span>
+       
+        <span class="c1">###</span>
+        <span class="c1"># Sometimes two consecutive speakers are the same</span>
+        <span class="c1"># This loop removes these duplicates</span>
+        <span class="c1">###</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dia_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">normalized_output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dia_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">speaker</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dia_list</span><span class="p">):</span>
+                
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">current_speaker</span> <span class="o">=</span> <span class="n">speaker</span>
+                
+                <span class="k">if</span> <span class="n">speaker</span> <span class="o">!=</span> <span class="n">current_speaker</span><span class="p">:</span>
+
+                    <span class="n">index_end_speaker</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+
+                    <span class="n">normalized_output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">index_start_speaker</span><span class="p">,</span>
+                                            <span class="n">index_end_speaker</span><span class="p">,</span>
+                                            <span class="n">current_speaker</span><span class="p">])</span>
+
+                    <span class="n">index_start_speaker</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">current_speaker</span> <span class="o">=</span> <span class="n">speaker</span>
+
+            
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dia_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+
+                    <span class="n">index_end_speaker</span> <span class="o">=</span> <span class="n">i</span>
+                    
+                    <span class="n">normalized_output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">index_start_speaker</span><span class="p">,</span> 
+                                            <span class="n">index_end_speaker</span><span class="p">,</span> 
+                                            <span class="n">current_speaker</span><span class="p">])</span>
+        
+        <span class="k">for</span> <span class="n">outp</span> <span class="ow">in</span> <span class="n">normalized_output</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span>  <span class="n">dia_list</span><span class="p">[</span><span class="n">outp</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span> 
+            <span class="n">end</span> <span class="o">=</span>  <span class="n">dia_list</span><span class="p">[</span><span class="n">outp</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">end</span>
+
+            <span class="n">diarization_output</span><span class="p">[</span><span class="s2">&quot;segments&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+            <span class="n">diarization_output</span><span class="p">[</span><span class="s2">&quot;speakers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outp</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">diarization_output</span></div>
+
+        
+<div class="viewcode-block" id="Diariser._get_token">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser._get_token">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_token</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the Huggingface token from a local file. This token is required</span>
+<span class="sd">        for accessing certain online resources.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the token is not found.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The Huggingface token.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">TOKEN_PATH</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TOKEN_PATH</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No token found.&#39;</span> \
+                <span class="s1">&#39;Please create a token at https://huggingface.co/settings/token&#39;</span> \
+                <span class="sa">f</span><span class="s1">&#39;and save it in a file called </span><span class="si">{</span><span class="n">TOKEN_PATH</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">token</span></div>
+
+
+<div class="viewcode-block" id="Diariser._save_token">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser._save_token">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_save_token</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the provided Huggingface token to a local file. This facilitates future</span>
+<span class="sd">        access to online resources without needing to repeatedly authenticate.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            token: The Huggingface token to save.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TOKEN_PATH</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">token</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Diariser.load_model">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser.load_model">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> 
+                    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PYANNOTE_DEFAULT_CONFIG</span><span class="p">,</span> 
+                    <span class="n">use_auth_token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">cache_token</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">PYANNOTE_DEFAULT_PATH</span><span class="p">,</span>
+                    <span class="n">hparams_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Pipeline</span><span class="p">:</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads a pretrained model from pyannote.audio, </span>
+<span class="sd">        either from a local cache or online repository.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model: Path or identifier for the pyannote model.</span>
+<span class="sd">                default: /models/pyannote/speaker_diarization/config.yaml</span>
+<span class="sd">            token: Optional HUGGINGFACE_TOKEN for authenticated access.</span>
+<span class="sd">            cache_token: Whether to cache the token locally for future use.</span>
+<span class="sd">            cache_dir: Directory for caching models.</span>
+<span class="sd">            hparams_file: Path to a YAML file containing hyperparameters.</span>
+<span class="sd">            args: Additional arguments only to avoid errors.</span>
+<span class="sd">            kwargs: Additional keyword arguments only to avoid errors.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Pipeline: A pyannote.audio Pipeline object, encapsulating the loaded model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">cache_token</span> <span class="ow">and</span> <span class="n">use_auth_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_save_token</span><span class="p">(</span><span class="n">use_auth_token</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="ow">and</span> <span class="n">use_auth_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">use_auth_token</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_token</span><span class="p">()</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;pyannote/speaker-diarization&#39;</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="ow">and</span> <span class="n">use_auth_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;pyannote/speaker-diarization&#39;</span>
+            
+        <span class="n">_model</span> <span class="o">=</span>  <span class="n">Pipeline</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                           <span class="n">use_auth_token</span> <span class="o">=</span> <span class="n">use_auth_token</span><span class="p">,</span>
+                                           <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">cache_dir</span><span class="p">,</span>
+                                           <span class="n">hparams_file</span> <span class="o">=</span> <span class="n">hparams_file</span><span class="p">,)</span>
+        
+        <span class="k">if</span> <span class="n">_model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unable to load model either from local cache&#39;</span> \
+                <span class="s1">&#39;or from huggingface.co models. Please check your token&#39;</span> \
+                <span class="s1">&#39;or your local model path&#39;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">_model</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Diariser._get_diarisation_kwargs">
+<a class="viewcode-back" href="../../scraibe.html#scraibe.diarisation.Diariser._get_diarisation_kwargs">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_diarisation_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates and extracts the keyword arguments for the pyannote diarization model.</span>
+
+<span class="sd">        Ensures that the provided keyword arguments match the expected parameters,</span>
+<span class="sd">        filtering out any invalid or unnecessary arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary containing the validated keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_possible_kwargs</span> <span class="o">=</span> <span class="n">SpeakerDiarization</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="vm">__code__</span><span class="o">.</span><span class="n">co_varnames</span>
+
+        <span class="n">diarisation_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">_possible_kwargs</span><span class="p">}</span>
+            
+        <span class="k">return</span> <span class="n">diarisation_kwargs</span></div>
+
+    
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Diarisation(model=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

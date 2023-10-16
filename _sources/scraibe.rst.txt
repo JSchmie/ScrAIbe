@@ -1,0 +1,85 @@
+scraibe package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scraibe.app
+
+Submodules
+----------
+
+scraibe.audio module
+--------------------
+
+.. automodule:: scraibe.audio
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.autotranscript module
+-----------------------------
+
+.. automodule:: scraibe.autotranscript
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.cli module
+------------------
+
+.. automodule:: scraibe.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.diarisation module
+--------------------------
+
+.. automodule:: scraibe.diarisation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.misc module
+-------------------
+
+.. automodule:: scraibe.misc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.transcriber module
+--------------------------
+
+.. automodule:: scraibe.transcriber
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.transcript\_exporter module
+-----------------------------------
+
+.. automodule:: scraibe.transcript_exporter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+scraibe.version module
+----------------------
+
+.. automodule:: scraibe.version
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: scraibe
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scraibe.app.gradio_app &mdash; ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment 0.1.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=a58bc63e"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../README.html"><code class="docutils literal notranslate"><span class="pre">ScrAIbe:</span> <span class="pre">Streamlined</span> <span class="pre">Conversation</span> <span class="pre">Recording</span> <span class="pre">with</span> <span class="pre">Automated</span> <span class="pre">Intelligence</span> <span class="pre">Based</span> <span class="pre">Environment</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">scraibe</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scraibe.app.gradio_app</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scraibe.app.gradio_app</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Gradio Audio Transcription App.</span>
+<span class="sd">--------------------------------</span>
+
+<span class="sd">This module provides an interface to transcribe audio files using the </span>
+<span class="sd">Scraibe model. Users can either upload an audio file or record their speech </span>
+<span class="sd">live for transcription. The application supports multiple languages and provides </span>
+<span class="sd">options to specify the number of speakers and the language of the audio.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    LANGUAGES (list): A list of supported languages for transcription.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Run this script to start the Gradio web interface for audio transcription.</span>
+<span class="sd">    </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Gradio Audio Transcription App.</span>
+<span class="sd">--------------------------------</span>
+
+<span class="sd">This module provides an interface to transcribe audio files using the </span>
+<span class="sd">Scraibe model. Users can either upload an audio file or record their speech </span>
+<span class="sd">live for transcription. The application supports multiple languages and provides </span>
+<span class="sd">options to specify the number of speakers and the language of the audio.</span>
+
+<span class="sd">Attributes:</span>
+<span class="sd">    LANGUAGES (list): A list of supported languages for transcription.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Run this script to start the Gradio web interface for audio transcription.</span>
+<span class="sd">    </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">CURRENT</span>
+
+<span class="kn">import</span> <span class="nn">gradio</span> <span class="k">as</span> <span class="nn">gr</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">scraibe</span> <span class="kn">import</span> <span class="n">Scraibe</span><span class="p">,</span> <span class="n">Transcript</span>
+
+<span class="n">theme</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">Soft</span><span class="p">(</span>
+    <span class="n">primary_hue</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">secondary_hue</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span>
+    <span class="n">neutral_hue</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span>  
+<span class="p">)</span>
+
+<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Afrikaans&quot;</span><span class="p">,</span> <span class="s2">&quot;Arabic&quot;</span><span class="p">,</span> <span class="s2">&quot;Armenian&quot;</span><span class="p">,</span> <span class="s2">&quot;Azerbaijani&quot;</span><span class="p">,</span> <span class="s2">&quot;Belarusian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bosnian&quot;</span><span class="p">,</span> <span class="s2">&quot;Bulgarian&quot;</span><span class="p">,</span> <span class="s2">&quot;Catalan&quot;</span><span class="p">,</span> <span class="s2">&quot;Chinese&quot;</span><span class="p">,</span> <span class="s2">&quot;Croatian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Czech&quot;</span><span class="p">,</span> <span class="s2">&quot;Danish&quot;</span><span class="p">,</span> <span class="s2">&quot;Dutch&quot;</span><span class="p">,</span> <span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;Estonian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Finnish&quot;</span><span class="p">,</span> <span class="s2">&quot;French&quot;</span><span class="p">,</span> <span class="s2">&quot;Galician&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">,</span> <span class="s2">&quot;Greek&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Hebrew&quot;</span><span class="p">,</span> <span class="s2">&quot;Hindi&quot;</span><span class="p">,</span> <span class="s2">&quot;Hungarian&quot;</span><span class="p">,</span> <span class="s2">&quot;Icelandic&quot;</span><span class="p">,</span> <span class="s2">&quot;Indonesian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Italian&quot;</span><span class="p">,</span> <span class="s2">&quot;Japanese&quot;</span><span class="p">,</span> <span class="s2">&quot;Kannada&quot;</span><span class="p">,</span> <span class="s2">&quot;Kazakh&quot;</span><span class="p">,</span> <span class="s2">&quot;Korean&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Latvian&quot;</span><span class="p">,</span> <span class="s2">&quot;Lithuanian&quot;</span><span class="p">,</span> <span class="s2">&quot;Macedonian&quot;</span><span class="p">,</span> <span class="s2">&quot;Malay&quot;</span><span class="p">,</span> <span class="s2">&quot;Marathi&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Maori&quot;</span><span class="p">,</span> <span class="s2">&quot;Nepali&quot;</span><span class="p">,</span> <span class="s2">&quot;Norwegian&quot;</span><span class="p">,</span> <span class="s2">&quot;Persian&quot;</span><span class="p">,</span> <span class="s2">&quot;Polish&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Portuguese&quot;</span><span class="p">,</span> <span class="s2">&quot;Romanian&quot;</span><span class="p">,</span> <span class="s2">&quot;Russian&quot;</span><span class="p">,</span> <span class="s2">&quot;Serbian&quot;</span><span class="p">,</span> <span class="s2">&quot;Slovak&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Slovenian&quot;</span><span class="p">,</span> <span class="s2">&quot;Spanish&quot;</span><span class="p">,</span> <span class="s2">&quot;Swahili&quot;</span><span class="p">,</span> <span class="s2">&quot;Swedish&quot;</span><span class="p">,</span> <span class="s2">&quot;Tagalog&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Tamil&quot;</span><span class="p">,</span> <span class="s2">&quot;Thai&quot;</span><span class="p">,</span> <span class="s2">&quot;Turkish&quot;</span><span class="p">,</span> <span class="s2">&quot;Ukrainian&quot;</span><span class="p">,</span> <span class="s2">&quot;Urdu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Vietnamese&quot;</span><span class="p">,</span> <span class="s2">&quot;Welsh&quot;</span>
+<span class="p">]</span>
+
+<span class="n">CURRENT_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+
+<div class="viewcode-block" id="GradioTranscriptionInterface">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface">[docs]</a>
+<span class="k">class</span> <span class="nc">GradioTranscriptionInterface</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Interface handling the interaction between Gradio UI and the Audio Transcription system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GradioTranscriptionInterface.__init__">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Scraibe</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the GradioTranscriptionInterface with a transcription model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model (Scraibe): Model responsible for audio transcription tasks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span></div>
+
+
+<div class="viewcode-block" id="GradioTranscriptionInterface.auto_transcribe">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.auto_transcribe">[docs]</a>
+    <span class="k">def</span> <span class="nf">auto_transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span>
+                        <span class="n">num_speakers</span> <span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="n">translation</span> <span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                        <span class="n">language</span> <span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shortcut method for the Scraibe task.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: Transcribed text (str), JSON output (dict)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;num_speakers&quot;</span><span class="p">:</span> <span class="n">num_speakers</span> <span class="k">if</span> <span class="n">num_speakers</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="n">language</span> <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="s1">&#39;translate&#39;</span> <span class="k">if</span> <span class="n">translation</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">autotranscribe</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">gr</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t detect any speech in the provided audio. </span><span class="se">\</span>
+<span class="s2">                        Please try again!&quot;</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">result</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">source_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">source</span><span class="p">]</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">),</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Transcribing audio files&quot;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">autotranscribe</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">_name</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;NO TRANSCRIPT FOUND FOR </span><span class="si">{</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">Warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t detect any speech in </span><span class="si">{</span><span class="n">_name</span><span class="si">}</span><span class="s2"> will skip this file.&quot;</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            
+            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;TRANSCRIPT </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> FOR (</span><span class="si">{</span><span class="n">source_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">):</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">out_dict</span><span class="p">[</span><span class="n">source_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">r</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">out_dict</span><span class="p">[</span><span class="n">source_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+              
+            <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">out_dict</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">gr</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">&quot;Please provide a valid audio file.&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="GradioTranscriptionInterface.transcribe">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.transcribe">[docs]</a>
+    <span class="k">def</span> <span class="nf">transcribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">translation</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shortcut method for the Transcribe task.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Transcribed text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="n">language</span> <span class="k">if</span> <span class="n">language</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="s1">&#39;translate&#39;</span> <span class="k">if</span> <span class="n">translation</span> <span class="o">==</span> <span class="s2">&quot;Yes&quot;</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">source_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">source</span><span class="p">]</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">),</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Transcribing audio files&quot;</span><span class="p">):</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            
+            <span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;TRANSCRIPT </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> FOR (</span><span class="si">{</span><span class="n">source_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">):</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+                <span class="n">out</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            
+            <span class="k">return</span> <span class="n">out</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">gr</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">&quot;Please provide a valid audio file.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GradioTranscriptionInterface.perform_diarisation">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.gradio_app.GradioTranscriptionInterface.perform_diarisation">[docs]</a>
+    <span class="k">def</span> <span class="nf">perform_diarisation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">num_speakers</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shortcut method for the Diarisation task.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: JSON output of diarisation result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;num_speakers&quot;</span><span class="p">:</span> <span class="n">num_speakers</span> <span class="k">if</span> <span class="n">num_speakers</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">diarization</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">gr</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t detect any speech in the provided audio. </span><span class="se">\</span>
+<span class="s2">                        Please try again!&quot;</span><span class="p">)</span>
+        
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">source_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">source</span><span class="p">]</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">),</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Performing diarisation&quot;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">diarization</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;NO DIARISATION FOUND FOR </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">Warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t detect any speech in </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2"> will skip this file.&quot;</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            
+            <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+            
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">source_names</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">res</span>
+                
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gr</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">&quot;Please provide a valid audio file.&quot;</span><span class="p">)</span></div>
+</div>
+
+            
+
+<span class="c1">####</span>
+<span class="c1"># Gradio Interface</span>
+<span class="c1">####</span>
+
+<div class="viewcode-block" id="gradio_Interface">
+<a class="viewcode-back" href="../../../scraibe.app.html#scraibe.app.gradio_app.gradio_Interface">[docs]</a>
+<span class="k">def</span> <span class="nf">gradio_Interface</span><span class="p">(</span><span class="n">model</span> <span class="p">:</span> <span class="n">Scraibe</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Scraibe</span><span class="p">()</span>
+        
+    <span class="n">pipe</span> <span class="o">=</span> <span class="n">GradioTranscriptionInterface</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">select_task</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s1">&#39;Auto Transcribe&#39;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+                    
+            
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s1">&#39;Transcribe&#39;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+
+            
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s1">&#39;Diarisation&#39;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>
+        
+    <span class="k">def</span> <span class="nf">select_origin</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;Upload Audio&quot;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">))</span>
+        
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;Record Audio&quot;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;Upload Video&quot;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">))</span>
+        
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;Record Video&quot;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">))</span>
+            
+        <span class="k">elif</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;File or Files&quot;</span><span class="p">:</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">run_scribe</span><span class="p">(</span><span class="n">task</span><span class="p">,</span>
+                   <span class="n">num_speakers</span><span class="p">,</span>
+                   <span class="n">translate</span><span class="p">,</span>
+                   <span class="n">language</span><span class="p">,</span>
+                   <span class="n">audio1</span><span class="p">,</span>
+                   <span class="n">audio2</span><span class="p">,</span>
+                   <span class="n">video1</span><span class="p">,</span>
+                   <span class="n">video2</span><span class="p">,</span>
+                   <span class="n">file_in</span><span class="p">,</span>
+                   <span class="n">progress</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Progress</span><span class="p">(</span><span class="n">track_tqdm</span><span class="o">=</span> <span class="kc">True</span><span class="p">)):</span>
+        <span class="c1"># get *args which are not None</span>
+        <span class="n">progress</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Starting task...&#39;</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">audio1</span> <span class="ow">or</span> <span class="n">audio2</span> <span class="ow">or</span> <span class="n">video1</span> <span class="ow">or</span> <span class="n">video2</span> <span class="ow">or</span> <span class="n">file_in</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">source</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+ 
+        <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;Auto Transcribe&#39;</span><span class="p">:</span>
+    
+            <span class="n">out_str</span> <span class="p">,</span> <span class="n">out_json</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">auto_transcribe</span><span class="p">(</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">,</span>
+                                <span class="n">num_speakers</span> <span class="o">=</span> <span class="n">num_speakers</span><span class="p">,</span>
+                                <span class="n">translation</span> <span class="o">=</span> <span class="n">translate</span><span class="p">,</span>
+                                <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">out_str</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">out_json</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>      
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">out_str</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">out_json</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                        <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>  
+            
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;Transcribe&#39;</span><span class="p">:</span>
+            
+            <span class="n">out</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">,</span>
+                                <span class="n">translation</span> <span class="o">=</span> <span class="n">translate</span><span class="p">,</span>
+                                <span class="n">language</span> <span class="o">=</span> <span class="n">language</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>
+            
+        <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;Diarisation&#39;</span><span class="p">:</span>
+            
+            <span class="n">out</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">perform_diarisation</span><span class="p">(</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">,</span>
+                                <span class="n">num_speakers</span> <span class="o">=</span> <span class="n">num_speakers</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="n">visible</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+                    <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span> <span class="o">=</span> <span class="kc">False</span><span class="p">))</span>
+        
+    <span class="k">def</span> <span class="nf">annotate_output</span><span class="p">(</span><span class="n">annoation</span> <span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">out_json</span> <span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># get *args which are not None</span>
+        
+        <span class="n">trans</span> <span class="o">=</span> <span class="n">Transcript</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">out_json</span><span class="p">)</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="o">*</span><span class="n">annoation</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">trans</span><span class="p">)),</span><span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">get_json</span><span class="p">())</span>
+        
+        
+    <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Blocks</span><span class="p">(</span><span class="n">theme</span><span class="o">=</span><span class="n">theme</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;ScrAIbe: Automatic Audio Transcription&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">demo</span><span class="p">:</span>
+            
+        <span class="c1"># Define components</span>
+        <span class="n">hname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CURRENT_PATH</span><span class="p">,</span> <span class="s2">&quot;header.html&quot;</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">hname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">gr</span><span class="o">.</span><span class="n">HTML</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show_label</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Row</span><span class="p">():</span>
+            
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+            
+                <span class="n">task</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Radio</span><span class="p">([</span><span class="s2">&quot;Auto Transcribe&quot;</span><span class="p">,</span> <span class="s2">&quot;Transcribe&quot;</span><span class="p">,</span> <span class="s2">&quot;Diarisation&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Task&quot;</span><span class="p">,</span>
+                                <span class="n">value</span><span class="o">=</span> <span class="s1">&#39;Auto Transcribe&#39;</span><span class="p">)</span>
+                
+                <span class="n">num_speakers</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Number</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span> <span class="s2">&quot;Number of speakers (optional)&quot;</span><span class="p">,</span> 
+                                <span class="n">info</span> <span class="o">=</span> <span class="s2">&quot;Number of speakers in the audio file. If you don&#39;t know,</span><span class="se">\</span>
+<span class="s2">                                    leave it at 0.&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+                
+                <span class="n">translate</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Translation&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">value</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                <span class="n">info</span><span class="o">=</span><span class="s2">&quot;Select &#39;Yes&#39; to have the output translated into English.&quot;</span><span class="p">,</span>
+                                <span class="n">visible</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+                
+                <span class="n">language</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">LANGUAGES</span><span class="p">,</span>
+                                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Language (optional)&quot;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
+                                <span class="n">info</span><span class="o">=</span><span class="s2">&quot;Language of the audio file. If you don&#39;t know,</span><span class="se">\</span>
+<span class="s2">                                    leave it at None.&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+                
+                <span class="nb">input</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Radio</span><span class="p">([</span><span class="s2">&quot;Upload Audio&quot;</span><span class="p">,</span> <span class="s2">&quot;Record Audio&quot;</span><span class="p">,</span> <span class="s2">&quot;Upload Video&quot;</span><span class="p">,</span><span class="s2">&quot;Record Video&quot;</span> 
+                                    <span class="p">,</span><span class="s2">&quot;File or Files&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Input Type&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Upload Audio&quot;</span><span class="p">)</span>
+                
+                <span class="n">audio1</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Audio</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;upload&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upload Audio&quot;</span><span class="p">,</span>
+                                    <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">audio2</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Audio</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;microphone&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Record Audio&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span>
+                                    <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="n">video1</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Video</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;upload&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upload Video&quot;</span><span class="p">,</span>
+                                    <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="n">video2</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Video</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s2">&quot;webcam&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Record Video&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span>
+                                    <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="n">file_in</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Files</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upload File or Files&quot;</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+                
+                <span class="n">submit</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">()</span>
+            
+            <span class="k">with</span> <span class="n">gr</span><span class="o">.</span><span class="n">Column</span><span class="p">():</span>
+                
+                <span class="n">out_txt</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Textbox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Output&quot;</span><span class="p">,</span>
+                                        <span class="n">visible</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">show_copy_button</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="n">out_json</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">JSON</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;JSON Output&quot;</span><span class="p">,</span>
+                                    <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show_copy_button</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                
+                <span class="n">annoation</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Textbox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Name your speaker&#39;s&quot;</span><span class="p">,</span>
+                                    <span class="n">info</span><span class="o">=</span> <span class="s2">&quot;Please provide a list of the speakers arranged </span><span class="se">\</span>
+<span class="s2">                                    in the order in which they appear in the input. Use comma &#39;,&#39; </span><span class="se">\</span>
+<span class="s2">                                    as a seperator. Be aware that the first name is given </span><span class="se">\</span>
+<span class="s2">                                        to SPEAKER_00 the second to SPEAKER_01 and so on.&quot;</span><span class="p">,</span>
+                                    <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+                
+                <span class="n">annotate</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;Annotate&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">interactive</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+            
+        <span class="c1"># Define usage of components</span>
+        <span class="nb">input</span><span class="o">.</span><span class="n">change</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">select_origin</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="nb">input</span><span class="p">],</span>
+                        <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">audio1</span><span class="p">,</span> <span class="n">audio2</span><span class="p">,</span> <span class="n">video1</span><span class="p">,</span> <span class="n">video2</span><span class="p">,</span> <span class="n">file_in</span><span class="p">])</span>
+        
+        <span class="n">task</span><span class="o">.</span><span class="n">change</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span><span class="n">select_task</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">task</span><span class="p">],</span>
+                    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">num_speakers</span><span class="p">,</span> <span class="n">translate</span><span class="p">,</span> <span class="n">language</span><span class="p">])</span>
+        
+        <span class="n">translate</span><span class="o">.</span><span class="n">change</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">),</span>
+                            <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">translate</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">translate</span><span class="p">])</span>
+        <span class="n">num_speakers</span><span class="o">.</span><span class="n">change</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">),</span>
+                            <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">num_speakers</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">num_speakers</span><span class="p">])</span>
+        <span class="n">language</span><span class="o">.</span><span class="n">change</span><span class="p">(</span><span class="n">fn</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">gr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">),</span> 
+                        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">language</span><span class="p">],</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">language</span><span class="p">])</span>
+        
+        <span class="n">submit</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">fn</span> <span class="o">=</span> <span class="n">run_scribe</span><span class="p">,</span> 
+                        <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">task</span><span class="p">,</span> <span class="n">num_speakers</span><span class="p">,</span> <span class="n">translate</span><span class="p">,</span> <span class="n">language</span><span class="p">,</span> <span class="n">audio1</span><span class="p">,</span>
+                                <span class="n">audio2</span><span class="p">,</span> <span class="n">video1</span><span class="p">,</span> <span class="n">video2</span><span class="p">,</span> <span class="n">file_in</span><span class="p">],</span>
+                        <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">out_txt</span><span class="p">,</span> <span class="n">out_json</span><span class="p">,</span> <span class="n">annoation</span><span class="p">,</span> <span class="n">annotate</span><span class="p">])</span>
+        
+        <span class="n">annotate</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="n">fn</span> <span class="o">=</span> <span class="n">annotate_output</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">annoation</span><span class="p">,</span> <span class="n">out_json</span><span class="p">],</span>
+                        <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="n">out_txt</span><span class="p">,</span> <span class="n">out_json</span><span class="p">])</span>
+        
+    <span class="k">return</span> <span class="n">demo</span></div>
+
+
+    
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    
+    <span class="n">gradio_Interface</span><span class="p">()</span><span class="o">.</span><span class="n">queue</span><span class="p">()</span><span class="o">.</span><span class="n">launch</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Jacob Schmieder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
