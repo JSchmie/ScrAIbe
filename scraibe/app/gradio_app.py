@@ -34,10 +34,12 @@ Usage:
 
 import json
 import os
+import re
 
 import gradio as gr
+import threading
 from tqdm import tqdm
-
+import time
 from scraibe import Scraibe, Transcript
 
 theme = gr.themes.Soft(
@@ -62,6 +64,19 @@ LANGUAGES = [
 ]
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+
+
+# Global variable to track user activity
+USER_ACTIVE = True
+
+# Lock to synchronize access to user_active variable
+user_active_lock = threading.Lock()
+
+# Function to reset the user activity flag
+def reset_user_activity():
+    global USER_ACTIVE
+    with user_active_lock:
+        USER_ACTIVE = True
 
 class GradioTranscriptionInterface:
     """
@@ -205,8 +220,7 @@ class GradioTranscriptionInterface:
             return json.dumps(out, indent=4)
         
         else:
-            gr.Error("Please provide a valid audio file.")
-            
+            gr.Error("Please provide a valid audio file.")        
 
 ####
 # Gradio Interface
@@ -218,8 +232,11 @@ def gradio_Interface(model : Scraibe = None):
         model = Scraibe()
         
     pipe = GradioTranscriptionInterface(model)
-
+        
     def select_task(choice):
+        # tell the app that it is still in use
+        reset_user_activity()
+        
         if choice == 'Auto Transcribe':
             
             return (gr.update(visible = True),
@@ -241,6 +258,10 @@ def gradio_Interface(model : Scraibe = None):
                     gr.update(visible = False))
         
     def select_origin(choice):
+        
+        # tell the app that it is still in use
+        reset_user_activity()
+        
         if choice == "Upload Audio":
             
             return (gr.update(visible = True),
@@ -292,6 +313,10 @@ def gradio_Interface(model : Scraibe = None):
                    file_in,
                    progress = gr.Progress(track_tqdm= True)):
         # get *args which are not None
+        
+        # # tell the app that it is still in use
+        reset_user_activity()
+        
         progress(0, desc='Starting task...')
         source = audio1 or audio2 or video1 or video2 or file_in
         
@@ -346,10 +371,28 @@ def gradio_Interface(model : Scraibe = None):
         trans = trans.annotate(*annoation.split(","))
 
         return gr.update(value = str(trans)),gr.update(value = trans.get_json())
+
+    # Create a thread to monitor user activity
+    def monitor_activity():
+        global USER_ACTIVE
         
+        while True:
+            time.sleep(60)  # Check user activity every second
+            with user_active_lock:
+                
+                if not USER_ACTIVE:
+                    del model
+                    print("Model deleted empty memory")
+                    break
+                USER_ACTIVE = False
+    
+    # Start the monitoring thread
+    activity_thread = threading.Thread(target=monitor_activity)
+    activity_thread.daemon = True
+    activity_thread.start()
         
     with gr.Blocks(theme=theme,title='ScrAIbe: Automatic Audio Transcription') as demo:
-            
+
         # Define components
         hname = os.path.join(CURRENT_PATH, "header.html")
         header = open(hname, "r").read()
@@ -358,7 +401,7 @@ def gradio_Interface(model : Scraibe = None):
         header = header.replace("/file=logo.svg", f"/file={CURRENT_PATH}/logo.svg" )
         
         gr.HTML(header, visible= True, show_label=False)
-        
+    
         with gr.Row():
             
             with gr.Column():
@@ -432,6 +475,8 @@ def gradio_Interface(model : Scraibe = None):
         
         annotate.click(fn = annotate_output, inputs=[annoation, out_json],
                         outputs=[out_txt, out_json])
+        
+        
         
     return demo
 
