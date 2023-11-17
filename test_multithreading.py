@@ -1,3 +1,4 @@
+import os
 import time
 
 from scraibe import Scraibe
@@ -22,29 +23,38 @@ def model_thread():
     last_used = time.time()
     
 def interaction_thread():
-    global model
+    global model, model_runner
     while True:
         command = input("Enter a command ('q' to quit, 'reload' to reload model): ")
-        print("Command entered:", command, command.lower() == 'reload')
+    
         if command.lower() == 'q':
             break
         elif command.lower() == 'reload':
             print("Reloading model...", model)
             if model is None:
+                transcribe_active.clear() #black magic
                 model_runner = threading.Thread(target=model_thread)
                 model_runner.start()
                 model_runner.join()
+                
             else:
                 print("Model is already loaded.")
         else:
-            transcribe = threading.Thread(target=transcribe_thread, args=(command,))
-            transcribe.start()
-            transcribe.join()
+            if os.path.exists(command):
+                transcribe = threading.Thread(target=transcribe_thread, args=(command,))
+                transcribe.start()
+                transcribe.join()
+                
+            else:
+                print("File does not exist.")
 
 def delete_unused_model(model_runner):
     global model, last_used, transcribe_active
+    
     while True:
-        if not transcribe_active.is_set() and (time.time() - last_used > 30) and model is not None:
+        print("Checking for unused model...", transcribe_active.is_set())
+        _unload_porperty = (not transcribe_active.is_set() and (time.time() - last_used > 30) and model is not None)
+        if _unload_porperty:
             
             del model
             model = None
@@ -53,8 +63,9 @@ def delete_unused_model(model_runner):
             torch.cuda.empty_cache()
 
             model_runner.join()
+            
             print("Model deleted", threading.active_count())
-        time.sleep(1)
+        time.sleep(10)
 
 if __name__ == "__main__":
     
