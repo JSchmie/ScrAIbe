@@ -2,6 +2,8 @@ import os
 import time
 
 from scraibe import Scraibe
+
+import multiprocessing
 import threading
 import torch
 import gc
@@ -52,7 +54,6 @@ def delete_unused_model(model_runner):
     global model, last_used, transcribe_active
     
     while True:
-        print("Checking for unused model...", transcribe_active.is_set())
         _unload_porperty = (not transcribe_active.is_set() and (time.time() - last_used > 30) and model is not None)
         if _unload_porperty:
             
@@ -64,7 +65,7 @@ def delete_unused_model(model_runner):
 
             model_runner.join()
             
-            print("Model deleted", threading.active_count())
+            print("Model deleted")
         time.sleep(10)
 
 if __name__ == "__main__":
@@ -72,8 +73,8 @@ if __name__ == "__main__":
     lock = threading.Lock()
     
     interaction = threading.Thread(target=interaction_thread)
-    model_runner = threading.Thread(target=model_thread)
-    model_deleter = threading.Thread(target=delete_unused_model, args=(model_runner,))
+    model_runner = threading.Thread(target=model_thread, daemon=True)
+    model_deleter = threading.Thread(target=delete_unused_model, args=(model_runner,), daemon=True)
     
     model_runner.start()
     model_deleter.start()
