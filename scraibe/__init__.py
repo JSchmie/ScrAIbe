@@ -7,8 +7,7 @@ from .diarisation import *
 from .version import get_version as _get_version
 from .misc import *
 
-from .app.gradio_app import *
-from .app.qtfaststart import *
+from .app import *
 
 from .cli import *
  
