@@ -1,5 +1,5 @@
 from .qtfaststart import *
-from .activity_tracker import *
+from .multi import *
 from .interface import *
 from .stg import *
 from .interactions import *

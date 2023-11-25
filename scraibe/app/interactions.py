@@ -3,10 +3,12 @@ This file contains ervery function that will be called when the user interacts w
 UI like pressing a button or uploading a file.
 """
 
-from math import pi
+import time
 import gradio as gr 
 import scraibe.app.global_var as gv
 from scraibe import Transcript
+from scraibe.app.stg import GradioTranscriptionInterface
+import threading
 
 def select_task(choice):
         # tell the app that it is still in use
@@ -84,11 +86,18 @@ def run_scraibe(task,
                 file_in,
                 progress = gr.Progress(track_tqdm= True)):
     
-    # get *args which are not None
+    # get *args which are not None 
     
-    pipe = gv.MODEL
-
-    progress(0, desc='Starting task...')
+    if gv.MODEL is None and gv.MODEL_THREAD_PARAMS is not None:
+        progress(0, desc='Model was not loaded to conserve resources. Loading model...')
+        time.sleep(1)
+        gv.MODEL_THREAD = threading.Thread(**gv.MODEL_THREAD_PARAMS)
+        gv.MODEL_THREAD.start()
+        gv.MODEL_THREAD.join()
+      
+    pipe = GradioTranscriptionInterface()
+        
+    progress(0.1, desc='Starting task...')
     source = audio1 or audio2 or video1 or video2 or file_in
     
     if isinstance(source, list):

@@ -9,8 +9,6 @@ import scraibe.app.global_var as gv
 from .interactions import *
 from .stg import *
 
-from scraibe import Scraibe
-
 theme = gr.themes.Soft(
     primary_hue="green",
     secondary_hue='orange',
@@ -36,10 +34,7 @@ LANGUAGES = [
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-def gradio_Interface(pipe : Scraibe = None):
-    
-    if pipe is not None:
-        gv.MODEL = GradioTranscriptionInterface(pipe)
+def gradio_Interface():
     
     with gr.Blocks(theme=theme,title='ScrAIbe: Automatic Audio Transcription') as demo:
             
