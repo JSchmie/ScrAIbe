@@ -3,12 +3,12 @@ This file contains ervery function that will be called when the user interacts w
 UI like pressing a button or uploading a file.
 """
 
+from re import M
 import time
 import gradio as gr 
 import scraibe.app.global_var as gv
 from scraibe import Transcript
-from scraibe.app.stg import GradioTranscriptionInterface
-import threading
+from .multi import start_model_worker
 
 def select_task(choice):
         # tell the app that it is still in use
@@ -84,33 +84,37 @@ def run_scraibe(task,
                 video1,
                 video2,
                 file_in,
-                progress = gr.Progress(track_tqdm= True)):
+                progress = gr.Progress(track_tqdm=False)):
     
     # get *args which are not None 
+    if gv.MODEL_PROCESS is None or not gv.MODEL_PROCESS.is_alive():
+        #progress(0.0, desc='Loading model...')
+        gv.MODEL_PROCESS = start_model_worker(gv.MODEL_PARAMS,
+                                      gv.REQUEST_QUEUE,
+                                      gv.LAST_ACTIVE_TIME,
+                                      gv.RESPONSE_QUEUE,
+                                      gv.LOADED_EVENT,
+                                      gv.RUNNING_EVENT)
     
-    if gv.MODEL is None and gv.MODEL_THREAD_PARAMS is not None:
-        progress(0, desc='Model was not loaded to conserve resources. Loading model...')
-        time.sleep(1)
-        gv.MODEL_THREAD = threading.Thread(**gv.MODEL_THREAD_PARAMS)
-        gv.MODEL_THREAD.start()
-        gv.MODEL_THREAD.join()
-      
-    pipe = GradioTranscriptionInterface()
-        
-    progress(0.1, desc='Starting task...')
+    # progress(0.1, desc='Starting task...')
     source = audio1 or audio2 or video1 or video2 or file_in
     
     if isinstance(source, list):
         source = [s.name for s in source]
         if len(source) == 1:
             source = source[0]
-
+    
+    config = dict(source = source,
+                  task = task,
+                  num_speakers = num_speakers,
+                  translate = translate,
+                  language = language)
+    
+    gv.REQUEST_QUEUE.put(config)
+    
     if task == 'Auto Transcribe':
-
-        out_str , out_json = pipe.auto_transcribe(source = source,
-                            num_speakers = num_speakers,
-                            translation = translate,
-                            language = language)
+        
+        out_str , out_json = gv.RESPONSE_QUEUE.get()
         
         if isinstance(source, str):
             return (gr.update(value = out_str, visible = True),
@@ -125,9 +129,7 @@ def run_scraibe(task,
         
     elif task == 'Transcribe':
         
-        out = pipe.transcribe(source = source,
-                            translation = translate,
-                            language = language)
+        out = gv.RESPONSE_QUEUE.get()
         
         return (gr.update(value = out, visible = True),
                 gr.update(value = None, visible = False),
@@ -136,8 +138,7 @@ def run_scraibe(task,
         
     elif task == 'Diarisation':
         
-        out = pipe.perform_diarisation(source = source,
-                            num_speakers = num_speakers)
+        out = gv.RESPONSE_QUEUE.get()
         
         return (gr.update(value = None, visible = False),
                 gr.update(value = out, visible = True),

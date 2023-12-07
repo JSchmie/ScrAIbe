@@ -1,0 +1,48 @@
+launch:
+  # The following are the default values for the launch configuration
+  # for more informations look at https://www.gradio.app/docs/interface 
+  server_port: 8080
+  server_name: 0.0.0.0
+  inbrowser: true
+  inline: false
+  max-threads: 40
+  quiet: false
+  auth:
+    enabled: false
+    username: admin
+    password: admin
+  auth_message: "Please enter your credentials"
+  show_error : false
+  favicon_path : null
+  ssl_keyfile : null
+  ssl_certfile : null
+  ssl_keyfile_password : null
+  ssl_verify : false
+  quiet : false
+  show_api : false
+  allowed_paths : null
+  blocked_paths : null
+  root_path : null
+  app_kwargs : null
+  state_session_capacity : 1000
+  share_server_address : null
+  share_server_protocol : null
+  share : false
+  debug : false
+queue:
+  # The following are the default values for the queue configuration
+  # for more informations look at hhttps://www.gradio.app/docs/interface
+  status_update_rate : 'auto'
+  api_open : null
+  max_size : null
+  concurrency_count : null
+  default_concurrency_limit : 'not_set'
+layout:
+  header:  scraibe/app/header.html
+  footer: null
+  logo: scraibe/app/logo.svg
+model:
+  whisper_model : null
+  dia_model: null
+advanced:
+  timeout: 300 #seconds e.g. 5 minutes
