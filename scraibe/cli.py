@@ -9,7 +9,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import json
 
 from .autotranscript import Scraibe
-from .app.gradio_app import gradio_Interface
+from .app.app import gradio_Interface
 
 from whisper.tokenizer import LANGUAGES , TO_LANGUAGE_CODE
 from torch.cuda import is_available

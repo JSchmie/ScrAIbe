@@ -11,7 +11,7 @@ launch:
     enabled: false
     username: admin
     password: admin
-  auth_message: "Please enter your credentials"
+  auth_message: null
   show_error : false
   favicon_path : null
   ssl_keyfile : null
