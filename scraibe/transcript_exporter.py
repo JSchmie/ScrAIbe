@@ -5,6 +5,8 @@ from typing import Union
  
 ALPHABET = [*"abcdefghijklmnopqrstuvwxyz"]
 
+# List of known hallucinations - taken from:
+# https://github.com/openai/whisper/discussions/928
 WHISPER_HALLUCINATIONS={
   "en": [
     " www.mooji.org",
