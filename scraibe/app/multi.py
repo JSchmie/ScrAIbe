@@ -11,15 +11,10 @@ import gc
 from typing import Union
 import multiprocessing
 import torch
-import signal
 
 from gradio import Warning
 from scraibe.autotranscript import Scraibe
 from .stg import GradioTranscriptionInterface 
-
-def init_worker():
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
-
 
 def clear_queue(queue):
     while not queue.empty():
