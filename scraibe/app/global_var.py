@@ -6,7 +6,6 @@ Stores global variables for the app.
 import multiprocessing
 import os
 import time
-import yaml
 
 REQUEST_QUEUE = multiprocessing.Queue() # audio file path as string 
 RESPONSE_QUEUE = multiprocessing.Queue() # transcription as string
@@ -22,3 +21,4 @@ LAST_USED = time.time()
 TIMEOUT = None #seconds
 
 DEFAULT_APP_CONIFG_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config.yml")
+
