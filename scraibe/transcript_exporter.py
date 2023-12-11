@@ -5,7 +5,7 @@ from typing import Union
  
 ALPHABET = [*"abcdefghijklmnopqrstuvwxyz"]
 
-# List of known hallucinations - taken from:
+# List of known hallucinations - adapted from:
 # https://github.com/openai/whisper/discussions/928
 WHISPER_HALLUCINATIONS={
   "en": [
@@ -18,12 +18,17 @@ WHISPER_HALLUCINATIONS={
   ],
   "de": [
     " Untertitelung aufgrund der Amara.org-Community"
+    " Untertitelung im Auftrag des ZDF für funk, 2016",
+    " Untertitelung im Auftrag des ZDF f\u00fcr funk, 2016",
     " Untertitel im Auftrag des ZDF für funk, 2017",
+    " Untertitel im Auftrag des ZDF f\u00fcr funk, 2017",
+    " Untertitel im Auftrag des ZDF für funk, 2018",
     " Untertitel von Stephanie Geiges",
     " Untertitel der Amara.org-Community",
     " Untertitel im Auftrag des ZDF, 2017",
-    " Untertitel im Auftrag des ZDF, 2020",
     " Untertitel im Auftrag des ZDF, 2018",
+    " Untertitel im Auftrag des ZDF, 2019",
+    " Untertitel im Auftrag des ZDF, 2020",
     " Untertitel im Auftrag des ZDF, 2021",
     " Untertitelung im Auftrag des ZDF, 2021",
     " Copyright WDR 2021",
