@@ -10,7 +10,7 @@ class ConfigLoader:
         
         self.config = config
     
-    def restore_defaults_for_keys(self, keys):
+    def restore_defaults_for_keys(self, *args):
         """
         Restores specified keys to their default values, including nested keys.
 
@@ -20,8 +20,8 @@ class ConfigLoader:
         """
         default_config = self.get_default_config()
         
-        
-        self.apply_overrides(self.config, default_config, keys)
+        for key in args:
+            self.apply_overrides(self.config, default_config, key)
             
             
         
@@ -52,42 +52,29 @@ class ConfigLoader:
         return cls(config)
     
     @staticmethod
-    def apply_overrides(orig_dict, override_dict, specific_keys=None):
+    def apply_overrides(orig_dict, override_dict, specific=None):
         """ Recursively apply overrides to the configuration, only for specific keys. """
-        if specific_keys is None:
-            specific_keys = override_dict.keys()  # If no specific keys provided, apply to all keys
-
-        
         for key, value in override_dict.items():
-            
-            if key not in specific_keys:
-                
-                continue  # Skip keys not in the specific keys set
             
             if isinstance(value, dict):
                 # If the value is a dict, apply recursively
                 sub_dict = orig_dict.get(key, {})
-                ConfigLoader.apply_overrides(sub_dict, value, specific_keys)
+                ConfigLoader.apply_overrides(sub_dict, value, specific)
                 orig_dict[key] = sub_dict
             else:
                 # Apply override for this key
-                print("HI iam here", key, value)
-                orig_dict[key] = value
-                print("HI", orig_dict)
-
-    # @staticmethod
-    # def apply_overrides(orig_dict, override_dict):
-        
-    #     """ Recursively apply overrides to the configuration. """
-    #     for key, value in override_dict.items():
-    #         if isinstance(value, dict):
-    #             # If the value is a dict, apply recursively
-    #             ConfigLoader.apply_overrides(orig_dict.get(key, {}), value)
-    #         else:
-    #             # If the value is not a dict, search for the key and update
-    #             if ConfigLoader.update_nested_key(orig_dict, key, value):
-    #                 continue  # Key was found and updated
-    #             orig_dict[key] = value  # Key not found, update at this level
+                if specific is None:
+                    # If no specific keys are provided, update the key  
+                    # If the value is not a dict, search for the key and update
+                    if ConfigLoader.update_nested_key(orig_dict, key, value):
+                        continue  # Key was found and updated
+                    orig_dict[key] = value  # Key not found, update at this level
+                
+                elif key in specific:
+                    # If specific keys are provided, only update if the key is in the list
+                    if ConfigLoader.update_nested_key(orig_dict, specific, value):
+                        continue  # Key was found and updated
+                    orig_dict[specific] = value
 
     @staticmethod
     def update_nested_key(d, key, value):
@@ -144,8 +131,8 @@ class AppConfig(ConfigLoader):
         
         launch_options = self.config.get("launch")
         
-        if launch_options.get('auth').pop('enabled'):
-            self.config['launch']['auth'] = (launch_options.get('auth').pop('username'),
+        if launch_options.get('auth').pop('auth_enabled'):
+            self.config['launch']['auth'] = (launch_options.get('auth').pop('auth_username'),
                                              launch_options.get('auth').pop('password'))
         else:
             self.config['launch']['auth'] = None

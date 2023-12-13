@@ -8,9 +8,9 @@ launch:
   max-threads: 40
   quiet: false
   auth:
-    enabled: false
-    username: admin
-    password: admin
+    auth_enabled: false
+    auth_username: admin
+    auth_password: admin
   auth_message: null
   show_error : false
   favicon_path : null
