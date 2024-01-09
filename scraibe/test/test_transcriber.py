@@ -9,6 +9,13 @@ from scraibe import Transcriber
 @patch("scraibe.Transcriber.load_model")
 
 def test_transcriber(mock_load_model, audio_file, expected_transcription):
+    """_summary_
+
+    Args:
+        mock_load_model (_type_): _description_
+        audio_file (_type_): _description_
+        expected_transcription (_type_): _description_
+    """    
     mock_model = mock_load_model.return_value
     mock_model.transcribe.return_value ={"text": expected_transcription} 
 

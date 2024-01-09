@@ -18,6 +18,11 @@ NORMALIZATION_FACTOR = 32768
 
 @pytest.fixture
 def probe_audio_processor():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """    
     return AudioProcessor(test_waveform, test_sr)
 
 
@@ -26,6 +31,11 @@ def probe_audio_processor():
 
 
 def test_AudioProcessor_init(probe_audio_processor):
+    """_summary_
+
+    Args:
+        probe_audio_processor (_type_): _description_
+    """    
     assert isinstance(probe_audio_processor, AudioProcessor)
     assert probe_audio_processor.waveform.device == test_waveform.device
     assert torch.equal(probe_audio_processor.waveform, test_waveform)
@@ -34,6 +44,8 @@ def test_AudioProcessor_init(probe_audio_processor):
 
 
 def test_cut():
+    """_summary_
+    """    
     waveform = torch.Tensor(10, 3)
     sr = 16000
     start = 4
@@ -57,11 +69,15 @@ def test_cut():
 
 
 def test_audio_processor_invalid_sr():
+    """_summary_
+    """    
     with pytest.raises(ValueError):
         AudioProcessor(test_waveform, [44100,48000])
 
 
 def test_audio_processor_SAMPLE_RATE():
+    """_summary_
+    """    
     probe_audio_processor = AudioProcessor(test_waveform)
     assert probe_audio_processor.sr == SAMPLE_RATE       
 

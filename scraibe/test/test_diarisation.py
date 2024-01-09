@@ -13,11 +13,21 @@ def diariser_instance():
 
 
 def test_Diariser_init(diariser_instance):
+    """_summary_
+
+    Args:
+        diariser_instance (_type_): _description_
+    """    
     assert diariser_instance.model == 'pyannote'
 
 
 
 def test_diarisation_function(diariser_instance):
+    """_summary_
+
+    Args:
+        diariser_instance (_type_): _description_
+    """    
     with mock.patch.object(diariser_instance.model, 'apply', return_value='diarization_result'):
         diarization_output = diariser_instance.diarization('example_audio_file.wav')
         assert diarization_output == 'diarization_result'
