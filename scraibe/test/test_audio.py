@@ -1,29 +1,25 @@
 import pytest
-#from scraibe import Transcriber
-#from unittest.mock import patch, mock_open
-#import unittest
-#import os
 from .audio import AudioProcessor
 import torch
 
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-
-test_waveform = torch.tensor([]).to('cuda')
-test_sr = 16000
+test_waveform = torch.tensor([]).to(device)
+TEST_SR = 16000
 SAMPLE_RATE = 16000
 NORMALIZATION_FACTOR = 32768
 
 
 @pytest.fixture
 def probe_audio_processor():
-    """_summary_
+    """Creates a dummy AudioProcessor Object
 
     Returns:
-        _type_: _description_
+        AudioProcessor Object with given parameters test_waveform and TEST_SR
     """    
-    return AudioProcessor(test_waveform, test_sr)
+    return AudioProcessor(test_waveform, TEST_SR)
 
 
 
@@ -31,10 +27,11 @@ def probe_audio_processor():
 
 
 def test_AudioProcessor_init(probe_audio_processor):
-    """_summary_
+    """
+    testing if the audio_processor Object gets initialized correctly
 
-    Args:
-        probe_audio_processor (_type_): _description_
+    Args: probe_audio_processor Object
+        
     """    
     assert isinstance(probe_audio_processor, AudioProcessor)
     assert probe_audio_processor.waveform.device == test_waveform.device
@@ -44,39 +41,32 @@ def test_AudioProcessor_init(probe_audio_processor):
 
 
 def test_cut():
-    """_summary_
+    """Test for the test_cut Method for fixed parameters
     """    
     waveform = torch.Tensor(10, 3)
     sr = 16000
     start = 4
     end = 7
-    assert AudioProcessor(waveform, sr).cut(start, end).size() == int((end - start) * test_sr)
+    assert AudioProcessor(waveform, sr).cut(start, end).size() == int((end - start) * TEST_SR)
 
 
 
-""" def test_cut(probe_audio_processor):
-    start = 10
-    end = 100
-    test_segment =  probe_audio_processor.cut(start, end) 
-    print(test_segment)
-    erwartetes_segment = int((end - start) * test_sr)
-    print(test_segment.size())
-    assert len(test_segment) == erwartetes_segment
- """
+
+   
 
 
 
 
 
 def test_audio_processor_invalid_sr():
-    """_summary_
+    """Testing the audio_processor Object with invalid Sample rate
     """    
     with pytest.raises(ValueError):
         AudioProcessor(test_waveform, [44100,48000])
 
 
 def test_audio_processor_SAMPLE_RATE():
-    """_summary_
+    """Making sure Sample Rate of Audio_processor Sample Rate matches global Sample Rate
     """    
     probe_audio_processor = AudioProcessor(test_waveform)
     assert probe_audio_processor.sr == SAMPLE_RATE       
