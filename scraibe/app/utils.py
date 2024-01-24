@@ -137,7 +137,7 @@ class AppConfig(ConfigLoader):
         
         if launch_options.get('auth').pop('auth_enabled'):
             self.config['launch']['auth'] = (launch_options.get('auth').pop('auth_username'),
-                                             launch_options.get('auth').pop('password'))
+                                             launch_options.get('auth').pop('auth_password'))
         else:
             self.config['launch']['auth'] = None
     
