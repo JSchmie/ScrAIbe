@@ -31,21 +31,18 @@ LANGUAGES = [
     "Vietnamese", "Welsh"
 ]
 
-CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-def gradio_Interface():
+
+def gradio_Interface(layout = None,):
     
     with gr.Blocks(theme=theme,title='ScrAIbe: Automatic Audio Transcription') as demo:
             
             # Define components
-            hname = os.path.join(CURRENT_PATH, "header.html")
-            header = open(hname, "r").read()
             
-            # ugly hack to get the logo to work
-            header = header.replace("/file=logo.svg", f"/file={CURRENT_PATH}/logo.svg" )
-            
-            gr.HTML(header, visible= True, show_label=False)
+
+            if layout.get('header') is not None:            
+                gr.HTML(layout.get('header'), visible= True, show_label=False)
             
             with gr.Row():
                 
@@ -98,7 +95,10 @@ def gradio_Interface():
                                         visible= False, interactive= True)
                     
                     annotate = gr.Button(value="Annotate", visible= False, interactive= True)
-                
+            
+            if layout.get('footer') is not None:            
+                gr.HTML(layout.get('footer'), visible= True, show_label=False)
+                 
             # Define usage of components
             input.change(fn=select_origin, inputs=[input],
                             outputs=[audio1, audio2, video1, video2, file_in])

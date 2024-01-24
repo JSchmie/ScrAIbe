@@ -68,13 +68,23 @@ def model_worker(model_params : Union[Scraibe, dict],
     clear_queue(response_queue)
     loaded_event.clear()
 
-def start_model_worker(model_params, request_queue, last_active_time, response_queue,loaded_event, running_event, *args, **kwargs):
+def start_model_worker(model_params,
+                       request_queue,
+                       last_active_time,
+                       response_queue,
+                       loaded_event,
+                       running_event,
+                       *args, **kwargs):
     context = multiprocessing.get_context('spawn')
     model_process = context.Process(target=model_worker, args=(model_params, request_queue, last_active_time, response_queue,loaded_event, running_event, *args), kwargs=kwargs)
     model_process.start()
     return model_process
 
-def timer_thread(request_queue, last_active_time,loaded_event, running_event, timeout=30):
+def timer_thread(request_queue,
+                 last_active_time,
+                 loaded_event,
+                 running_event,
+                 timeout=30):
     while True:
         time.sleep(timeout)
         

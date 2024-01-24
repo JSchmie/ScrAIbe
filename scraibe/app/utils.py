@@ -1,9 +1,12 @@
+from email import header
+from math import e
 import os
 import warnings
 import yaml
 
 import scraibe.app.global_var as gv
 
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 class ConfigLoader:
     def __init__(self, config):
@@ -42,6 +45,7 @@ class ConfigLoader:
         config = cls.get_default_config()
     
         # Override with another YAML file if provided
+        
         if yaml_path:
             with open(yaml_path, 'r') as file:
                 override_config = yaml.safe_load(file)
@@ -106,7 +110,7 @@ class AppConfig(ConfigLoader):
         self.set_launch_options()
         self.set_layout_options()
         
-        self.lauch = self.config.get("launch")
+        self.launch = self.config.get("launch")
         self.model = self.config.get("model")
         self.advanced = self.config.get("advanced")
         self.queue = self.config.get("queue")
@@ -141,7 +145,50 @@ class AppConfig(ConfigLoader):
         self.config['layout']['header'] = self.check_and_set_path(self.config['layout'], 'header')
         self.config['layout']['footer'] = self.check_and_set_path(self.config['layout'], 'footer')
         self.config['layout']['logo'] = self.check_and_set_path(self.config['layout'], 'logo')
-
+    
+    def get_layout(self):
+        
+        if not os.path.exists(self.config['layout']['header']) and \
+            self.config['layout']['header'] == "scraibe/app/header.html": 
+            
+            hname = os.path.join(CURRENT_PATH, "header.html")
+            
+            header = open(hname).read()
+            
+        elif not os.path.exists(self.config['layout']['header']) and self.config['layout']['header'] != "scraibe/app/header.html":
+            warnings.warn(f"Header file not found: {self.config['layout']['header']} \n" \
+                              "fall back to default.")
+            
+            hname = os.path.join(CURRENT_PATH, "header.html")
+            
+            header = open(hname).read()
+        elif os.path.exists(self.config['layout']['header']):
+            header = open(self.config['layout']['header']).read()    
+        else:
+            warnings.warn(f"Header file not found: {self.config['layout']['header']}")
+            header = None
+            
+              
+        if header != None: 
+            if self.config['layout']['logo'] == "scraibe/app/logo.svg":
+                header = header.replace("/file=logo.svg", f"/file={os.path.join(CURRENT_PATH, 'logo.svg')}")
+            elif self.config['layout']['logo'] != "scraibe/app/logo.svg":
+                header = header.replace("/file=logo.svg", f"/file={self.config['layout']['logo']}")
+            else:
+                warnings.warn(f"Logo file not found: {self.config['layout']['logo']}")
+            
+        
+        if self.config['layout']['footer'] != None:
+            if os.path.exists(self.config['layout']['footer']):
+                footer = open(self.config['layout']['footer']).read()
+            elif self.config['layout']['footer'] == None:
+                footer = None
+            else:    
+                warnings.warn(f"Footer file not found: {self.config['layout']['footer']}")
+        else:
+            footer = None
+        return {'header' : header ,
+                'footer' : footer} 
     
     @staticmethod
     def check_and_set_path(config_item, key):
