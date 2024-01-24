@@ -7,8 +7,7 @@ launch:
   inbrowser: true
   share : false
   debug : false
-
-  max-threads: 40
+  max_threads: 40
   quiet: false
   auth:
     auth_enabled: false
