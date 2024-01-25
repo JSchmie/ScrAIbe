@@ -4,7 +4,7 @@ launch:
   server_port: 7860
   server_name: 0.0.0.0
   inline: false
-  inbrowser: true
+  inbrowser: false
   share : false
   debug : false
   max_threads: 40
@@ -16,7 +16,7 @@ launch:
   auth_message: null
   prevent_thread_lock : false
   show_error : false
-  show_tips : true
+  show_tips : false
   favicon_path : null
   ssl_keyfile : null
   ssl_certfile : null

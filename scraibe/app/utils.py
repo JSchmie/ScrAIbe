@@ -1,5 +1,3 @@
-from email import header
-from math import e
 import os
 import warnings
 import yaml
