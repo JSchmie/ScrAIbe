@@ -1,4 +1,3 @@
-from .qtfaststart import *
 from .multi import *
 from .interface import *
 from .stg import *
