@@ -1,0 +1,6 @@
+scraibe/*__pycache__
+scraibe/app/*__pycache__
+scraibe/.pyannotetoken
+.git
+.gitignore
+.github
