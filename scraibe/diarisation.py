@@ -227,6 +227,8 @@ class Diariser:
                     "Trying to find it nearby the config file.")
                 
                 pwd = model.split("/")[:-1]
+                pwd = "/".join(pwd)
+                
                 path_to_model = os.path.join(pwd, "pytorch_model.bin")
 
                 if not os.path.exists(path_to_model):
