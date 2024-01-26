@@ -169,7 +169,10 @@ def cli():
         
         execute_path = os.path.join(os.path.dirname(__file__), "app/app_starter.py")
         
-        subprocess.run([sys.executable, execute_path])
+        config = arg_dict.pop("server_config")
+        server_kwargs = arg_dict.pop("server_kwargs")
+        
+        subprocess.run([sys.executable, execute_path, f"--server-config={config}", f"--server-kwargs={server_kwargs}"])
 
 if __name__ == "__main__":
     cli()
