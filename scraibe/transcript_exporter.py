@@ -278,24 +278,39 @@ class Transcript:
             raise ValueError("Unknown file format")
         
     @classmethod
-    def from_json(cls, json: Union[dict, str]) -> "Transcript":
-        """Load transcript from json file
+    def from_json(cls, js: Union[dict, str]) -> "Transcript":
+        """
+        Creates a Transcript object from a JSON file or a JSON string.
+
+        This method accepts either a dictionary representing a JSON object, 
+        a string containing a JSON object, or a string representing the path 
+        to a JSON file. If a dictionary is provided, it is used directly to 
+        create the Transcript object. If a string is provided, the method 
+        first attempts to parse it as a JSON object. If this fails, it treats 
+        the string as a file path and attempts to load the JSON object from 
+        the file.
 
         Args:
-            path (str): path to json file
+            js (Union[dict, str]): A dictionary representing a JSON object, a 
+            string containing a JSON object, or a string representing the path 
+            to a JSON file.
 
         Returns:
-            Transcript: Transcript object
+            Transcript: A Transcript object created from the provided JSON.
+
+        Raises:
+            JSONDecodeError: If a string is provided and it cannot be parsed 
+            as a JSON object or as a file path to a valid JSON file.
         """
-        if isinstance(json, dict):
-            return cls(json)
+        
+        if isinstance(js, dict):
+            return cls(js)
         else:
             try:
-                transcript = json.loads(json)
+                transcript = json.loads(js)
             except:
-                with open(json, "r") as f:
+                with open(js, "r") as f:
                     transcript = json.load(f)
             
             return cls(transcript)
-
-    
+        
