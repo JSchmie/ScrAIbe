@@ -6,8 +6,21 @@ The main Reason for this script is to allow the use of multiprocessing in the ap
 """
 
 import multiprocessing
-from scraibe.misc import ParseKwargs
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Action
+
+class ParseKwargs(Action):
+    """
+    Custom argparse action to parse keyword arguments. has to bne redifined here because of multiprocessing.
+    """
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, dict())
+        for value in values:
+            key, value = value.split('=')
+            try:
+                value = eval(value)
+            except:
+                pass
+            getattr(namespace, self.dest)[key] = value
 
 parser = ArgumentParser()
 
