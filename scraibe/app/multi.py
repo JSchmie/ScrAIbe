@@ -84,7 +84,7 @@ def timer_thread(request_queue,
                  last_active_time,
                  loaded_event,
                  running_event,
-                 timeout=30):
+                 timeout):
     while True:
         time.sleep(timeout)
         

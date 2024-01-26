@@ -57,7 +57,9 @@ def app(config : str = None, **kwargs):
     timer = Thread(target=timer_thread, args=(gv.REQUEST_QUEUE,
                                             gv.LAST_ACTIVE_TIME,
                                             gv.LOADED_EVENT,
-                                            gv.RUNNING_EVENT), daemon=True)
+                                            gv.RUNNING_EVENT,
+                                            gv.TIMEOUT), daemon=True)
+    
     layout = config.get_layout()
     
     timer.start()
