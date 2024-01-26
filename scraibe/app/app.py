@@ -68,5 +68,3 @@ def app(config : str = None, **kwargs):
 
     timer.join()
     gv.MODEL_PROCESS.join()
-
-    print('')
