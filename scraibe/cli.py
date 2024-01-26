@@ -5,7 +5,7 @@ The function includes arguments for specifying the audio files, model paths,
 output formats, and other options necessary for transcription.
 """
 import os 
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, Action
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import json
 
 from .autotranscript import Scraibe
