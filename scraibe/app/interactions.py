@@ -3,8 +3,6 @@ This file contains ervery function that will be called when the user interacts w
 UI like pressing a button or uploading a file.
 """
 
-from re import M
-import time
 import gradio as gr 
 import scraibe.app.global_var as gv
 from scraibe import Transcript

@@ -1,41 +1,65 @@
 """
-stg - scraibe to gradio interface
+stg - Scraibe to Gradio Interface
 
-This file contains the code for the scraibe to gradio interface.
-It makes adds gradio interactions to the scraibe class in the back.
+This module provides an interface between the Scraibe transcription system and the Gradio user interface.
+It defines a class, GradioTranscriptionInterface, that wraps the Scraibe model and provides methods for performing transcription tasks through the Gradio UI.
 
+Modules:
+    json: Used for encoding and decoding JSON data.
+    gradio as gr: Used for creating the Gradio UI.
+    tqdm: Used for displaying progress bars.
+    scraibe.app.global_var as gv: Contains global variables for the Scraibe app.
 """
-
 import json
 import gradio as gr
 from tqdm import tqdm
+from typing import Any, Dict, Union, Tuple, List
 
-import scraibe.app.global_var as gv
+
 
 
 class GradioTranscriptionInterface:
     """
-    Interface handling the interaction between Gradio UI and the Audio Transcription system.
+    A class that provides an interface between the Gradio UI and the Scraibe transcription system.
+
+    This class wraps the Scraibe model and provides methods for performing transcription tasks through the Gradio UI. 
+    These tasks include auto transcription, transcription, and diarisation.
+
+    Attributes:
+        model (Scraibe): The Scraibe model for performing transcription tasks.
     """
 
-    def __init__(self, model):
+    def __init__(self, model) -> None:
         """
-        Initializes the GradioTranscriptionInterface with a transcription model.
+        Initializes the GradioTranscriptionInterface with a Scraibe model.
 
         Args:
-            model (Scraibe): Model responsible for audio transcription tasks.
+            model (Scraibe): The Scraibe model for performing transcription tasks.
+            *args (Any): Additional positional arguments.
+            **kwargs (Dict[str, Any]): Additional keyword arguments.
         """
-        self.model = model 
+            
+        self.model = model
 
-    def autotranscribe(self, source,
-                        num_speakers : int,
-                        translate : bool,
-                        language : str,*args ,**kwargs):
+    def autotranscribe(self, source: Union[str, List[str]],
+                        num_speakers: int,
+                        translate: bool,
+                        language: str,
+                        *args: Any, **kwargs: Dict[str, Any]) -> Tuple[str, Union[str, dict]]:
         """
-        Shortcut method for the Scraibe task.
+        Performs auto transcription on the given source.
+
+        Args:
+            source (Union[str, List[str]]): The source to transcribe. This can be a string representing a single source,
+                                    or a list of strings representing multiple sources.
+            num_speakers (int): The number of speakers in the source.
+            translate (bool): Whether to translate the transcription.
+            language (str): The language of the source.
+            *args (Any): Additional positional arguments.
+            **kwargs (Dict[str, Any]): Additional keyword arguments.
 
         Returns:
-            tuple: Transcribed text (str), JSON output (dict)
+            Tuple[str, Union[str, dict]]: A tuple containing the transcribed text (str) and the JSON output (str or dict).
         """
         
         _kwargs = {
@@ -82,12 +106,23 @@ class GradioTranscriptionInterface:
             raise gr.Error("Please provide a valid audio file.")
 
 
-    def transcribe(self, source, translate, language,*args ,**kwargs):
+    def transcribe(self, source: Union[str, List[str]], 
+                   translate: bool,
+                   language: str,
+                   *args: Any, **kwargs: Dict[str, Any]) -> str:
         """
-        Shortcut method for the Transcribe task.
+        Performs transcription on the given source.
+
+        Args:
+            source (Union[str, List[str]]): The source to transcribe.
+            This can be a string representing a single source, or a list of strings representing multiple sources.
+            translate (bool): Whether to translate the transcription.
+            language (str): The language of the source.
+            *args (Any): Additional positional arguments.
+            **kwargs (Dict[str, Any]): Additional keyword arguments.
 
         Returns:
-            str: Transcribed text.
+            str: The transcribed text.
         """
 
         _kwargs = {
@@ -118,13 +153,24 @@ class GradioTranscriptionInterface:
         else:
             raise gr.Error("Please provide a valid audio file.")
 
-    def diarisation(self, source, num_speakers, *args ,**kwargs):
+    def diarisation(self, source: Union[str, List[str]],
+                    num_speakers: int,
+                    *args: Any, **kwargs: Dict[str, Any]) -> str:
         """
-        Shortcut method for the Diarisation task.
+        Performs diarisation on the given source.
+
+        Args:
+            source (Union[str, List[str]]): The source to perform diarisation on.
+            This can be a string representing a single source, 
+            or a list of strings representing multiple sources.
+            num_speakers (int): The number of speakers in the source.
+            *args (Any): Additional positional arguments.
+            **kwargs (Dict[str, Any]): Additional keyword arguments.
 
         Returns:
-            str: JSON output of diarisation result.
+            str: The JSON output of the diarisation result.
         """
+    
         
         _kwargs = {
             "num_speakers": num_speakers if num_speakers != 0 else None,
@@ -160,16 +206,16 @@ class GradioTranscriptionInterface:
         else:
             gr.Error("Please provide a valid audio file.")
     
-    def get_task_from_str(self, task):
+    def get_task_from_str(self, task: str) -> callable:
         """
-        Returns the coresponing task function based on the task string.
-        
-        params:
-            task (str): Task string. Can be one of the following:
-                - 'Auto Transcribe'
-                - 'Transcribe'
-                - 'Diarisation'
-        """ 
+        Returns the corresponding task function based on the given task string.
+
+        Args:
+            task (str): The task string. This can be one of the following: 'Auto Transcribe', 'Transcribe', 'Diarisation'.
+
+        Returns:
+            callable: The corresponding task function.
+        """
         
         if task == 'Auto Transcribe':
             return self.autotranscribe

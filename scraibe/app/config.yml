@@ -22,7 +22,6 @@ launch:
   ssl_certfile : null
   ssl_keyfile_password : null
   ssl_verify : false
-  quiet : false
   show_api : false
   allowed_paths : null
   blocked_paths : null

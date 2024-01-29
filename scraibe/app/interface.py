@@ -1,11 +1,20 @@
 """
-This file contains the actual gradio Interface which is used to interact with the user.
+This module contains the gradio Interface which is used to interact with the user.
+
+The interface is themed with a soft color scheme, with primary colors of green and orange, and a neutral color of gray.
+
+A list of languages is also defined in this module, which may be used elsewhere in the application.
+
+Classes:
+    Soft: A class from the gradio library used to theme the interface.
+
+Variables:
+    theme (gr.themes.Soft): The theme for the gradio interface.
+    LANGUAGES (list of str): A list of languages supported by the application.
 """
 
 import gradio as gr
-import os
 
-import scraibe.app.global_var as gv
 from .interactions import *
 from .stg import *
 
@@ -35,7 +44,20 @@ LANGUAGES = [
 
 
 def gradio_Interface(layout = None,):
-    
+    """
+    Creates a gradio interface for audio transcription.
+
+    The interface includes options for the user to select the task, number of speakers, translation, language, and input type.
+    It also provides options for the user to upload or record audio/video, or upload files.
+    The output of the transcription is displayed in a textbox, and the JSON output in a JSON viewer.
+    The user can also annotate the output by naming the speakers.
+
+    Args:
+        layout (dict, optional): A dictionary containing layout information. Defaults to None.
+
+    Returns:
+        gr.Blocks: A gradio Blocks object representing the interface.
+    """
     with gr.Blocks(theme=theme,title='ScrAIbe: Automatic Audio Transcription') as demo:
             
             # Define components
