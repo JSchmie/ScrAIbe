@@ -12,7 +12,9 @@ if CACHE_DIR != PYANNOTE_CACHE_DIR:
 
 WHISPER_DEFAULT_PATH = os.path.join(CACHE_DIR, "whisper")
 PYANNOTE_DEFAULT_PATH = os.path.join(CACHE_DIR, "pyannote")
-PYANNOTE_DEFAULT_CONFIG = os.path.join(PYANNOTE_DEFAULT_PATH, "config.yaml")
+PYANNOTE_DEFAULT_CONFIG = os.path.join(PYANNOTE_DEFAULT_PATH, "config.yaml") \
+                            if os.path.exists(os.path.join(PYANNOTE_DEFAULT_PATH, "config.yaml")) \
+                                else 'pyannote/speaker-diarization-3.1'  
 
 def config_diarization_yaml(file_path: str, path_to_segmentation: str = None) -> None:
     """Configure diarization pipeline from a YAML file.
