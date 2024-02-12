@@ -34,9 +34,14 @@ if __name__ == "__main__":
                 open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
             )
         ],
-        dependency_links=[
-            'https://download.pytorch.org/whl/cu113',
-            ],
+        extras_require= {
+            "app" : "scraibe-webui @ https://github.com/JSchmie/ScrAIbe-WebUI" 
+        }       
+        ,
+        # dependency_links=[
+        #     'https://download.pytorch.org/whl/cu113',
+        #     ],
+        
         url= github_url,
         
         license='GPL-3',
