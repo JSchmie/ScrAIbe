@@ -8,13 +8,6 @@ pyannote.database~=5.0.1
 pyannote.metrics~=3.2.1
 pyannote.pipeline~=3.0.1
 
-setuptools~=65.6.3
-setuptools-rust~=1.5.2
-
 tqdm>=4.65.0
-
-gradio~=3.36.1
-gradio-client~=0.2.7
-
 
 
