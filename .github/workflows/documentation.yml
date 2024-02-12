@@ -1,0 +1,42 @@
+name: documentation
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libsndfile1-dev
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install --upgrade --force-reinstall torch==1.11.0+cpu torchvision==0.12.0+cpu torchaudio==0.11.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install  numpy==1.25
+          pip install --upgrade sphinx sphinx_rtd_theme myst-parser
+          pip install --upgrade markdown-it-py[plugins]
+          pip install --upgrade mdit-py-plugins
+          
+      - name: Sphinx build
+        run: |
+          cp README.md ./source/README.md
+          cp LICENSE ./source/LICENSE
+          cp -r Pictures ./source/Pictures
+          sphinx-apidoc -o source scraibe/  
+          sphinx-build -M html source docs
+          make html
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/sphinx_action' }}
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.TOKEN_GH }}
+          publish_dir: ./docs/html
+          force_orphan: true
