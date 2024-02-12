@@ -16,8 +16,8 @@ During post-diarization, each audio segment is processed by the OpenAI `Whisper`
 
 The following graphic illustrates the whole pipeline:
 
-![Pipeline](Pictures/pipeline.png#gh-dark-mode-only) 
-![Pipeline](Pictures/pipeline_light.png#gh-light-mode-only) 
+![Pipeline](./Pictures/pipeline.png#gh-dark-mode-only) 
+![Pipeline](./Pictures/pipeline_light.png#gh-light-mode-only) 
 
 ## Install `ScrAIbe` : 
 
@@ -131,7 +131,7 @@ The default address is: http://127.0.0.1:7860 or http://0.0.0.0:7860
 After the app is running, you can upload your audio file and select the desired options.
 An example is shown below:
 
-![Gradio App](Pictures/gradio_app.png)
+![Gradio App](./Pictures//gradio_app.png)
 
 
 ### Running a Docker container
@@ -177,7 +177,7 @@ For further guidance, check: https://blog.roboflow.com/use-the-gpu-in-docker/
 
 ## Documentation 
 
-For further insights, check the [documentation page]().
+For further insights, check the [documentation page](https://jschmie.github.io/ScrAIbe/).
 
 ## Contributions
 
@@ -207,12 +207,12 @@ For queries contact [Jacob Schmieder](Jacob.Schmieder@dbfz.de)
 
 ## License 
 
-ScrAIbe is licensed under GNU General Public License.
+ScrAIbe is licensed under [GNU General Public License](LICENSE).
 
 ## Acknowledgments
 
 Special thanks go to the KIDA project and the BMEL (Bundesministerium für Ernährung und Landwirtschaft), especially to the AI Consultancy Team.
 
-![KIDA](Pictures/kida_dark.png#gh-dark-mode-only)    &nbsp;    ![BMEL](Pictures/BMEL_dark.png#gh-dark-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](Pictures/DBFZ_dark.png#gh-dark-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](Pictures/MRI.png#gh-dark-mode-only)   
+![KIDA](./Pictures/kida_dark.png#gh-dark-mode-only)    &nbsp;    ![BMEL](./Pictures/BMEL_dark.png#gh-dark-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](./Pictures/DBFZ_dark.png#gh-dark-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](./Pictures/MRI.png#gh-dark-mode-only)   
 
-![KIDA](Pictures/kida.png#gh-light-mode-only)    &nbsp;    ![BMEL](Pictures/BMEL.jpg#gh-light-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](Pictures/DBFZ.png#gh-light-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](Pictures/MRI.png#gh-light-mode-only)  
+![KIDA](./Pictures/kida.png#gh-light-mode-only)    &nbsp;    ![BMEL](./Pictures/BMEL.jpg#gh-light-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](./Pictures/DBFZ.png#gh-light-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](./Pictures/MRI.png#gh-light-mode-only)  
