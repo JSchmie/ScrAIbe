@@ -10,7 +10,7 @@ import json
 
 from .autotranscript import Scraibe
 from .misc import ParseKwargs
-from .app.app import gradio_Interface
+
 
 from whisper.tokenizer import LANGUAGES , TO_LANGUAGE_CODE
 from torch.cuda import is_available
@@ -164,6 +164,7 @@ def cli():
                     
     
     else: # unfinished code
+        raise NotImplementedError("Currently not Working")
         import subprocess
         import sys
         
