@@ -1,6 +1,7 @@
 import os
 import yaml
 from pyannote.audio.core.model import CACHE_DIR as PYANNOTE_CACHE_DIR
+from argparse import Action
 
 CACHE_DIR = os.getenv(
     "AUTOT_CACHE",
@@ -40,3 +41,17 @@ def config_diarization_yaml(file_path: str, path_to_segmentation: str = None) ->
 
     with open(file_path, "w") as stream:
         yaml.dump(yml, stream)
+
+class ParseKwargs(Action):
+    """
+    Custom argparse action to parse keyword arguments.
+    """
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, dict())
+        for value in values:
+            key, value = value.split('=')
+            try:
+                value = eval(value)
+            except:
+                pass
+            getattr(namespace, self.dest)[key] = value

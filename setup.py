@@ -1,4 +1,3 @@
-from calendar import c
 import pkg_resources
 import os
 from setuptools import setup, find_packages
@@ -20,6 +19,8 @@ with open(verfile, "r") as fp:
 ############### setup ###############
 
 build_version = "SCRAIBE_BUILD" in os.environ
+
+version["ISRELEASED"] = True if "ISRELEASED" in os.environ else False
 
 if __name__ == "__main__":
 
@@ -53,7 +54,7 @@ if __name__ == "__main__":
         keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio', 'ScrAIbe', 'scraibe',
                     'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
                     'voice-to-speech'],
-        package_data={'scraibe.app' : ["*.html", "*.svg"]},
+        package_data={'scraibe.app' : ["*.html", "*.svg","*.yml"]},
         entry_points={'console_scripts':
             ['scraibe = scraibe.cli:cli']}
         

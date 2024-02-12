@@ -75,6 +75,11 @@ class Scraibe:
                                 Path to pyannote diarization model or model itself.
             **kwargs: Additional keyword arguments for whisper
                         and pyannote diarization models.
+                    e.g.:
+
+                    - verbose: If True, the class will print additional information.
+                    - save_kwargs: If True, the keyword arguments will be saved
+                                    for autotranscribe. So you can unload the class and reload it again.
         """
         
         
@@ -97,6 +102,15 @@ class Scraibe:
             self.verbose = True
         else:
             self.verbose = False
+            
+        # Save kwargs for autotranscribe if you want to unload the class and load it again.
+        if kwargs.get('save_setup'): 
+            self.params = dict(whisper_model = whisper_model,
+                               dia_model = dia_model,
+                               **kwargs)
+        else:
+            self.params = {}
+             
             
     def autotranscribe(self, audio_file : Union[str, torch.Tensor, ndarray],
                    remove_original : bool = False,

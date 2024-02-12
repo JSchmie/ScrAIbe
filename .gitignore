@@ -1,0 +1,6 @@
+transcibe.py
+scraibe/*__pycache__
+scraibe/app/*__pycache__
+scraibe/.pyannotetoken
+
+
