@@ -1,5 +1,5 @@
-import pkg_resources
 import os
+import re
 from setuptools import setup, find_packages
 
 module_name = "scraibe"
@@ -22,6 +22,11 @@ build_version = "SCRAIBE_BUILD" in os.environ
 
 version["ISRELEASED"] = True if "ISRELEASED" in os.environ else False
 
+###############  load requirements ############### 
+
+with open(os.path.join(os.path.dirname(__file__), "requirements.txt")) as f:
+        requirements = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+
 if __name__ == "__main__":
 
     setup(
@@ -30,10 +35,7 @@ if __name__ == "__main__":
         packages=find_packages(),
         python_requires=">=3.8",
         readme="README.md",
-        install_requires = [str(r) for r in pkg_resources.parse_requirements(
-                open(os.path.join(os.path.dirname(__file__), "requirements.txt"))
-            )
-        ],
+        install_requires = requirements,
         extras_require= {
             "app" : "scraibe-webui @ https://github.com/JSchmie/ScrAIbe-WebUI" 
         }       
