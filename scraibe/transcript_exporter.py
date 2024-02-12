@@ -2,8 +2,11 @@ import json
 import time
 
 from typing import Union
- 
+
+from .hallucinations import KNOWN_HALLUCINATIONS
+
 ALPHABET = [*"abcdefghijklmnopqrstuvwxyz"]
+
 
 
 class Transcript:
@@ -23,6 +26,7 @@ class Transcript:
         """
 
         self.transcript = transcript
+        self._remove_hallucinations()
         self.speakers = self._extract_speakers()
         self.segments = self._extract_segments()
         self.annotation = {}
@@ -62,6 +66,20 @@ class Transcript:
         
         return self
     
+    def _remove_hallucinations(self) -> None:
+        """
+        Removes all occurances of known hallucinations from all segments of the transcript.
+        Segments that are identical to empty strings afterwards are removed from the transcript.
+        """
+        segments_to_drop=[]
+        for id in self.transcript:
+            for snippet in KNOWN_HALLUCINATIONS:
+                self.transcript[id]['text']=self.transcript[id]['text'].replace(snippet,'')
+            if self.transcript[id]['text'] == '': segments_to_drop.append(id)
+
+        for id in segments_to_drop:
+            del self.transcript[id]
+
     def _extract_speakers(self) -> list:
         """
         Extracts the unique speaker names from the transcript.
