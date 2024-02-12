@@ -212,9 +212,7 @@ class Diariser:
             
         if not os.path.exists(model) and use_auth_token is None:
             use_auth_token = cls._get_token()
-            model = 'pyannote/speaker-diarization'
-        elif not os.path.exists(model) and use_auth_token is not None:
-            model = 'pyannote/speaker-diarization'
+            
         elif os.path.exists(model) and not use_auth_token:
             # check if model can be found locally nearby the config file
             with open(model, 'r') as file:
