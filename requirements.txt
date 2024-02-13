@@ -1,13 +1,12 @@
-torch~=2.2.0
+tqdm>=4.65.0
+numpy>=1.26.4
 
 openai-whisper==20231117
-numpy>=1.26.4
+
 pyannote.audio~=3.1.1
 pyannote.core~=5.0.0
 pyannote.database~=5.0.1 
 pyannote.metrics~=3.2.1
 pyannote.pipeline~=3.0.1
 
-tqdm>=4.65.0
-
-
+torch~=2.2.0
