@@ -3,10 +3,9 @@ from .audio import AudioProcessor
 import torch
 
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-
-test_waveform = torch.tensor([]).to(device)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+TEST_WAVEFORM = torch.tensor([]).to(device)
 TEST_SR = 16000
 SAMPLE_RATE = 16000
 NORMALIZATION_FACTOR = 32768
@@ -43,11 +42,10 @@ def test_AudioProcessor_init(probe_audio_processor):
 def test_cut():
     """Test for the test_cut Method for fixed parameters
     """    
-    waveform = torch.Tensor(10, 3)
-    sr = 16000
+  
     start = 4
     end = 7
-    assert AudioProcessor(waveform, sr).cut(start, end).size() == int((end - start) * TEST_SR)
+    assert AudioProcessor(TEST_WAVEFORM, TEST_SR).cut(start, end).size() == int((end - start) * TEST_SR)
 
 
 
