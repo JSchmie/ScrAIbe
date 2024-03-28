@@ -1,6 +1,7 @@
 name: Run tests
 
-on: push
+on:
+ push:
   
   #pull_request:
     #branches: ['main', 'develop']
