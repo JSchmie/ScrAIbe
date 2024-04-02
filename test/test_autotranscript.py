@@ -1,6 +1,6 @@
 import pytest
 import torch
-from ..scraibe import Scraibe, Diariser, Transcriber, Transcript, AudioProcessor
+from scraibe import Scraibe, Diariser, Transcriber, Transcript, AudioProcessor
 from unittest.mock import MagicMock, patch
 
 
