@@ -1,7 +1,7 @@
 import pytest
 import os
 from unittest import mock
-from scraibe import Diariser
+from scraibe import diarisation, Diariser
 
 
 
@@ -15,7 +15,7 @@ def diariser_instance():
     Returns:
         Diariser(Obj): An instance of the Diariser class with a mocked token.
     """
-    with mock.patch.object(Diariser, '_get_token', return_value = 'personal Hugging-Face token')
+    with mock.patch.object(Diariser, '_get_token', return_value = 'HF_TOKEN' ):
         return Diariser('pyannote')
 
 
