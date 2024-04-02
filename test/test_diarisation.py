@@ -1,7 +1,7 @@
 import pytest
 import os
 from unittest import mock
-from scraibe import Diariser
+from ..scraibe import Diariser
 
 
 

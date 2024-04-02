@@ -1,5 +1,5 @@
 import pytest
-from .audio import AudioProcessor
+from ..scraibe.audio import AudioProcessor
 import torch
 
 

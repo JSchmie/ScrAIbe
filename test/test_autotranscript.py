@@ -1,14 +1,16 @@
 import pytest
 import torch
-from scraibe import Scraibe, Diariser, Transcriber, Transcript, AudioProcessor
-from unittest.mock import MagicMOck, patch
+from ..scraibe import Scraibe, Diariser, Transcriber, Transcript, AudioProcessor
+from unittest.mock import MagicMock, patch
 
 
 """
 @pytest.fixture
-def example_audio_file(tmp_path):
-    audio_path = tmp_path 
+def example_audio_file(audio_test_2.mp4):
+    audio_path = audio_test_2.mp4 
 """
+
+
 @pytest.fixture
 def create_scraibe_instance():
     return Scraibe()
@@ -23,7 +25,7 @@ def test_scraibe_init(create_scraibe_instance):
 
 def test_scraibe_autotranscribe(create_scraibe_instance, example_audio_file):
     model = create_scraibe_instance
-    transcript = example_audio_file
+    transcript = model.autotranscribe(example_audio_file)
     assert isinstance(transcript, Transcript)
 
 def test_scraibe_diarization(create_scraibe_instance, example_audio_file):
