@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch
-from ..scraibe import Transcriber
+from scraibe import Transcriber
 
 
 
