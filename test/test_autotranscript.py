@@ -2,7 +2,7 @@ import pytest
 import torch
 from scraibe import Scraibe, Diariser, Transcriber, Transcript, AudioProcessor
 from unittest.mock import MagicMock, patch
-
+import os
 
 """
 @pytest.fixture
@@ -13,7 +13,11 @@ def example_audio_file(audio_test_2.mp4):
 
 @pytest.fixture
 def create_scraibe_instance():
-    return Scraibe()
+    if "HF_TOKEN" in os.environ:
+        return Scraibe(use_auth_token=os.environ["HF_TOKEN"] )
+    else:
+        return Scraibe()
+    
 
 
 
