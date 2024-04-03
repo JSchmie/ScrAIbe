@@ -39,6 +39,5 @@ jobs:
         env: 
           HF_TOKEN : ${{ secrets.HF_TOKEN }}
         run: |
-          python -c "import os; print('True' if 'HF_TOKEN' in os.environ else 'False')"
-          python -c "from scraibe import Scraibe;import os; print(Scraibe(use_auth_token=os.environ.get('HF_TOKEN'), verbose = True).autotranscribe('test/audio_test_1.mp4'))"
+            pytest
            
