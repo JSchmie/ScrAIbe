@@ -34,6 +34,6 @@ jobs:
       - name: Run pytest
         
         run: |
-           echo "${{ secrets.HF_TOKEN }}" >> scraibe/.pyannotetoken
+           echo "${{ secrets.HF_TOKEN }}" >> /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/scraibe/.pyannotetoken
            pytest 
            
