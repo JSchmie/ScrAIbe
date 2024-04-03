@@ -32,8 +32,9 @@ jobs:
            
 
       - name: Run pytest
-        
+        env: 
+          HF_TOKEN : ${{ secrets.HF_TOKEN }}
         run: |
-           echo "${{ secrets.HF_TOKEN }}" >> /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/scraibe/.pyannotetoken
-           pytest 
+          python -c "import os; print('True' if 'HF_TOKEN' in os.environ else 'False')"
+          python -c "from scraibe import Scraibe;import os; print(Scraibe(use_auth_token=os.environ.get('HF_TOKEN'), verbose = True).autotranscribe('test/audio_test_1.mp4'))"
            
