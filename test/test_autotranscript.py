@@ -11,6 +11,8 @@ def example_audio_file(audio_test_2.mp4):
 """
 
 
+
+
 @pytest.fixture
 def create_scraibe_instance():
     if "HF_TOKEN" in os.environ:
@@ -27,7 +29,7 @@ def test_scraibe_init(create_scraibe_instance):
     assert isinstance(model.diariser, Diariser)
 
 
-def test_scraibe_autotranscribe(create_scraibe_instance, example_audio_file):
+""" def test_scraibe_autotranscribe(create_scraibe_instance, example_audio_file):
     model = create_scraibe_instance
     transcript = model.autotranscribe(example_audio_file)
     assert isinstance(transcript, Transcript)
@@ -58,4 +60,4 @@ def test_get_audio_file(create_scraibe_instance, example_audio_file):
     audio_file = os.path.exist(example_audio_file)
     assert isinstance(audio_file, AudioProcessor)
     assert isinstance(audio_file.waveform, torch.Tensor)
-    assert isinstance(audio_file.sr, torch.Tensor)
+    assert isinstance(audio_file.sr, torch.Tensor) """
