@@ -5,7 +5,7 @@ import torch
 
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-TEST_WAVEFORM = torch.tensor([]).to(DEVICE)
+TEST_WAVEFORM = torch.sin(torch.randn(160000)).to(DEVICE)
 TEST_SR = 16000
 SAMPLE_RATE = 16000
 NORMALIZATION_FACTOR = 32768
@@ -54,7 +54,7 @@ def test_AudioProcessor_init(probe_audio_processor):
 
 
 
-def test_cut():
+def test_cut(probe_audio_processor):
     """Test the cut function of the AudioProcessor class.
     
     This test verifies that the cut function correctly extracts a segment of audio data from
@@ -69,7 +69,11 @@ def test_cut():
   
     start = 4
     end = 7
-    assert AudioProcessor(TEST_WAVEFORM, TEST_SR).cut(start, end).size() == int((end - start) * TEST_SR)
+    trimmed_waveform = probe_audio_processor.cut(start, end)
+    expected_size = int((end - start) * TEST_SR)
+    real_size = trimmed_waveform.size(0)
+    assert real_size == expected_size
+    #assert AudioProcessor(TEST_WAVEFORM, TEST_SR).cut(start, end).size() == int((end - start) * TEST_SR)
 
 
 
