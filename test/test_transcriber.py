@@ -1,8 +1,12 @@
 import pytest
 from unittest.mock import patch
 from scraibe import Transcriber
+import torch
 
 
+
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+TEST_WAVEFORM = "Hello World"
 
 """ 
 @pytest.mark.parametrize("audio_file, expected_transcription",[("path_to_test_audiofile", "test_transcription")] )
@@ -24,6 +28,24 @@ def test_transcriber(mock_load_model, audio_file, expected_transcription):
     transcription_result = transcriber.transcribe(audio=audio_file)
 
     assert transcription_result == expected_transcription """
+
+@pytest.fixture
+def transcriber_instance():
+    return Transcriber('medium')
+
+def test_transcriber_initialization(transcriber_instance):
+    assert transcriber_instance.model == 'medium'
+
+""" def test_get_whisper_kwargs():
+    kwargs = {"arg1": 1, "arg3": 3} 
+    valid_kwargs = Transcriber._get_diarisation_kwargs(**kwargs)
+    assert not valid_kwargs == {"arg1": 1, "arg3": 3}  """
+
+
+""" def test_transcribe(transcriber_instance, TEST_WAVEFORM):
+    mocker.patch.object(transcriber_instance.model, 'transcribe', return_value={'Hello, World !'} )
+    transcript = transcriber_instance.transcribe("Hello, World")
+    assert isinstance(transcript, str) """
 
 
 
