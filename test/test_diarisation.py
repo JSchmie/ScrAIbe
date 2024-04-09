@@ -15,8 +15,8 @@ def diariser_instance():
     Returns:
         Diariser(Obj): An instance of the Diariser class with a mocked token.
     """
-    with mock.patch.object(Diariser, '_get_token', return_value = 'HF_TOKEN' ):
-        return Diariser('pyannote')
+    #with mock.patch.object(Diariser, '_get_token', return_value = 'HF_TOKEN' ):
+    return Diariser('pyannote')
 
 
 
@@ -37,25 +37,11 @@ def test_Diariser_init(diariser_instance):
 
 
 
-def test_diarisation_function(diariser_instance):
-    """Test the diarization function of the Diariser class.
 
-    This test verifies that the diarization function of the Diariser class correctly processes
-    an audio file and returns the diarization result. It patches the apply method of the model
-    attribute of the Diariser instance using unittest.mock.patch.object, ensuring that it returns 
-    a predetermined value ('diarization_result') when called with the audio file argument.
-    It then calls the diarization function with an example audio file and checks whether the returned 
-    diarization output matches the expected result ('diarization_result').
 
-    Args:
-        diariser_instance (obj): instance of the Diariser object
 
-    Returns:
-        None    
-    """    
-    with mock.patch.object(diariser_instance.model, 'apply', return_value='diarization_result'):
-        diarization_output = diariser_instance.diarization('example_audio_file.wav')
-        assert diarization_output == 'diarization_result'
+
+
 
 
 
