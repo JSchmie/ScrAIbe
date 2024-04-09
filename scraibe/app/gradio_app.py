@@ -34,7 +34,7 @@ Usage:
 
 import json
 import os
-from tkinter import CURRENT
+
 
 import gradio as gr
 from tqdm import tqdm
