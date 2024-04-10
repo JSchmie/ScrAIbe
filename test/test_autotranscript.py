@@ -29,35 +29,36 @@ def test_scraibe_init(create_scraibe_instance):
     assert isinstance(model.diariser, Diariser)
 
 
-""" def test_scraibe_autotranscribe(create_scraibe_instance, example_audio_file):
+def test_scraibe_autotranscribe(create_scraibe_instance):
     model = create_scraibe_instance
-    transcript = model.autotranscribe(example_audio_file)
+    transcript = model.autotranscribe("audio_test_2.mp4")
     assert isinstance(transcript, Transcript)
 
-def test_scraibe_diarization(create_scraibe_instance, example_audio_file):
+
+def test_scraibe_diarization(create_scraibe_instance):
     model = create_scraibe_instance
-    diarisation_result = model.diarisation(example_audio_file)
+    diarisation_result = model.diarization("audio_test_2.mp4")
     assert isinstance(diarisation_result, dict)
 
 
-def test_scraibe_transcribe(create_scraibe_instance, example_audio_file):
+def test_scraibe_transcribe(create_scraibe_instance):
     model = create_scraibe_instance
-    transcription_result = model.transcribe(example_audio_file)
+    transcription_result = model.transcribe("audio_test_2.mp4")
     assert isinstance(transcription_result, str)
 
 
-def test_remove_audio_file(create_scraibe_instance, example_audio_file):
+""" def test_remove_audio_file(create_scraibe_instance):
     model = create_scraibe_instance
     with pytest.raises(ValueError):
         model.remove_audio_file("non_existing_audio_file")
 
-    model.remove_audio_file(example_audio_file)
-    assert not os.path.exists(example_audio_file)      
+    model.remove_audio_file("audio_test_2.mp4")
+    assert not os.path.exists("audio_test_2.mp4")   """    
 
 
-def test_get_audio_file(create_scraibe_instance, example_audio_file):
+""" def test_get_audio_file(create_scraibe_instance):
     model = create_scraibe_instance
-    audio_file = os.path.exist(example_audio_file)
+    audio_file = os.path.exist("audio_test_2.mp4")
     assert isinstance(audio_file, AudioProcessor)
     assert isinstance(audio_file.waveform, torch.Tensor)
-    assert isinstance(audio_file.sr, torch.Tensor) """
+    assert isinstance(audio_file.sr, torch.Tensor)   """
