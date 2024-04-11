@@ -3,6 +3,10 @@ import torch
 from scraibe import Scraibe, Diariser, Transcriber, Transcript, AudioProcessor
 from unittest.mock import MagicMock, patch
 import os
+import imp
+
+
+
 
 """
 @pytest.fixture
@@ -31,13 +35,13 @@ def test_scraibe_init(create_scraibe_instance):
 
 def test_scraibe_autotranscribe(create_scraibe_instance):
     model = create_scraibe_instance
-    transcript = model.autotranscribe("audio_test_2.mp4")
+    transcript = model.autotranscribe(util)
     assert isinstance(transcript, Transcript)
 
 
 def test_scraibe_diarization(create_scraibe_instance):
     model = create_scraibe_instance
-    diarisation_result = model.diarization("audio_test_2.mp4")
+    diarisation_result = model.diarization('test/audio_test_2.mp4')
     assert isinstance(diarisation_result, dict)
 
 
