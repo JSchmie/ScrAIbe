@@ -45,7 +45,7 @@ def test_get_whisper_kwargs():
 def test_transcribe(transcriber_instance):
     model = transcriber_instance
     #mocker.patch.object(transcriber_instance.model, 'transcribe', return_value={'Hello, World !'} )
-    transcript = model.transcribe('audio_test_2.mp4')
+    transcript = model.transcribe('test/audio_test_2.mp4')
     assert isinstance(transcript, str)
 
 
