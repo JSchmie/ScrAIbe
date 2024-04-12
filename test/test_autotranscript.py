@@ -25,7 +25,7 @@ def test_scraibe_init(create_scraibe_instance):
 
 def test_scraibe_autotranscribe(create_scraibe_instance):
     model = create_scraibe_instance
-    transcript = model.autotranscribe('test/audio_test.mp4')
+    transcript = model.autotranscribe('test/audio_test_2.mp4')
     assert isinstance(transcript, Transcript)
 
 
