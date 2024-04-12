@@ -31,21 +31,22 @@ def test_transcriber(mock_load_model, audio_file, expected_transcription):
 
 @pytest.fixture
 def transcriber_instance():
-    return Transcriber('medium')
+    return Transcriber.load_model('medium')
 
 def test_transcriber_initialization(transcriber_instance):
-    assert transcriber_instance.model == 'medium'
+    assert isinstance(transcriber_instance, Transcriber)
 
-""" def test_get_whisper_kwargs():
+def test_get_whisper_kwargs():
     kwargs = {"arg1": 1, "arg3": 3} 
-    valid_kwargs = Transcriber._get_diarisation_kwargs(**kwargs)
-    assert not valid_kwargs == {"arg1": 1, "arg3": 3}  """
+    valid_kwargs = Transcriber._get_whisper_kwargs(**kwargs)
+    assert not valid_kwargs == {"arg1": 1, "arg3": 3}  
 
 
-""" def test_transcribe(transcriber_instance, TEST_WAVEFORM):
-    mocker.patch.object(transcriber_instance.model, 'transcribe', return_value={'Hello, World !'} )
-    transcript = transcriber_instance.transcribe("Hello, World")
-    assert isinstance(transcript, str) """
+def test_transcribe(transcriber_instance):
+    model = transcriber_instance
+    #mocker.patch.object(transcriber_instance.model, 'transcribe', return_value={'Hello, World !'} )
+    transcript = model.transcribe('audio_test_2.mp4')
+    assert isinstance(transcript, str)
 
 
 
