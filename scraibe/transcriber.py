@@ -70,6 +70,7 @@ class Transcriber:
 
         Args:
             model (whisper): The Whisper model to use for transcription.
+            model_name (str): The name of the model.
         """
         
         self.model = model
