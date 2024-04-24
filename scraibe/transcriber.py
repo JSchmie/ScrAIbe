@@ -141,6 +141,7 @@ class Transcriber:
                         - 'medium'
                         - 'large-v1'
                         - 'large-v2'
+                        - 'large-v3'
                         - 'large'
                         
             download_root (str, optional): Path to download the model.
