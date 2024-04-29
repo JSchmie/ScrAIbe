@@ -1,0 +1,43 @@
+name: Run tests
+
+on:
+ #push:
+  
+  pull_request:
+    branches: ['main', 'develop']
+
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install Dependencies
+        run: |
+
+             sudo apt update && sudo apt upgrade
+             python -m pip install --upgrade pip
+             pip install -r requirements.txt
+             pip install .
+             sudo apt-get install libsndfile1-dev 
+             sudo apt-get install ffmpeg 
+             pip install pytest
+
+
+           
+
+      - name: Run pytest
+        env: 
+          HF_TOKEN : ${{ secrets.HF_TOKEN }}
+        run: |
+            pytest 
+           
