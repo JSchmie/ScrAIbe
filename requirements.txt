@@ -11,7 +11,7 @@ setuptools-rust~=1.8.1
 
 tqdm>=4.65.0
 
-gradio~=3.36.1
+gradio~=4.28.3
 gradio-client~=0.2.7
 
 # add pytorch to override the one installed by pyannote.audio
