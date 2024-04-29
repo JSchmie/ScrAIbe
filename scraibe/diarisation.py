@@ -232,6 +232,10 @@ class Diariser:
                 if not os.path.exists(path_to_model):
                     warnings.warn(f"Model not found at {path_to_model}. \
                         'Trying to find it nearby .bin files instead.")
+                    warnings.warn(
+                        'Searching for nearby files in a folder path is '
+                        'deprecated and will be removed in future versions.',
+                        category=DeprecationWarning)
                     # list elementes with the ending .bin
                     bin_files = [f for f in os.listdir(pwd) if f.endswith(".bin")]
                     if len(bin_files) == 1:
