@@ -1,0 +1,3 @@
+[lint.extend-per-file-ignores]
+"__init__.py" = ["E402"]
+'__init__.py' = ["F403"]
