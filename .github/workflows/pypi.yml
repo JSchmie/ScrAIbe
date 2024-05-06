@@ -96,7 +96,6 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: ${{ github.ref == 'refs/heads/main' && 'env.PyPI_URL' || ' env.PyPI_DEV_URL' }}
-          user: ${{ secrets.PYPI_USERNAME }}
-          password: ${{ secrets.PYPI_PASSWORD }}
+          password: ${{ secrets.PYPI_API_TOKEN}}
 
 
