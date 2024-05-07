@@ -34,11 +34,6 @@ jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
-    # Check if manually triggered or automatically after successful test
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-      (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'develop'))
     steps:
       - uses: actions/checkout@v4
         with:
