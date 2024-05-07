@@ -87,7 +87,7 @@ jobs:
           python-version: "3.x"
       - name: Install package
         run: |
-          python3 -m pip install scraibe --index-url $TestPyPI_URL
+          python3 -m pip install --index-url https://test.pypi.org/simple/ scraibe
 
   publish-to-pypi:
     name: Conditional Publish to PyPI or Dev Repository
