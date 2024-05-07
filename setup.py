@@ -37,7 +37,7 @@ if __name__ == "__main__":
         readme = "README.md",
         install_requires = requirements,
         extras_require = {
-            "app" : ["scraibe-webui @ git+https://github.com/JSchmie/ScrAIbe-WebUI"], 
+            "app" : ["scraibe-webui"], 
         },
         # dependency_links=[
         #     'https://download.pytorch.org/whl/cu113',
