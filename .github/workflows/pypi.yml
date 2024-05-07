@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: $TestPyPI_URL
+      url: env.TestPyPI_URL
     permissions:
       id-token: write
     steps:
