@@ -1,0 +1,101 @@
+name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Branch to build from (default is main)'
+        required: false
+        default: 'main'
+  workflow_run:
+    workflows: ["Run Tests"]  # Ensure this matches the name of your testing workflow
+    types:
+      - completed
+    branches: [main, develop]  # This ensures it only triggers for these branches
+
+env:
+  TestPyPI_URL: https://test.pypi.org/p/scraibe
+  PyPI_URL: https://pypi.org/p/scraibe
+  PyPI_DEV_URL: https://pypi.org/p/scraibe-nightly
+
+jobs:
+  
+  build:
+    name: Build distribution 📦
+    runs-on: ubuntu-latest
+    # Check if manually triggered or automatically after successful test
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'develop'))
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch_name || github.event.workflow_run.head_branch }}
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Build source distribution
+        run: python3 setup.py sdist
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-package-distributions
+          path: dist/
+
+  publish-to-testpypi:
+    name: Publish Python 🐍 distribution 📦 to TestPyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: $TestPyPI_URL
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Publish distribution 📦 to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  test-install:
+    name: Test Installation from TestPyPI
+    needs: publish-to-testpypi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install package
+        run: |
+          python3 -m pip install --index-url $TestPyPI_URL
+
+  publish-to-pypi:
+    name: Conditional Publish to PyPI or Dev Repository
+    needs: [build, test-install]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: $PyPI_URL
+    permissions:
+      id-token: write
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Publish distribution 📦 to PyPI or Dev Repository
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: ${{ github.ref == 'refs/heads/main' && 'env.PyPI_URL' || ' env.PyPI_DEV_URL' }}
+          password: ${{ secrets.PYPI_API_TOKEN}}
+
+
