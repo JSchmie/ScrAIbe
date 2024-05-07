@@ -74,7 +74,7 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           skip-existing: true
-          
+
 
   test-install:
     name: Test Installation from TestPyPI
@@ -87,7 +87,7 @@ jobs:
           python-version: "3.x"
       - name: Install package
         run: |
-          python3 -m pip install scraibe --index-url env.TestPyPI_URL
+          python3 -m pip install scraibe --index-url $env.TestPyPI_URL
 
   publish-to-pypi:
     name: Conditional Publish to PyPI or Dev Repository
