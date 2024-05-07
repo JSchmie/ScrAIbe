@@ -1,23 +1,34 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       branch_name:
+#         description: 'Branch to build from (default is main)'
+#         required: false
+#         default: 'main'
+#   workflow_run:
+#     workflows: ["Run Tests"]
+#     types:
+#       - completed
+#     branches: [main, develop]  # This ensures it only triggers for these branches
+
 on:
+  push:
+    branches:
+      - develop
   workflow_dispatch:
     inputs:
       branch_name:
         description: 'Branch to build from (default is main)'
         required: false
         default: 'main'
-  workflow_run:
-    workflows: ["Run Tests"]  # Ensure this matches the name of your testing workflow
-    types:
-      - completed
-    branches: [main, develop]  # This ensures it only triggers for these branches
-
+  
 env:
   TestPyPI_URL: https://test.pypi.org/p/scraibe
   PyPI_URL: https://pypi.org/p/scraibe
   PyPI_DEV_URL: https://pypi.org/p/scraibe-nightly
-
+  ISRELEASED: true
 jobs:
   
   build:
