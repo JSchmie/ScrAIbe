@@ -26,6 +26,9 @@ version["ISRELEASED"] = True if "ISRELEASED" in os.environ else False
 with open(os.path.join(os.path.dirname(__file__), "requirements.txt")) as f:
         requirements = [line.strip() for line in f if line.strip() and not line.startswith('#')]
 
+
+print(f"Launch Version: {version['get_version'](build_version)}")
+
 if __name__ == "__main__":
 
     setup(
@@ -59,8 +62,8 @@ if __name__ == "__main__":
         keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio', 'ScrAIbe', 'scraibe',
                     'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
                     'voice-to-speech'],
+        include_package_data=True,
         package_data = {'scraibe.app' : ["*.html", "*.svg","*.yml"]},
         entry_points = {'console_scripts':
-            ['scraibe = scraibe.cli:cli']}
-        
+            ['scraibe = scraibe.cli:cli']}        
     )
