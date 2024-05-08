@@ -39,7 +39,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch_name || github.event.workflow_run.head_branch }}
       - name: Get Branch Name
-      run: echo running on branch ${GITHUB_REF##*/}
+        run: echo running on branch ${GITHUB_REF##*/}
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
