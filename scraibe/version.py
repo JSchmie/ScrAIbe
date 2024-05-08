@@ -4,7 +4,7 @@ import subprocess as sp
 MAJOR = 0
 MINOR = 1
 MICRO = 1
-NANO = 1
+NANO = 2
 ISRELEASED = False
 VERSION = '%d.%d.%d.%d' % (MAJOR, MINOR, MICRO, NANO)
 
