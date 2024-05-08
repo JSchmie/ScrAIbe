@@ -38,17 +38,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch_name || github.event.workflow_run.head_branch }}
-      - name: Debug Event Context
-        run: |
-          echo "Event Name: ${{ github.event_name }}"
-          echo "Inputs Branch Name: ${{ github.event.inputs.branch_name }}"
-          echo "Workflow Run Head Branch: ${{ github.event.workflow_run.head_branch }}"
-          echo "Ref: ${{ github.ref }}"
-          echo "GITHUB_REF: $GITHUB_REF"
-      - name: Display Branch Name
-        run: |
-            BRANCH=${{ github.event.inputs.branch_name || github.event.workflow_run.head_branch }}
-            echo "Building branch: $BRANCH"
+      - name: Get Branch Name
+      run: echo running on branch ${GITHUB_REF##*/}
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
