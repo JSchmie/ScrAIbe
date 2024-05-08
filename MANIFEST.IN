@@ -1,4 +1,5 @@
 recursive-include scraibe *.py
 recursive-include scraibe *.yaml
+include requirements.txt
 global-exclude *.pyc
 global-exclude __pycache__
