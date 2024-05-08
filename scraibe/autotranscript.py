@@ -64,6 +64,7 @@ class Scraibe:
     """
     def __init__(self,
                 whisper_model: Union[bool, str, whisper] = None,
+                whisper_type: str = "whisper",
                 dia_model : Union[bool, str, DiarisationType] = None,
                 **kwargs) -> None:
         """Initializes the Scraibe class.
@@ -84,9 +85,9 @@ class Scraibe:
         
         
         if whisper_model is None:
-            self.transcriber = Transcriber.load_model("medium", **kwargs)    
+            self.transcriber = Transcriber.load_model("medium", whisper_type, **kwargs)    
         elif isinstance(whisper_model, str):
-            self.transcriber = Transcriber.load_model(whisper_model, **kwargs)
+            self.transcriber = Transcriber.load_model(whisper_model, whisper_type, **kwargs)
         else:
             self.transcriber = whisper_model
 
