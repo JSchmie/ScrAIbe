@@ -4,8 +4,9 @@ import subprocess as sp
 MAJOR = 0
 MINOR = 1
 MICRO = 1
+NANO = 1
 ISRELEASED = False
-VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
+VERSION = '%d.%d.%d.%d' % (MAJOR, MINOR, MICRO, NANO)
 
 # Return the git revision as a string
 # taken from numpy/numpy
