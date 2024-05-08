@@ -46,7 +46,7 @@ jobs:
           pip install setuptools wheel
       - name: Build source distribution       
         run: |
-          python3 -c "import os; print("ISRELEASED" in os.environ)"
+          python3 -c "import os; print('ISRELEASED' in os.environ)"
           python3 setup.py sdist
       - name: Store the distribution packages
         uses: actions/upload-artifact@v3
