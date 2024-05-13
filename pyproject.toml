@@ -44,13 +44,6 @@ pytest = "^8.1.1"
 enable = true
 vcs = "git"
 strict = true
-format-jinja = """
-{%- if distance == 0 -%}
-        {{ serialize_pep440(base) }}
-{%- else -%}
-        {{serialize_pep440(bump_version(base, index=1), dev=timestamp)}}
-{%- endif -%}
-"""
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.3.7"
