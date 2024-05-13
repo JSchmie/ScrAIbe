@@ -1,5 +1,4 @@
 import os
-import re
 from setuptools import setup, find_packages
 
 module_name = "scraibe"
@@ -27,30 +26,32 @@ version["ISRELEASED"] = True if "ISRELEASED" in os.environ else False
 with open(os.path.join(os.path.dirname(__file__), "requirements.txt")) as f:
         requirements = [line.strip() for line in f if line.strip() and not line.startswith('#')]
 
+
+print(f"Launch Version: {version['get_version'](build_version)}")
+
 if __name__ == "__main__":
 
     setup(
-        name=module_name,
-        version=version["get_version"](build_version),
-        packages=find_packages(),
-        python_requires=">=3.8",
-        readme="README.md",
+        name = module_name,
+        version = version["get_version"](build_version),
+        packages = find_packages(),
+        python_requires = ">=3.8",
+        readme = "README.md",
         install_requires = requirements,
-        extras_require= {
-            "app" : "scraibe-webui @ https://github.com/JSchmie/ScrAIbe-WebUI" 
-        }       
-        ,
+        extras_require = {
+            "app" : ["scraibe-webui"], 
+        },
         # dependency_links=[
         #     'https://download.pytorch.org/whl/cu113',
         #     ],
         
-        url= github_url,
+        url = github_url,
         
-        license='GPL-3',
-        author='Jacob Schmieder',
-        author_email='Jacob.Schmieder@dbfz.de',
-        description='Transcription tool for audio files based on Whisper and Pyannote',
-        classifiers=[
+        license = 'GPL-3',
+        author = 'Jacob Schmieder',
+        author_email = 'Jacob.Schmieder@dbfz.de',
+        description = 'Transcription tool for audio files based on Whisper and Pyannote',
+        classifiers = [
             'Development Status :: 3 - Alpha',
             'Environment :: GPU :: NVIDIA CUDA :: 11.2',
             'License :: OSI Approved :: Open Software License 3.0 (OSL-3.0)',
@@ -61,8 +62,8 @@ if __name__ == "__main__":
         keywords = ['transcription', 'speech recognition', 'whisper', 'pyannote', 'audio', 'ScrAIbe', 'scraibe',
                     'speech-to-text', 'speech-to-text transcription', 'speech-to-text recognition',
                     'voice-to-speech'],
-        package_data={'scraibe.app' : ["*.html", "*.svg","*.yml"]},
-        entry_points={'console_scripts':
-            ['scraibe = scraibe.cli:cli']}
-        
+        include_package_data=True,
+        package_data = {'scraibe.app' : ["*.html", "*.svg","*.yml"]},
+        entry_points = {'console_scripts':
+            ['scraibe = scraibe.cli:cli']}        
     )
