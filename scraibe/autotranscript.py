@@ -72,6 +72,8 @@ class Scraibe:
         Args:
             whisper_model (Union[bool, str, whisper], optional): 
                                 Path to whisper model or whisper model itself.
+            whisper_type (str):
+                                Type of whisper model to load. "whisper" or "whisperx".
             diarisation_model (Union[bool, str, DiarisationType], optional): 
                                 Path to pyannote diarization model or model itself.
             **kwargs: Additional keyword arguments for whisper

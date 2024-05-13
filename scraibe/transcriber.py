@@ -140,10 +140,10 @@ class Transcriber:
                         - 'large-v2'
                         - 'large-v3'
                         - 'large'
-                        
+            whisper_type (str):
+                                Type of whisper model to load. "whisper" or "whisperx".
             download_root (str, optional): Path to download the model.
                                             Defaults to WHISPER_DEFAULT_PATH.
-                                            
             device (Optional[Union[str, torch.device]], optional): 
                                         Device to load model on. Defaults to None.
             in_memory (bool, optional): Whether to load model in memory. 
