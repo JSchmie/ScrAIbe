@@ -45,7 +45,13 @@ enable = true
 vcs = "git"
 strict = true
 format-jinja = """
-    TEST_{{- branch -}}_TEST
+    {%- if distance == 0 -%}
+        {{ serialize_pep440(base, stage, revision) }}
+    {%- elif revision is not none -%}
+        {{ serialize_pep440(base, stage, revision + 1, dev=distance, metadata=[commit]) }}
+    {%- else -%}
+        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
+    {%- endif -%}
 """
 
 [tool.poetry.group.docs.dependencies]
