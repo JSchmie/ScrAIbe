@@ -43,7 +43,10 @@ pytest = "^8.1.1"
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
-style= "pep440"
+strict = true
+format-jinja = """
+    TEST_{{- branch -}}_TEST
+"""
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.3.7"
