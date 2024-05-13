@@ -1,6 +1,10 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
 [tool.poetry]
 name = "scraibe"
-version = "0.0.0.0"
+version = "0.0.0"
 description = "Transcription tool for audio files based on Whisper and Pyannote"
 authors = ["Schmieder, Jacob <jacob.schmieder@dbfz.de>"]
 license = "GPL-3.0-or-later"
@@ -47,10 +51,6 @@ format-jinja = """
         {{serialize_pep440(bump_version(base, index=1), dev=timestamp)}}
 {%- endif -%}
 """
-
-[build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
-build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.3.7"
