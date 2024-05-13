@@ -1,6 +1,0 @@
-recursive-include scraibe *.py
-recursive-include scraibe *.yaml
-recursive-exclude test/*
-global-include requirements.txt
-global-exclude *.pyc
-global-exclude __pycache__
