@@ -47,6 +47,8 @@ strict = true
 format-jinja = """
     {%- if distance == 0 -%}
         {{ serialize_pep440(base) }}
+    {%- elif branch == pyproject.toml -%}
+        {{ serialize_pep440(bump_version(base), dev = distance) }}
     {%- else -%}
         {{ serialize_pep440(bump_version(base), dev=distance, metadata=[commit]) }}
     {%- endif -%}
