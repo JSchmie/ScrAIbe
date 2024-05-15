@@ -42,23 +42,23 @@ jobs:
           python3 -m pip install setuptools 
           python3 -m pip install --index-url https://test.pypi.org/simple/ scraibe
 
-  publish-to-pypi:
-    name: Conditional Publish to PyPI or Dev Repository
-    needs: [build, test-install]
-    runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: env.PyPI_URL
-    permissions:
-      id-token: write
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v3
-        with:
-          name: python-package-distributions
-          path: dist/
-      - name: Publish distribution 📦 to PyPI or Dev Repository
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: ${{ github.ref == 'refs/heads/main' && 'env.PyPI_URL' || ' env.PyPI_DEV_URL' }}
-          password: ${{ secrets.PYPI_API_TOKEN}}
+  # publish-to-pypi:
+  #   name: Conditional Publish to PyPI or Dev Repository
+  #   needs: [build, test-install]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: pypi
+  #     url: env.PyPI_URL
+  #   permissions:
+  #     id-token: write
+  #   steps:
+  #     - name: Download all the dists
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: python-package-distributions
+  #         path: dist/
+  #     - name: Publish distribution 📦 to PyPI or Dev Repository
+  #       uses: pypa/gh-action-pypi-publish@release/v1
+  #       with:
+  #         repository-url: ${{ github.ref == 'refs/heads/main' && 'env.PyPI_URL' || ' env.PyPI_DEV_URL' }}
+  #         password: ${{ secrets.PYPI_API_TOKEN}}
