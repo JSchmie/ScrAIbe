@@ -1,83 +1,31 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       branch_name:
-#         description: 'Branch to build from (default is main)'
-#         required: false
-#         default: 'main'
-#   workflow_run:
-#     workflows: ["Run Tests"]
-#     types:
-#       - completed
-#     branches: [main, develop]  # This ensures it only triggers for these branches
-
 on:
   push:
     branches:
-      - develop
+      - pyproject.toml # test branch for testing the workflow
+    tags:
+      - v* # Push tags to trigger the workflow
   workflow_dispatch:
     inputs:
-      branch_name:
-        description: 'Branch to build from (default is main)'
-        required: false
-        default: 'main'
-  
-env:
-  TestPyPI_URL: https://test.pypi.org/p/scraibe
-  PyPI_URL: https://pypi.org/p/scraibe
-  PyPI_DEV_URL: https://pypi.org/p/scraibe-nightly
-  ISRELEASED: true
-jobs:
-  
-  build:
-    name: Build distribution 📦
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install setuptools wheel
-      - name: Build source distribution       
-        run: |
-          python3 setup.py sdist
-      - name: Store the distribution packages
-        uses: actions/upload-artifact@v3
-        with:
-          name: python-package-distributions
-          path: dist/
+      test:
+        description: "Push to TestPyPI not PyPI"
+        default: true
+        type: boolean
 
-  publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: testpypi
-      url: env.TestPyPI_URL
-    permissions:
-      id-token: write
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v3
-        with:
-          name: python-package-distributions
-          path: dist/
-      - name: Publish distribution 📦 to TestPyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          skip-existing: true
+jobs: 
+  Build-and-publish-to-Test-PyPI:
+    if: ${{ !(startsWith(github.ref, 'refs/tags')) || (inputs.test == true) }}
+    uses: JRubics/poetry-publish@v1.16
+    with:
+      plugins: "poetry-dynamic-versioning"
+      repository_name: "testpypi"
+      repository_url: "https://test.pypi.org/legacy/"
 
 
   test-install:
     name: Test Installation from TestPyPI
-    needs: publish-to-testpypi
+    needs: Build-and-publish-to-Test-PyPI
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
