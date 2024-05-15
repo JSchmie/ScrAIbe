@@ -10,6 +10,8 @@ VERSION = '%d.%d.%d.%d' % (MAJOR, MINOR, MICRO, NANO)
 
 # Return the git revision as a string
 # taken from numpy/numpy
+
+
 def git_version():
     def _minimal_ext_cmd(cmd):
         # construct minimal environment
@@ -24,7 +26,8 @@ def git_version():
         env['LANG'] = 'C'
         env['LC_ALL'] = 'C'
 
-        out = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE, env=env).communicate()[0]
+        out = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE,
+                       env=env).communicate()[0]
         return out
 
     try:
@@ -34,6 +37,7 @@ def git_version():
         GIT_REVISION = "Unknown"
 
     return GIT_REVISION
+
 
 def _get_git_version():
     cwd = os.getcwd()
@@ -51,6 +55,7 @@ def _get_git_version():
     os.chdir(cwd)
     return res
 
+
 def get_version(build_version=False):
     if ISRELEASED:
         return VERSION
@@ -64,6 +69,3 @@ def get_version(build_version=False):
         return VERSION + ".dev" + date
     else:
         return VERSION + ".dev0+" + GIT_REVISION[:7]
-
-
-

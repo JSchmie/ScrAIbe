@@ -1,20 +1,14 @@
 import pytest
 from scraibe import Scraibe, Diariser, Transcriber, Transcript
-from unittest.mock import MagicMock, patch
 import os
-
-
-
 
 
 @pytest.fixture
 def create_scraibe_instance():
     if "HF_TOKEN" in os.environ:
-        return Scraibe(use_auth_token=os.environ["HF_TOKEN"] )
+        return Scraibe(use_auth_token=os.environ["HF_TOKEN"])
     else:
         return Scraibe()
-    
-
 
 
 def test_scraibe_init(create_scraibe_instance):
@@ -47,7 +41,7 @@ def test_scraibe_transcribe(create_scraibe_instance):
         model.remove_audio_file("non_existing_audio_file")
 
     model.remove_audio_file("audio_test_2.mp4")
-    assert not os.path.exists("audio_test_2.mp4")   """    
+    assert not os.path.exists("audio_test_2.mp4")   """
 
 
 """ def test_get_audio_file(create_scraibe_instance):
