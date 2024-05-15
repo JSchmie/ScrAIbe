@@ -14,15 +14,19 @@ on:
         type: boolean
 
 jobs: 
-  uses: actions/checkout@v4
-  
+
   Build-and-publish-to-Test-PyPI:
-    if: ${{ !(startsWith(github.ref, 'refs/tags')) || (inputs.test == true) }}
-    uses: JRubics/poetry-publish@v2.0
-    with:
-      plugins: "poetry-dynamic-versioning"
-      repository_name: "scraibe"
-      repository_url: "https://test.pypi.org/legacy/"
+    name: Build and Publish to Test PyPI
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4  
+      - name: Set up Poetry 📦
+        if: ${{ !(startsWith(github.ref, 'refs/tags')) || (inputs.test == true) }}
+        uses: JRubics/poetry-publish@v2.0
+        with:
+          plugins: "poetry-dynamic-versioning"
+          repository_name: "scraibe"
+          repository_url: "https://test.pypi.org/legacy/"
 
   test-install:
     name: Test Installation from TestPyPI
