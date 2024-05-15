@@ -25,6 +25,7 @@ jobs:
         if: ${{ !(startsWith(github.ref, 'refs/tags'))}}
         uses: JRubics/poetry-publish@v1.16
         with:
+          pypi_token: ${{ secrets.TEST_PYPI_API_TOKEN }}
           plugins: "poetry-dynamic-versioning"
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
