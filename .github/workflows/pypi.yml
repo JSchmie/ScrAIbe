@@ -14,8 +14,9 @@ on:
         type: boolean
 
 jobs: 
+  uses: actions/checkout@v4
+  
   Build-and-publish-to-Test-PyPI:
-    ususes: actions/checkout@v4
     if: ${{ !(startsWith(github.ref, 'refs/tags')) || (inputs.test == true) }}
     uses: JRubics/poetry-publish@v2.0
     with:
