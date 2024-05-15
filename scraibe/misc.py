@@ -2,6 +2,7 @@ import os
 import yaml
 from pyannote.audio.core.model import CACHE_DIR as PYANNOTE_CACHE_DIR
 from argparse import Action
+from ast import literal_eval
 
 CACHE_DIR = os.getenv(
     "AUTOT_CACHE",
@@ -56,7 +57,7 @@ class ParseKwargs(Action):
         for value in values:
             key, value = value.split('=')
             try:
-                value = ast.literal_eval(value)
+                value = literal_eval(value)
             except:
                 pass
             getattr(namespace, self.dest)[key] = value
