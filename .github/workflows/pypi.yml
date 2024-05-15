@@ -16,7 +16,7 @@ on:
 jobs: 
   Build-and-publish-to-Test-PyPI:
     if: ${{ !(startsWith(github.ref, 'refs/tags')) || (inputs.test == true) }}
-    uses: JRubics/poetry-publish@v1.16
+    uses: JRubics/poetry-publish@v2.0
     with:
       plugins: "poetry-dynamic-versioning"
       repository_name: "testpypi"
