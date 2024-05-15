@@ -53,7 +53,7 @@ format-jinja = """
 """
 
 [tool.poetry.group.docs.dependencies]
-sphinx = "^7.3.7"
+sphinx = "^7.1"
 sphinx-rtd-theme = "^2.0.0"
 markdown-it-py = {version = "~3.0.0", extras = ["plugins"]}
 myst-parser = "^3.0.1"
