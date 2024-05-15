@@ -21,8 +21,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+      - name: Setup package Name 
+        if: ${{ github.ref_name == 'pyproject.toml'}}
+        run: |
+          sed -i 's/name = "scraibe"/name = "scraibe-nightly"/' pyproject.toml
+          echo "You are running on the develop branch deploying to nightly!"
       - name: Set up Poetry 📦
-        if: ${{ !(startsWith(github.ref, 'refs/tags'))}}
+        if: ${{ !(startsWith(github.ref, 'refs/tags')) }}
         uses: JRubics/poetry-publish@v1.16
         with:
           pypi_token: ${{ secrets.TEST_PYPI_API_TOKEN }}
