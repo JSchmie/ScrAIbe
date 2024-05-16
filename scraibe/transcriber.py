@@ -30,6 +30,7 @@ from whisperx.asr import WhisperModel
 from whisperx import load_model as whisperx_load_model
 from typing import TypeVar, Union, Optional
 from torch import Tensor, device
+from torch.cuda import is_available as cuda_is_available
 from numpy import ndarray
 from inspect import getfullargspec
 from abc import abstractmethod
@@ -115,15 +116,14 @@ class Transcriber:
 
         print(f'Transcript saved to {save_path}')
 
-    @classmethod
-    def load_model(cls,
-                   model: str = "medium",
+    @staticmethod
+    def load_model(model: str = "medium",
                    whisper_type: str = 'whisper',
                    download_root: str = WHISPER_DEFAULT_PATH,
                    device: Optional[Union[str, device]] = None,
                    in_memory: bool = False,
                    *args, **kwargs
-                   ) -> 'Transcriber':
+                   ) -> 'Union[WhisperTranscriber, WhisperXTranscriber]':
         """
         Load whisper model.
 
@@ -278,6 +278,9 @@ class WhisperTranscriber(Transcriber):
 
         return whisper_kwargs
 
+    def __repr__(self) -> str:
+        return f"WhisperTranscriber(model_name={self.model_name}, model={self.model})"
+
 
 class WhisperXTranscriber(Transcriber):
     def __init__(self, model: whisper, model_name: str) -> None:
@@ -345,6 +348,8 @@ class WhisperXTranscriber(Transcriber):
         Returns:
             Transcriber: A Transcriber object initialized with the specified model.
         """
+        if device is None:
+            device = "cuda" if cuda_is_available() else "cpu"
         if not isinstance(device, str):
             device = str(device)
         _model = whisperx_load_model(model, download_root=download_root,
@@ -375,3 +380,6 @@ class WhisperXTranscriber(Transcriber):
             whisper_kwargs["language"] = language
 
         return whisper_kwargs
+
+    def __repr__(self) -> str:
+        return f"WhisperXTranscriber(model_name={self.model_name}, model={self.model})"
