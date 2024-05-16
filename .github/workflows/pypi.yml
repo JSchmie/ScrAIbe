@@ -33,7 +33,7 @@ jobs:
         run: ls -la /github/home/.cache/pypoetry/virtualenvs
   
       - name: Get the virtual environment path
-        run: echo "VENV_PATH=$(ls -d /github/home/.cache/pypoetry/virtualenvs/*)" >> $GITHUB_ENV
+        run: echo "VENV_PATH=$(ls -d $HOME/.cache/pypoetry/virtualenvs/* | head -n 1)" >> $GITHUB_ENV
 
       - name: Activate the virtual environment and get version
         run: |
