@@ -14,18 +14,12 @@ on:
         type: boolean
 
 jobs: 
-
   Build-and-publish-to-Test-PyPI:
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
-      - name: Setup package Name 
-        if: ${{ github.ref_name == 'pyproject.toml'}}
-        run: |
-          sed -i 's/name = "scraibe"/name = "scraibe-nightly"/' pyproject.toml
-          echo "You are running on the develop branch deploying to nightly!"
       - name: Set up Poetry 📦
         if: ${{ !(startsWith(github.ref, 'refs/tags')) }}
         uses: JRubics/poetry-publish@v1.16
@@ -34,6 +28,17 @@ jobs:
           plugins: "poetry-dynamic-versioning"
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
+      - name: Get the version
+        run: |
+          echo "SCRAIBE_VERSION=$(python -c 'import scraibe; print(scraibe.__version__)')" >> $GITHUB_ENV
+          echo "SCRAIBE_VERSION=$SCRAIBE_VERSION"
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v4
+        with:
+            name: build
+            path: ./sdist
+            retention-days: 5
+      
 
   test-install:
     name: Test Installation from TestPyPI
