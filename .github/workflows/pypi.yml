@@ -28,28 +28,8 @@ jobs:
           plugins: "poetry-dynamic-versioning"
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
-      
-      - name: List virtual environments
-        run: ls -la /github/home/.cache/pypoetry/virtualenvs
-  
-      - name: Get the virtual environment path
-        run: echo "VENV_PATH=$(ls -d $HOME/.cache/pypoetry/virtualenvs/* | head -n 1)" >> $GITHUB_ENV
-
-      - name: Activate the virtual environment and get version
-        run: |
-          source $VENV_PATH/bin/activate
-          VERSION=$(python -c "import scraibe; print(scraibe.__version__)")
-          echo "SCRAIBE_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "SCRAIBE_VERSION=$VERSION"
-        env:
-          VENV_PATH: ${{ env.VENV_PATH }}
-  
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v4
-        with:
-            name: build
-            path: ./sdist
-            retention-days: 5
+      - name: Get list of available folders after checkout
+        run: ls -l
       
 
   test-install:
