@@ -29,7 +29,9 @@ jobs:
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
       - name: Get list of available folders after checkout
-        run: ls -l
+        run: |
+          cd source
+          ls -l
       
 
   test-install:
