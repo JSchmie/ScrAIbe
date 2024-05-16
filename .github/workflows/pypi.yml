@@ -28,12 +28,21 @@ jobs:
           plugins: "poetry-dynamic-versioning"
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
-      - name: Get the version from wheel
+      
+      - name: List virtual environments
+        run: ls -la /github/home/.cache/pypoetry/virtualenvs
+  
+      - name: Get the virtual environment path
+        run: echo "VENV_PATH=$(ls -d /github/home/.cache/pypoetry/virtualenvs/*)" >> $GITHUB_ENV
+
+      - name: Activate the virtual environment and get version
         run: |
-          WHEEL_FILE=$(find dist -name "*.whl" | head -n 1)
-          VERSION=$(python -c "from pkginfo import Wheel; w = Wheel('$WHEEL_FILE'); print(w.version)")
+          source $VENV_PATH/bin/activate
+          VERSION=$(python -c "import scraibe; print(scraibe.__version__)")
           echo "SCRAIBE_VERSION=$VERSION" >> $GITHUB_ENV
           echo "SCRAIBE_VERSION=$VERSION"
+        env:
+          VENV_PATH: ${{ env.VENV_PATH }}
   
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v4
