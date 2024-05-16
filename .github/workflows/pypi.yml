@@ -14,6 +14,19 @@ on:
         type: boolean
 
 jobs: 
+  check-tag:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: Check if tag is present
+        run: |
+          if [ -z "$GITHUB_REF" ]; then
+            echo "No tag found"
+            exit 1
+          fi
+          echo "Tag found: $GITHUB_REF"
   Build-and-publish-to-Test-PyPI:
     runs-on: ubuntu-latest
     steps: 
