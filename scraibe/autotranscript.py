@@ -38,7 +38,7 @@ from tqdm import trange
 # Application-Specific Imports
 from .audio import AudioProcessor
 from .diarisation import Diariser
-from .transcriber import Transcriber, whisper
+from .transcriber import Transcriber, load_transcriber, whisper
 from .transcript_exporter import Transcript
 
 
@@ -87,10 +87,10 @@ class Scraibe:
         """
 
         if whisper_model is None:
-            self.transcriber = Transcriber.load_model(
+            self.transcriber = load_transcriber(
                 "medium", whisper_type, **kwargs)
         elif isinstance(whisper_model, str):
-            self.transcriber = Transcriber.load_model(
+            self.transcriber = load_transcriber(
                 whisper_model, whisper_type, **kwargs)
         else:
             self.transcriber = whisper_model
@@ -258,7 +258,7 @@ class Scraibe:
         _old_model = self.transcriber.model_name
 
         if isinstance(whisper_model, str):
-            self.transcriber = Transcriber.load_model(whisper_model, **kwargs)
+            self.transcriber = load_transcriber(whisper_model, **kwargs)
         elif isinstance(whisper_model, Transcriber):
             self.transcriber = whisper_model
         else:

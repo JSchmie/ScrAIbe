@@ -116,14 +116,16 @@ class Transcriber:
 
         print(f'Transcript saved to {save_path}')
 
-    @staticmethod
-    def load_model(model: str = "medium",
+    @classmethod
+    @abstractmethod
+    def load_model(cls,
+                   model: str = "medium",
                    whisper_type: str = 'whisper',
                    download_root: str = WHISPER_DEFAULT_PATH,
                    device: Optional[Union[str, device]] = None,
                    in_memory: bool = False,
                    *args, **kwargs
-                   ) -> 'Union[WhisperTranscriber, WhisperXTranscriber]':
+                   ) -> None:
         """
         Load whisper model.
 
@@ -153,19 +155,8 @@ class Transcriber:
             kwargs: Additional keyword arguments only to avoid errors.
 
         Returns:
-            Transcriber: A Transcriber object initialized with the specified model.
+            None: abscract method.
         """
-        if whisper_type.lower() == 'whisper':
-            _model = WhisperTranscriber.load_model(
-                model, download_root, device, in_memory, *args, **kwargs)
-            return _model
-        elif whisper_type.lower() == 'whisperx':
-            _model = WhisperXTranscriber.load_model(
-                model, download_root, device, *args, **kwargs)
-            return _model
-        else:
-            raise ValueError(f'Model type not recognized, exptected "whisper" '
-                             f'or "whisperx", got {whisper_type}.')
         pass
 
     @staticmethod
@@ -216,7 +207,7 @@ class WhisperTranscriber(Transcriber):
                    device: Optional[Union[str, device]] = None,
                    in_memory: bool = False,
                    *args, **kwargs
-                   ) -> 'Transcriber':
+                   ) -> 'WhisperTranscriber':
         """
         Load whisper model.
 
@@ -316,7 +307,7 @@ class WhisperXTranscriber(Transcriber):
                    download_root: str = WHISPER_DEFAULT_PATH,
                    device: Optional[Union[str, device]] = None,
                    *args, **kwargs
-                   ) -> 'Transcriber':
+                   ) -> 'WhisperXTranscriber':
         """
         Load whisper model.
 
@@ -383,3 +374,55 @@ class WhisperXTranscriber(Transcriber):
 
     def __repr__(self) -> str:
         return f"WhisperXTranscriber(model_name={self.model_name}, model={self.model})"
+
+
+def load_transcriber(model: str = "medium",
+                     whisper_type: str = 'whisper',
+                     download_root: str = WHISPER_DEFAULT_PATH,
+                     device: Optional[Union[str, device]] = None,
+                     in_memory: bool = False,
+                     *args, **kwargs
+                     ) -> Union[WhisperTranscriber, WhisperXTranscriber]:
+    """
+    Load whisper model.
+
+    Args:
+        model (str): Whisper model. Available models include:
+                    - 'tiny.en'
+                    - 'tiny'
+                    - 'base.en'
+                    - 'base'
+                    - 'small.en'
+                    - 'small'
+                    - 'medium.en'
+                    - 'medium'
+                    - 'large-v1'
+                    - 'large-v2'
+                    - 'large-v3'
+                    - 'large'
+        whisper_type (str):
+                            Type of whisper model to load. "whisper" or "whisperx".
+        download_root (str, optional): Path to download the model.
+                                        Defaults to WHISPER_DEFAULT_PATH.
+        device (Optional[Union[str, torch.device]], optional): 
+                                    Device to load model on. Defaults to None.
+        in_memory (bool, optional): Whether to load model in memory. 
+                                    Defaults to False.
+        args: Additional arguments only to avoid errors.
+        kwargs: Additional keyword arguments only to avoid errors.
+
+    Returns:
+        Union[WhisperTranscriber, WhisperXTranscriber]: 
+        One of the Whisper variants as Transcrbier object initialized with the specified model.
+    """
+    if whisper_type.lower() == 'whisper':
+        _model = WhisperTranscriber.load_model(
+            model, download_root, device, in_memory, *args, **kwargs)
+        return _model
+    elif whisper_type.lower() == 'whisperx':
+        _model = WhisperXTranscriber.load_model(
+            model, download_root, device, *args, **kwargs)
+        return _model
+    else:
+        raise ValueError(f'Model type not recognized, exptected "whisper" '
+                         f'or "whisperx", got {whisper_type}.')
