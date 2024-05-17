@@ -348,7 +348,7 @@ class WhisperXTranscriber(Transcriber):
                           f'device {device}! Changing compute type to int8.')
             compute_type = 'int8'
         _model = whisperx_load_model(model, download_root=download_root,
-                                     device=device)
+                                     device=device, compute_type=compute_type)
 
         return cls(_model, model_name=model)
 
