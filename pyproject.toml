@@ -53,6 +53,8 @@ format-jinja = """
         {{ serialize_pep440(bump_version(base), dev=distance, metadata=[commit]) }}
     {%- endif -%}
 """
+[tool.poetry-dynamic-versioning.substitution]
+files = ["scraibe/_version.py"]
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.3.7"
