@@ -6,15 +6,12 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    # if: github.event.pull_request.merged
-    
+    runs-on: ubuntu-latest    
     steps:
       - name: Tag
         uses: K-Phoen/semver-release-action@master
         with:
-          release_branch: pyproject.toml
+          release_branch: test_semver
           release_strategy: none
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
