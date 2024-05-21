@@ -3,7 +3,7 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 on:
   push:
     branches:
-      - develop branch to create pre-release
+      - develop
     tags:
       - v* # Push tags to trigger the workflow
   workflow_dispatch:
@@ -53,9 +53,18 @@ jobs:
     needs: test-install
     runs-on: ubuntu-latest
     steps: 
-      - uses: actions/checkout@v4
+      - name: Checkout Repository Tags
+        uses: actions/checkout@v4
+        if: github.ref == 'refs/tags/v*'
         with:
           fetch-depth: '0'
+          branch: 'main'
+      - name: Checkout Repository (Develop)
+        uses: actions/checkout@v4
+        if: github.ref == "refs/heads/develop"
+        with:
+          fetch-depth: '0'
+          branch: 'develop'
       - name: Set up Poetry 📦
         uses: JRubics/poetry-publish@v1.16
         with:
