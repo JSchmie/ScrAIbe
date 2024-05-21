@@ -1,9 +1,8 @@
-# .github/workflows/release.yml
-name: Release
+name: Semantic Versioning
 
-on:
-  pull_request:
-    types: [closed]
+on: push
+  # pull_request:
+  #   types: [closed]
 
 jobs:
   build:
@@ -17,6 +16,5 @@ jobs:
         with:
           release_branch: pyproject.toml
           release_strategy: none
-
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
