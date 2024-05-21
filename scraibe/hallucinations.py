@@ -1,6 +1,6 @@
 # List of known hallucinations - adapted from:
 # https://github.com/openai/whisper/discussions/928
-KNOWN_HALLUCINATIONS=[
+KNOWN_HALLUCINATIONS = [
     # en
     " www.mooji.org"
     # nl
@@ -73,7 +73,7 @@ KNOWN_HALLUCINATIONS=[
     " Sous-titres réalisés para la communauté d'Amara.org"
     # ln
     " Sous-titres réalisés para la communauté d'Amara.org"
-    # pl 
+    # pl
     " Napisy stworzone przez społeczność Amara.org",
     " Napisy wykonane przez społeczność Amara.org",
     " Zdjęcia i napisy stworzone przez społeczność Amara.org",

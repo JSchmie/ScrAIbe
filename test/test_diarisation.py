@@ -1,8 +1,5 @@
 import pytest
-import os
-from unittest import mock
-from scraibe import diarisation, Diariser
-
+from scraibe import Diariser
 
 
 @pytest.fixture
@@ -15,9 +12,8 @@ def diariser_instance():
     Returns:
         Diariser(Obj): An instance of the Diariser class with a mocked token.
     """
-    #with mock.patch.object(Diariser, '_get_token', return_value = 'HF_TOKEN' ):
+    # with mock.patch.object(Diariser, '_get_token', return_value = 'HF_TOKEN' ):
     return Diariser('pyannote')
-
 
 
 def test_Diariser_init(diariser_instance):
@@ -30,18 +26,7 @@ def test_Diariser_init(diariser_instance):
     Args:
         diariser_instance (obj): instance of the Diariser class
 
-    Returns: 
+    Returns:
            None
-    """    
+    """
     assert diariser_instance.model == 'pyannote'
-
-
-
-
-
-
-
-
-
-
-
