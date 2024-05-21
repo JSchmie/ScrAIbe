@@ -1,12 +1,14 @@
 name: Semantic Versioning for Tags
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - test_semver
+      - main
 
 jobs:
   bump-version:
+    if: ${{ github.event.pull_request.merged == true $$ github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
