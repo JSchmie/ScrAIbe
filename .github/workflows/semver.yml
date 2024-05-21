@@ -3,7 +3,7 @@ name: Semantic Versioning for Tags
 on:
   push:
     branches:
-      - test_semserver
+      - test_semver
 
 jobs:
   bump-version:
