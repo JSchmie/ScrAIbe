@@ -68,5 +68,5 @@ scraibe = "scraibe.cli:cli"
 app = ["scraibe-webui"]
 
 [tool.ruff.lint.extend-per-file-ignores]
-"__init__.py" = ["E402","F403"]
+"__init__.py" = ["E402","F403",'F401']
 "scraibe/misc.py" = ["E722"]
