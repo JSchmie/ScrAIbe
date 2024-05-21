@@ -7,7 +7,6 @@ from .diarisation import *
 from .misc import *
 
 from .cli import *
- 
- # set __version__ attribute
- 
-__version__ = "0.0.0"
+
+from ._version import __version__ 
+
