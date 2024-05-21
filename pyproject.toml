@@ -1,0 +1,72 @@
+[build-system]
+requires = ["poetry-core>=1.8.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry]
+name = "scraibe"
+version = "0.0.0"
+description = "Transcription tool for audio files based on Whisper and Pyannote"
+authors = ["Schmieder, Jacob <jacob.schmieder@dbfz.de>"]
+license = "GPL-3.0-or-later"
+readme = ["README.md", "LICENSE"]
+repository = "https://github.com/JSchmie/ScAIbe"
+documentation = "https://jschmie.github.io/ScrAIbe/"
+keywords = ["transcription", "audio", "whisper", "pyannote", "speech-to-text", "speech-recognition"]
+classifiers = [
+                'Development Status :: 4 - Beta',
+                'Intended Audience :: Developers',
+                'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+                'Programming Language :: Python :: 3.8',
+                'Programming Language :: Python :: 3.9',
+                'Programming Language :: Python :: 3.10',
+                'Programming Language :: Python :: 3.11',
+                'Environment :: GPU :: NVIDIA CUDA :: 12 :: 12.1',
+                'Topic :: Scientific/Engineering :: Artificial Intelligence'
+                ]
+packages = [{include = "scraibe"}]
+exclude =[
+        "__pycache__",
+        "*.pyc",
+        "test"
+        ]
+[tool.poetry.dependencies]
+python = "^3.9"
+tqdm = "^4.66.4"
+numpy = "^1.26.4"
+openai-whisper = "^20231117"
+"pyannote.audio" = "^3.2.0"
+torch = "^2.3.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+strict = true
+format-jinja = """
+    {%- if distance == 0 -%}
+        {{ serialize_pep440(base) }}
+    {%- elif branch == 'pyproject.toml' -%}
+        {{ serialize_pep440(bump_version(base), dev = distance) }}
+    {%- else -%}
+        {{ serialize_pep440(bump_version(base), dev=distance, metadata=[commit]) }}
+    {%- endif -%}
+"""
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.3.7"
+sphinx-rtd-theme = "^2.0.0"
+markdown-it-py = {version = "~3.0.0", extras = ["plugins"]}
+myst-parser = "^3.0.1"
+mdit-py-plugins = "^0.4.1"
+
+[tool.poetry.scripts]
+scraibe = "scraibe.cli:cli"
+
+[tool.poetry.extras]
+app = ["scraibe-webui"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"__init__.py" = ["E402","F403",'F401']
+"scraibe/misc.py" = ["E722"]

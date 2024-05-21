@@ -1,0 +1,48 @@
+name: Semantic Versioning for Tags
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    if: ${{ github.event.pull_request.merged == true $$ github.event.pull_request.base.ref == 'main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump Version and Tag
+        run: |
+          # Fetch the latest tags from the remote
+          git fetch --tags
+
+          # Get the latest tag
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+          # Split the latest tag into parts
+          IFS='.' read -r -a parts <<< "${latest_tag#v}"
+
+          # Increment the patch version
+          major=${parts[0]}
+          minor=${parts[1]}
+          patch=${parts[2]}
+          new_patch=$((patch + 1))
+
+          # Create a new tag
+          new_tag="v$major.$minor.$new_patch"
+
+          echo "Bumping version from $latest_tag to $new_tag"
+
+          # Tag the new version
+          git tag $new_tag
+
+          # Configure GitHub token authentication
+          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
+
+          # Push the new tag to the remote repository
+          git push origin $new_tag

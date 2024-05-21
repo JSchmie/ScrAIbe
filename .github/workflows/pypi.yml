@@ -1,112 +1,73 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       branch_name:
-#         description: 'Branch to build from (default is main)'
-#         required: false
-#         default: 'main'
-#   workflow_run:
-#     workflows: ["Run Tests"]
-#     types:
-#       - completed
-#     branches: [main, develop]  # This ensures it only triggers for these branches
-
 on:
   push:
     branches:
       - develop
+    tags:
+      - v* # Push tags to trigger the workflow
   workflow_dispatch:
     inputs:
-      branch_name:
-        description: 'Branch to build from (default is main)'
-        required: false
-        default: 'main'
-  
-env:
-  TestPyPI_URL: https://test.pypi.org/p/scraibe
-  PyPI_URL: https://pypi.org/p/scraibe
-  PyPI_DEV_URL: https://pypi.org/p/scraibe-nightly
-  ISRELEASED: true
-jobs:
-  
-  build:
-    name: Build distribution 📦
+      test:
+        description: "Push to TestPyPI not PyPI"
+        default: true
+        type: boolean
+
+jobs: 
+  Build-and-publish-to-Test-PyPI:
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install setuptools wheel
-      - name: Build source distribution       
-        run: |
-          python3 -c "import os; print('ISRELEASED' in os.environ)"
-          python3 setup.py sdist
-      - name: Store the distribution packages
-        uses: actions/upload-artifact@v3
+          fetch-depth: '0'
+      - name: Set up Poetry 📦
+        uses: JRubics/poetry-publish@v1.16
         with:
-          name: python-package-distributions
-          path: dist/
-
-  publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: testpypi
-      url: env.TestPyPI_URL
-    permissions:
-      id-token: write
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v3
-        with:
-          name: python-package-distributions
-          path: dist/
-      - name: Publish distribution 📦 to TestPyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
-          skip-existing: true
-
+          pypi_token: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          plugins: "poetry-dynamic-versioning"
+          repository_name: "scraibe"
+          repository_url: "https://test.pypi.org/legacy/"
 
   test-install:
     name: Test Installation from TestPyPI
-    needs: publish-to-testpypi
+    needs: Build-and-publish-to-Test-PyPI
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.11, 3.12]
     steps:
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: ${{ matrix.python-version }}
       - name: Install package
         run: |
-          python3 -m pip install setuptools 
-          python3 -m pip install --index-url https://test.pypi.org/simple/ scraibe
+          pip install -U setuptools
+          pip install -r requirements.txt
+          python3 -m pip install --no-deps --pre --index-url https://test.pypi.org/simple/ scraibe>=0.1.3
+          python3 -c "import scraibe; print(scraibe.__version__)"
 
   publish-to-pypi:
-    name: Conditional Publish to PyPI or Dev Repository
-    needs: [build, test-install]
+    name: Publish to PyPI
+    needs: test-install
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: env.PyPI_URL
-    permissions:
-      id-token: write
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v3
+    steps: 
+      - name: Checkout Repository Tags
+        uses: actions/checkout@v4
+        if: github.ref == 'refs/tags/v*'
         with:
-          name: python-package-distributions
-          path: dist/
-      - name: Publish distribution 📦 to PyPI or Dev Repository
-        uses: pypa/gh-action-pypi-publish@release/v1
+          fetch-depth: '0'
+          branch: 'main'
+      - name: Checkout Repository (Develop)
+        uses: actions/checkout@v4
+        if: github.ref == "refs/heads/develop"
         with:
-          repository-url: ${{ github.ref == 'refs/heads/main' && 'env.PyPI_URL' || ' env.PyPI_DEV_URL' }}
-          password: ${{ secrets.PYPI_API_TOKEN}}
+          fetch-depth: '0'
+          branch: 'develop'
+      - name: Set up Poetry 📦
+        uses: JRubics/poetry-publish@v1.16
+        with:
+          pypi_token: ${{ secrets.PYPI_API_TOKEN }}
+          plugins: "poetry-dynamic-versioning"
+          repository_name: "scraibe"

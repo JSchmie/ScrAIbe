@@ -1,8 +1,6 @@
 name: Run Tests
 
 on:
- #push:
-  
   pull_request:
     branches: ['main', 'develop']
   workflow_dispatch:
@@ -14,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v3
@@ -30,10 +30,7 @@ jobs:
              sudo apt-get install libsndfile1-dev 
              sudo apt-get install ffmpeg 
              pip install pytest
-
-
-           
-
+             
       - name: Run pytest
         env: 
           HF_TOKEN : ${{ secrets.HF_TOKEN }}
