@@ -61,7 +61,7 @@ jobs:
           branch: 'main'
       - name: Checkout Repository (Develop)
         uses: actions/checkout@v4
-        if: github.ref == "refs/heads/develop"
+        if: github.ref == 'refs/heads/develop'
         with:
           fetch-depth: '0'
           branch: 'develop'
