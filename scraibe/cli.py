@@ -5,17 +5,12 @@ The function includes arguments for specifying the audio files, model paths,
 output formats, and other options necessary for transcription.
 """
 import os
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import json
-
-from .autotranscript import Scraibe
-from .misc import ParseKwargs
-
-
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
 from torch.cuda import is_available
 from torch import set_num_threads
-
+from .autotranscript import Scraibe
 
 def cli():
     """
@@ -148,7 +143,6 @@ def cli():
                 path = os.path.join(out_folder, f"{basename}.{out_format}")
                 with open(path, "w") as f:
                     f.write(out)
-
 
 if __name__ == "__main__":
     cli()
