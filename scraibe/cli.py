@@ -65,7 +65,7 @@ def cli():
     parser.add_argument("--verbose-output", type=str2bool, default=True,
                         help="Enable or disable progress and debug messages.")
 
-    parser.add_argument("--task", type=str, default='autotranscribe',  # unifinished code
+    parser.add_argument("--task", type=str, default='autotranscribe',
                         choices=["autotranscribe", "diarization",
                                  "autotranscribe+translate", "translate", 'transcribe'],
                         help="Choose to perform transcription, diarization, or translation. \
