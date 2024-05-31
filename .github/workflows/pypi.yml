@@ -2,10 +2,11 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 on:
   push:
-    branches:
-      - develop
     tags:
       - v* # Push tags to trigger the workflow
+  pull_request:
+    branches:
+      - develop
   workflow_dispatch:
     inputs:
       test:
