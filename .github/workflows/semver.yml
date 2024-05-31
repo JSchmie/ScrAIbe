@@ -8,7 +8,7 @@ on:
 
 jobs:
   bump-version:
-    if: ${{ github.event.pull_request.merged == true $$ github.event.pull_request.base.ref == 'main' }}
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -17,26 +17,45 @@ jobs:
           fetch-depth: 0
 
       - name: Bump Version and Tag
+        id: bump_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           # Fetch the latest tags from the remote
           git fetch --tags
 
-          # Get the latest tag
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          # Get the latest tag, or initialize to v0.0.0 if no tags are found
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null || echo "v0.0.0")
 
-          # Split the latest tag into parts
-          IFS='.' read -r -a parts <<< "${latest_tag#v}"
+          # Extract version from PR title or body
+          pr_body="${{ github.event.pull_request.body }}"
+          pr_title="${{ github.event.pull_request.title }}"
+          version_regex="v([0-9]+)\.([0-9]+)\.([0-9]+)"
 
-          # Increment the patch version
-          major=${parts[0]}
-          minor=${parts[1]}
-          patch=${parts[2]}
-          new_patch=$((patch + 1))
-
-          # Create a new tag
-          new_tag="v$major.$minor.$new_patch"
+          if [[ $pr_body =~ $version_regex ]]; then
+            major=${BASH_REMATCH[1]}
+            minor=${BASH_REMATCH[2]}
+            patch=${BASH_REMATCH[3]}
+            new_tag="v$major.$minor.$patch"
+          elif [[ $pr_title =~ $version_regex ]]; then
+            major=${BASH_REMATCH[1]}
+            minor=${BASH_REMATCH[2]}
+            patch=${BASH_REMATCH[3]}
+            new_tag="v$major.$minor.$patch"
+          else
+            # Split the latest tag into parts
+            IFS='.' read -r -a parts <<< "${latest_tag#v}"
+            major=${parts[0]}
+            minor=${parts[1]}
+            patch=${parts[2]}
+            patch=$((patch + 1))
+            new_tag="v$major.$minor.$patch"
+          fi
 
           echo "Bumping version from $latest_tag to $new_tag"
+
+          # Set the new tag as an environment variable
+          echo "new_tag=$new_tag" >> $GITHUB_ENV
 
           # Tag the new version
           git tag $new_tag
@@ -46,3 +65,33 @@ jobs:
 
           # Push the new tag to the remote repository
           git push origin $new_tag
+
+      - name: Extract Release Notes
+        id: extract_notes
+        run: |
+          version="${{ env.new_tag }}"
+          clean_version="${version#v}"
+          release_notes=$(awk -v version="$clean_version" '
+            BEGIN { flag=0 }
+            # Start flagging when the version section is found
+            /^## \[.*\]/ {
+              if (flag) exit  # Exit when the next section starts
+            }
+            /^## \['"$clean_version"'\]/ { flag=1; next }  # Start printing after the header
+            flag { print }  # Print lines while flag is 1
+          ' CHANGELOG.md)
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$release_notes" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ env.new_tag }}
+          release_name: Release ${{ env.new_tag }}
+          body: ${{ env.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+ 
