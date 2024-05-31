@@ -5,6 +5,7 @@ on:
     tags:
       - v* # Push tags to trigger the workflow
   pull_request:
+    types: [closed]
     branches:
       - develop
   workflow_dispatch:
