@@ -57,7 +57,6 @@ jobs:
     steps: 
       - name: Checkout Repository Tags
         uses: actions/checkout@v4
-        if: github.ref == 'refs/tags/v*'
         with:
           fetch-depth: '0'
           branch: 'main'
