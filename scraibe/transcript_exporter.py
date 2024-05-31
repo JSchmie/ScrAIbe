@@ -300,7 +300,7 @@ class Transcript:
             raise ValueError("Unknown file format")
 
     @classmethod
-    def from_json(cls, json: Union[dict, str]) -> "Transcript":
+    def from_json(cls, _json: Union[dict, str]) -> "Transcript":
         """Load transcript from json file
 
         Args:
@@ -309,13 +309,13 @@ class Transcript:
         Returns:
             Transcript: Transcript object
         """
-        if isinstance(json, dict):
-            return cls(json)
+        if isinstance(_json, dict):
+            return cls(_json)
         else:
             try:
-                transcript = json.loads(json)
+                transcript = json.loads(_json)
             except (TypeError, JSONDecodeError):
-                with open(json, "r") as f:
+                with open(_json, "r") as f:
                     transcript = json.load(f)
 
             return cls(transcript)

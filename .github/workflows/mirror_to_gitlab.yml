@@ -12,7 +12,7 @@ jobs:
     - name: Mirror + trigger CI
       uses: SvanBoxel/gitlab-mirror-and-ci-action@master
       with:
-        args: "https://git-dmz.thuenen.de/kida/i2-skills-beratungsstelle/scraibe"
+        args: "https://git-dmz.thuenen.de/kida/i2-skills-beratungsstelle/active-service-requests/scraibe/scraibe"
       env:
         FOLLOW_TAGS: "true"
         FORCE_PUSH: "true"
