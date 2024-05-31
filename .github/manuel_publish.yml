@@ -1,0 +1,29 @@
+name: Manual Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to check out (main or develop)'
+        required: true
+        type: choice
+        options:
+          - main
+          - develop
+
+jobs:
+  publish-to-pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+          ref: ${{ github.event.inputs.branch }}
+      - name: Set up Poetry 📦
+        uses: JRubics/poetry-publish@v1.16
+        with:
+          pypi_token: ${{ secrets.PYPI_API_TOKEN }}
+          plugins: "poetry-dynamic-versioning"
+          repository_name: "scraibe-webui"
