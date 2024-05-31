@@ -1,0 +1,90 @@
+name: Check and Add Version in Changelog
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  check-and-add-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if Source Branch is docs
+        id: check_docs_branch
+        run: |
+          pr_head_ref="${{ github.event.pull_request.head.ref }}"
+          if [[ "$pr_head_ref" == "docs" ]]; then
+            echo "This is a docs branch merge. Exiting without creating a tag."
+            echo "is_docs_branch=true" >> $GITHUB_ENV
+            exit 0
+          else
+            echo "is_docs_branch=false" >> $GITHUB_ENV
+          fi
+
+      - name: Extract and Determine Version
+        if: env.is_docs_branch != 'true'
+        id: extract_version
+        run: |
+          # Fetch the latest tags from the remote
+          git fetch --tags
+
+          # Get the latest tag, or initialize to v0.0.0 if no tags are found
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null || echo "v0.0.0")
+
+          # Extract version from PR title or body
+          pr_body="${{ github.event.pull_request.body }}"
+          pr_title="${{ github.event.pull_request.title }}"
+          version_regex="v([0-9]+)\.([0-9]+)\.([0-9]+)"
+
+          if [[ $pr_body =~ $version_regex ]]; then
+            major=${BASH_REMATCH[1]}
+            minor=${BASH_REMATCH[2]}
+            patch=${BASH_REMATCH[3]}
+            new_tag="v$major.$minor.$patch"
+          elif [[ $pr_title =~ $version_regex ]]; then
+            major=${BASH_REMATCH[1]}
+            minor=${BASH_REMATCH[2]}
+            patch=${BASH_REMATCH[3]}
+            new_tag="v$major.$minor.$patch"
+          else
+            # Split the latest tag into parts
+            IFS='.' read -r -a parts <<< "${latest_tag#v}"
+            major=${parts[0]}
+            minor=${parts[1]}
+            patch=${parts[2]}
+            patch=$((patch + 1))
+            new_tag="v$major.$minor.$patch"
+          fi
+
+          clean_version="${new_tag#v}"
+          echo "version=$clean_version" >> $GITHUB_ENV
+          echo "Version determined: $clean_version"
+
+      - name: Check if Version Already Exists in Tags
+        if: env.is_docs_branch != 'true'
+        run: |
+          version="${{ env.version }}"
+          if git tag --list | grep -q "^$version$"; then
+            echo "Version $version already exists in tags."
+            exit 1
+          else
+            echo "Version $version does not exist in tags."
+          fi
+
+      - name: Check Version in CHANGELOG
+        if: env.is_docs_branch != 'true'
+        id: check_version
+        run: |
+          version="${{ env.version }}"
+          if ! grep -q "^## \[$version\]" CHANGELOG.md; then
+            echo "Version $version not found in CHANGELOG.md."
+            exit 1
+          else
+            echo "Version $version found in CHANGELOG.md."
+          fi

@@ -1,199 +1,173 @@
+# `ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment` 🎙️🧠
 
-# `ScrAIbe: Streamlined Conversation Recording with Automated Intelligence Based Environment`
+Welcome to `ScrAIbe`, a state-of-the-art, [PyTorch](https://pytorch.org/) based multilingual speech-to-text framework designed to generate fully automated transcriptions. 
 
-`ScrAIbe` is a state-of-the-art,  [PyTorch](https://pytorch.org/) based multilingual speech-to-text framework to generate fully automated transcriptions. 
+Beyond transcription, ScrAIbe supports advanced functions such as speaker diarization and speaker recognition. 🚀
 
-Beyond transcription, ScrAIbe supports advanced functions, such as speaker diarization and speaker recognition.
+Designed as a comprehensive AI toolkit, it uses multiple powerful AI models:
 
-Designed as a comprehensive AI toolkit, it uses multiple AI models:
-
-- [whisper](https://github.com/openai/whisper): A general-purpose speech recognition model.
-- [payannote-audio](https://github.com/pyannote/pyannote-audio): An open-source toolkit for speaker diarization.
+- **[Whisper](https://github.com/openai/whisper)**: A general-purpose speech recognition model.
+- **[WhisperX](https://github.com/m-bain/whisperX)**: A faster, quantized version of Whisper for enhanced performance on CPU. ⚡
+- **[Pyannote-Audio](https://github.com/pyannote/pyannote-audio)**: An open-source toolkit for speaker diarization. 🗣️
 
 The framework utilizes a PyanNet-inspired pipeline, with the `Pyannote` library for speaker diarization and `VoxCeleb` for speaker embedding.
 
-During post-diarization, each audio segment is processed by the OpenAI `Whisper` model, in a transformer encoder-decoder structure. Initially, a CNN mitigates noise and enhances speech. Before transcription, `VoxLingua` identifies the language segment, facilitating Whisper's role in both transcription and text translation.
+During post-diarization, each audio segment is processed by the OpenAI `Whisper` model in a transformer encoder-decoder structure. Initially, a CNN mitigates noise and enhances speech. Before transcription, `VoxLingua` identifies the language segment, facilitating Whisper's role in both transcription and text translation. 🌍✨
 
 The following graphic illustrates the whole pipeline:
 
-![Pipeline](Pictures/pipeline.png#gh-dark-mode-only) 
-![Pipeline](Pictures/pipeline_light.png#gh-light-mode-only) 
+<div style="text-align:center;">
+  <img src="./Pictures/pipeline.png#gh-dark-mode-only" style="width: 60%;" />
+  <img src="./Pictures/pipeline_light.png#gh-light-mode-only" style="width: 60%;" />
+</div>
 
-## Install `ScrAIbe` : 
+## Getting Started 🚀
 
-The following command will pull and install the latest commit from this repository, along with its Python dependencies.
+### Prerequisites
 
-    pip install scraibe
+Before installing ScrAIbe, ensure you have the following prerequisites:
 
-- **Python version**: Python 3.8
-- **PyTorch version**: Python 1.11.0
-- **CUDA version**: Cuda-toolkit 11.3.1
+- **Python**: Version 3.9 or later.
+- **PyTorch**: Version 2.0 or later.
+- **CUDA**: A compatible version with your PyTorch Version if you want to use GPU acceleration.
 
+**Note:** PyTorch should be automatically installed with the pip installer. However, if you encounter any issues, you should consider installing it manually by following the instructions on the [PyTorch website](https://pytorch.org/get-started/locally/).
 
-Important: For the `Pyannote` model, you need to be granted access to Hugging Face.
-Check the [Pyannote model page](https://huggingface.co/pyannote/speaker-diarization) to get access to the model.
+### Install ScrAIbe 
 
-Additionally, you need to generate a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens). 
+Install ScrAIbe on your local machine with ease using PyPI.
 
-## Usage 
+```bash
+pip install scraibe
+```
+
+If you want to install the development version, you can do so by installing it from GitHub:
+
+```bash
+pip install git+https://github.com/JSchmie/ScrAIbe.git@develop
+```
+
+or from PyPI using our latest pre-release:
+
+```bash
+pip install --pre scraibe
+```
+
+Get started with ScrAIbe today and experience seamless, automated transcription and diarization.
+
+## Usage
 
 We've developed ScrAIbe with several access points to cater to diverse user needs.
 
-### Python usage
+### Python Usage
 
-It enables full control over the functionalities as well as process customization. 
+Gain full control over the functionalities as well as process customization.
 
 ```python
 from scraibe import Scraibe
 
-model = Scraibe(use_auth_token = "hf_yourhftoken")
+model = Scraibe()
 
 text = model.autotranscribe("audio.wav")
 
 print(f"Transcription: \n{text}")
 ```
-The `Scraibe` Class is taking care of the models being properly loaded. Therefore, you can choose the other [whisper](https://github.com/openai/whisper/blob/main/model-card.md) models using the `whisper_model` keyword. 
-You can also change the `pyannote` diarization model using the `dia_model` keyword.
 
+The `Scraibe` class ensures the models are properly loaded. You can customize the models with various keywords:
 
-As input, `autoranscribe` accepts every format which is compatible with [ffmgeg](https://ffmpeg.org/ffmpeg-formats.html). Examples therefore are `.mp4 .mp3 .wav .ogg .flac` and many more.
+- **Whisper Models**: Use the `whisper_model` keyword to specify models like `tiny`, `base`, `small`, `medium`, or `large` (`large-v2`, `large-v3`) depending on your accuracy and speed needs.
+- **Pyannote Diarization Model**: Use the `dia_model` keyword to change the diarization model.
+- **WhisperX**: Set the `whisper_type` to `"whisperX"` for enhanced performance on CPU and use their enhanced models. (Model names are the same)
+- **Keyword Arguments**: A variety of different `kwargs` are available:
+  - `use_auth_token`: Pass a Hugging Face token to the Pyannote backend if you want to use one of the models hosted on their Hugging Face.
+  - `verbose`: Enable this to add an additional level of verbosity.
+  
+  In general, you should be able to input any `kwargs` that you can input in the original Whisper (WhisperX) and Pyannote Python APIs.
 
-To further control the pipeline of `ScrAIbe` you can parse almost any keyword you also cloud parsed towards `whisper` or `pyannote` if you need more option, try to check out the documentations  tows two Frameworks, you might have a good chance that these keywords will work here as well. 
-Here's are some examples regarding the `diarization` (which relies on the `pyannote` pipeline):
+As input, `autotranscribe` accepts every format compatible with [FFmpeg](https://ffmpeg.org/ffmpeg-formats.html). Examples include `.mp4`, `.mp3`, `.wav`, `.ogg`, `.flac`, and many more.
 
-- `num_speakers` Number of speakers in the audio file
-- `min_speakers` Minimal Number of speakers in the audio file 
-- `max_speakers` maximal Number of speakers in the audio file
+To further control the pipeline of `ScrAIbe`, you can pass almost any keyword argument that is accepted by `Whisper` or `Pyannote`. For more options, refer to the documentation of these frameworks, as their keywords are likely to work here as well. 
 
-Then there are arguments about the transcription process, which uses the "whisper" model.
+Here are some examples regarding `diarization` (which relies on the `pyannote` pipeline):
 
-- `language` Specify the language ([list to supported languages](https://github.com/openai/whisper/blob/main/language-breakdown.svg)) 
-- `task` can be just `transcribe` or `translate`. If `translate` is selected, the transcribed audio will be translated to English.
+- `num_speakers`: Number of speakers in the audio file
+- `min_speakers`: Minimum number of speakers in the audio file
+- `max_speakers`: Maximum number of speakers in the audio file
+
+Then there are arguments for the transcription process, which uses the "Whisper" model:
+
+- `language`: Specify the language ([list of supported languages](https://github.com/openai/whisper/blob/main/language-breakdown.svg))
+- `task`: Can be either `transcribe` or `translate`. If `translate` is selected, the transcribed audio will be translated to English.
 
 For example:
 
-```
+```python
 text = model.autotranscribe("audio.wav", language="german", num_speakers = 2)
 ```
 
-`Scraibe` also contains the option to just do a transcription
+`Scraibe` also contains the option to just do a transcription:
+
 ```python
 transcription = model.transcribe("audio.wav")
 ``` 
-or just do a diarization: 
+
+or just do a diarization:
 
 ```python
-diarization = model.diarize("audio.wav")
+diarization = model.diarization("audio.wav")
 ```
+
+Start exploring the powerful features of ScrAIbe and customize it to fit your specific transcription and diarization needs!
 
 ### Command-line usage
 
 Next to the Pyhton interface, you can also run ScrAIbe using the command-line interface:
 
-    scraibe -f "audio.wav" --hf-token "hf_yourhftoken" --language "german" --num_speakers 2
+```bash
+scraibe -f "audio.wav" --language "german" --num_speakers 2
+```
 
 For the full list of options, run:
 
-    scraibe -h
-
-### Gradio App
-
-The Gradio App is a user-friendly interface for ScrAIbe. It enables you to run the model without any coding knowledge. Therefore, you can run the app in your browser and upload your audio file, or you can make the Framework avail on your network and run it on your local machine.
-
-#### Running the Gradio App on your local machine
-
-To run the Gradio App on your local machine, just use the following command:
-
-```
-scraibe --start_server --port 7860 --hf_token hf_yourhftoken
+```bash
+scraibe -h
 ```
 
-- `--start_server`: Command to start the Gradio App.
-- `--port`: Flag for connecting the container internal port to the port on your local machine.
-- `--hf_token`: Flag for entering your personal HuggingFace token in the container.
+This will display a comprehensive list of all command-line options, allowing you to tailor ScrAIbe’s functionality to your specific needs.
 
-When the app is running, it will show you at which address you can access it.
-The default address is: http://127.0.0.1:7860 or http://0.0.0.0:7860
+## Gradio App 🌐
 
-After the app is running, you can upload your audio file and select the desired options.
-An example is shown below:
+The Gradio App is now part of ScrAIbe-WebUI! This user-friendly interface enables you to run the model without any coding knowledge. You can easily run the app in your browser and upload your audio files, or make the framework available on your network and run it on your local machine. 🚀
 
-![Gradio App](Pictures/gradio_app.png)
+All functionalities previously available in the Gradio App are now part of the ScrAIbe-WebUI. For more information and detailed instructions, visit the [ScrAIbe-WebUI GitHub repository](https://github.com/JSchmie/ScrAIbe-WebUI).
+
+## Docker Container 🐳
+
+ScrAIbe's Docker containers have also moved to ScrAIbe-WebUI! This option is especially useful if you want to run the model on a server or if you would like to use the GPU without dealing with CUDA.
+
+All Docker container functionalities are now part of ScrAIbe-WebUI. For more information and detailed instructions on how to use the Docker containers, please visit the [ScrAIbe-WebUI GitHub repository](https://github.com/JSchmie/ScrAIbe-WebUI).
+
+---
+
+With these changes, ScrAIbe focuses on its core functionalities while the enhanced Gradio App and related Docker containers are now part of ScrAIbe-WebUI. Enjoy a more streamlined and powerful transcription experience! 🎉
+
+## Documentation 📚
+
+For comprehensive guides, detailed instructions, and advanced usage tips, visit our [documentation page](https://jschmie.github.io/ScrAIbe/). Here, you will find everything you need to make the most out of ScrAIbe.
+
+### Contributions 🤝
+
+We warmly welcome contributions from the community! Whether you’re fixing bugs, adding new features, or improving documentation, your help is invaluable. Please see our [Contributing Guidelines](./CONTRIBUTING.md) for more information on how to get involved and make your mark on ScrAIbe-WebUI.
 
 
-### Running a Docker container
+### License 📜
 
-Another option to run ScrAIbe is to use a Docker container. This option is especially useful if you want to run the model on a server or if you would like to use the GPU without dealing with CUDA.
-After you have installed Docker, you can execute the following commands in the terminal.
-
-First, you need to build the Docker image. Therefore, you need to enter your HuggingFace token and the image name.
-
-```
-docker build . --build-arg="hf_token=[enter your HuggingFace token] " -t scraibe
-```
-
-After the image is built, you can run the container with the following command:
-
-```
-sudo docker run -it  -p 7860:7860  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
-
-```
--  `-p`: Flag for connecting the container internal port to the port on your local machine.
--  `--hf_token`: Flag for entering your personal HuggingFace token in the container.
-- `--start_server`: Command to start the Gradio App.
-
-Inside the container, the `cli` is used. Therefore, you can use the same commands as in the command-line interface.
-
-#### Enabling GPU usage
-
-To use the GPU, ensure your Docker installation supports GPU usage.
-For further information, check: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
-To enable GPU usage, you need to add the following flag to the `docker run` command:
-
-```
-docker run -it  -p 7860:7860 --gpus 'all,capabilities=utility'  --name [container name][image name]  --hf_token [enter your HuggingFace token] --start_server
-```
-
-For further guidance, check: https://blog.roboflow.com/use-the-gpu-in-docker/ 
-
-## Documentation 
-
-For further insights, check the [documentation page]().
-
-## Contributions
-
-We are happy to have any interest in contributing and about feedback: In order to do that, create an issue with your feedback or feel free to contact us.
-
-## Roadmap
-
-The following milestones are planned for further releases of ScrAIbe:
-
-- Model quantization   
-Quantization to empower memory and computational efficiency.
-
-- Model fine-tuning  
-In order to be able to cover a variety of linguistic phenomena.
-
-For example, currently ScrAIbe is able to transcribe word by word, but ignores filler words or speech pauses. 
-These phenomena can be addressed by fine-tuning with the corresponding data.
-
-- Implementation of LLMs   
-One example is the implementation of a summarization or extraction model, which enables ScrAIbe to automatically summarize or retrieve the key information out of a generated transcription, which could be the minutes of a meeting.
-
-- Executable for Windows
-
-## Contact
-
-For queries contact [Jacob Schmieder](Jacob.Schmieder@dbfz.de)
-
-## License 
-
-ScrAIbe is licensed under GNU General Public License.
+ScrAIbe-WebUI is proudly open source and licensed under the GPL-3.0 license. This promotes a collaborative and transparent development process. For more details, see the [LICENSE](./LICENSE) file in this repository.
 
 ## Acknowledgments
 
-Special thanks go to the KIDA project and the BMEL (Bundesministerium für Ernährung und Landwirtschaft), especially to the AI Consultancy Team.
+Special thanks go to the [KIDA](https://www.kida-bmel.de/) project and the [BMEL (Bundesministerium für Ernährung und Landwirtschaft)](https://www.bmel.de/EN/Home/home_node.html), especially to the AI Consultancy Team.
 
-![KIDA](Pictures/kida_dark.png#gh-dark-mode-only)    &nbsp;    ![BMEL](Pictures/BMEL_dark.png#gh-dark-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](Pictures/DBFZ_dark.png#gh-dark-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](Pictures/MRI.png#gh-dark-mode-only)   
+---
 
-![KIDA](Pictures/kida.png#gh-light-mode-only)    &nbsp;    ![BMEL](Pictures/BMEL.jpg#gh-light-mode-only) &nbsp;&nbsp;&nbsp;&nbsp; ![DBFZ](Pictures/DBFZ.png#gh-light-mode-only)   &nbsp;  &nbsp;&nbsp;&nbsp;    ![MRI](Pictures/MRI.png#gh-light-mode-only)  
+Join us in making ScrAIbe even better! 🚀

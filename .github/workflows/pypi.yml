@@ -1,0 +1,75 @@
+name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
+
+on:
+  push:
+    tags:
+      - v* # Push tags to trigger the workflow
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Push to TestPyPI not PyPI"
+        default: true
+        type: boolean
+
+jobs: 
+  Build-and-publish-to-Test-PyPI:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+      - name: Set up Poetry 📦
+        uses: JRubics/poetry-publish@v1.16
+        with:
+          pypi_token: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          plugins: "poetry-dynamic-versioning"
+          repository_name: "scraibe"
+          repository_url: "https://test.pypi.org/legacy/"
+
+  test-install:
+    name: Test Installation from TestPyPI
+    needs: Build-and-publish-to-Test-PyPI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.9, 3.11, 3.12]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package
+        run: |
+          pip install -U setuptools
+          pip install -r requirements.txt
+          python3 -m pip install --no-deps --pre --index-url https://test.pypi.org/simple/ scraibe>=0.1.3
+          python3 -c "import scraibe; print(scraibe.__version__)"
+
+  publish-to-pypi:
+    name: Publish to PyPI
+    needs: test-install
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout Repository Tags
+        uses: actions/checkout@v4
+        if: github.ref == 'refs/tags/v*'
+        with:
+          fetch-depth: '0'
+          branch: 'main'
+      - name: Checkout Repository (Develop)
+        uses: actions/checkout@v4
+        if: github.ref == 'refs/heads/develop'
+        with:
+          fetch-depth: '0'
+          branch: 'develop'
+      - name: Set up Poetry 📦
+        uses: JRubics/poetry-publish@v1.16
+        with:
+          pypi_token: ${{ secrets.PYPI_API_TOKEN }}
+          plugins: "poetry-dynamic-versioning"
+          repository_name: "scraibe"
