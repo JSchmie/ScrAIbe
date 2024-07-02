@@ -7,29 +7,22 @@ on:
       - main
 
 jobs:
+
   bump-version:
-    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}
+    if: >
+        github.event.pull_request.merged == true &&
+        github.event.pull_request.base.ref == 'main' &&
+        contains(github.event.pull_request.labels.*.name, 'release')
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Check if Source Branch is docs
-        id: check_docs_branch
-        run: |
-          pr_head_ref="${{ github.event.pull_request.head.ref }}"
-          if [[ "$pr_head_ref" == "docs" ]]; then
-            echo "is_docs_branch=true" >> $GITHUB_ENV
-            echo "This is a docs branch merge. Exiting without creating a tag."
-            exit 0
-          else
-            echo "is_docs_branch=false" >> $GITHUB_ENV
-          fi
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump Version and Tag
-        if: env.is_docs_branch != 'true'
         id: bump_version
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -80,7 +73,6 @@ jobs:
           git push origin $new_tag
 
       - name: Extract Release Notes
-        if: env.is_docs_branch != 'true'
         id: extract_notes
         run: |
           version="${{ env.new_tag }}"
@@ -99,7 +91,6 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Create Release
-        if: env.is_docs_branch != 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
