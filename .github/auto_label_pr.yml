@@ -7,6 +7,8 @@ documentation:
       - 'docs/**'
       - 'README.md'
       - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      - 'Makefile'
       
 
 # Label for Docker changes
@@ -20,14 +22,14 @@ docker:
 release:
   - changed-files:
     - any-glob-to-any-file:
-      - 'src/**'
+      - 'scraibe/**'
       - 'pyproject.toml'
       - 'LICENCE'
 
 tests:
   - changed-files:
     - any-glob-to-any-file:
-      - 'tests/**'
+      - 'test/**'
       
 workflows:
   - changed-files:
@@ -39,6 +41,14 @@ github:
   - changed-files:
       - any-glob-to-any-file:
         - '.gitignore'
+
+dependencies: 
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'requirements.txt'
+        - 'environment.yml'
+        - 'pyproject.toml'
+  - head-branch: ['^dependencies', 'dependencies', '^dependency', 'dependency']
 
 feature:
  - head-branch: ['^feature', 'feature']
