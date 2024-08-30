@@ -9,6 +9,7 @@ documentation:
       - 'CHANGELOG.md'
       - 'CONTRIBUTING.md'
       - 'Makefile'
+      - 'Pictures'
       
 
 # Label for Docker changes
