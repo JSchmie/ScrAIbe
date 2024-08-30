@@ -1,0 +1,62 @@
+# .github/labeler.yml
+
+# Label for documentation changes
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - 'CONTRIBUTING.md'
+      - 'Makefile'
+      - 'Pictures'
+      
+
+# Label for Docker changes
+docker:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*docker*'
+      - 'Docker*'
+
+# Label for release-related changes
+release:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'scraibe/**'
+      - 'pyproject.toml'
+      - 'LICENCE'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'test/**'
+      
+workflows:
+  - changed-files:
+      - any-glob-to-any-file:
+        - '.github/workflows/*'
+        - '.github/*'
+
+github: 
+  - changed-files:
+      - any-glob-to-any-file:
+        - '.gitignore'
+
+dependencies: 
+  - changed-files:
+      - any-glob-to-any-file:
+        - 'requirements.txt'
+        - 'environment.yml'
+        - 'pyproject.toml'
+  - head-branch: ['^dependencies', 'dependencies', '^dependency', 'dependency']
+
+feature:
+ - head-branch: ['^feature', 'feature']
+
+patch:
+  - head-branch: ['^patch', 'patch', '^bug', 'bug']
+
+ignore-pr-title-for-release: 
+  - head-branch: ['develop']
+  - base-branch: ['main']

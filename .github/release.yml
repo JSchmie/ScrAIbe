@@ -1,0 +1,47 @@
+#Automatically generated release notes from GIthub used by softprops/action-gh-release@v2 in .github/workflows/release.yaml
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - ignore-pr-title-for-release
+      - workflows
+      - github
+      - documentation
+    authors:
+      - octocat
+      - github-actions[bot]
+
+  categories:
+    - title: New Features 🎉
+      labels:
+        - enhancement
+        - feature
+        - Semver-Minor
+
+    - title: Bug Fixes 🐛
+      labels:
+        - bug
+        - fix
+        - patch
+
+    - title: Dependency Updates 📦
+      labels:
+        - dependency
+        - dependencies
+        - dependency-update
+
+    - title: Breaking Changes 🛠
+      labels:
+        - breaking-change
+        - Semver-Major
+
+    - title: Container and Compose Updates 🐳
+      labels:
+        - docker
+        - compose
+        - docker-compose
+
+    - title: Other Changes 🔧
+      labels:
+        - "*"

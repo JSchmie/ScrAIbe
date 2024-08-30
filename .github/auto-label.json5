@@ -1,0 +1,21 @@
+{
+  labelsSynonyms: {
+    bug: ['error', 'need fix', 'not working', 'failure', 'crash', 'problem', 'issue', 'defect', 'glitch', 'fault', 'anomaly'],
+    enhancement: ['upgrade', 'update', 'improve', 'feature request', 'new feature', 'enhance', 'extension', 'add-on', 'improvement'],
+    "help wanted": ['help', 'how can i', 'assistance needed', 'support needed', 'question', 'guidance', 'aid', 'need assistance', 'advice', 'instruction'],
+    documentation: ['docs', 'Readme', 'documentation', 'guide', 'manual', 'instructions', 'how-to', 'reference', 'tutorial', 'specification'],
+    docker: ['compose', 'Dockerfile', 'container', 'docker-compose', 'image', 'docker setup', 'kubernetes', 'docker swarm', 'containerization'],
+    performance: ['slow', 'lag', 'performance', 'speed', 'optimization', 'tuning', 'efficiency', 'latency', 'improve performance', 'boost', 'performance issue'],
+    security: ['vulnerability', 'exploit', 'attack', 'breach', 'security', 'protection', 'patch', 'secure', 'threat', 'risk', 'malware'],
+    ui: ['user interface', 'ui', 'ux', 'design', 'layout', 'front-end', 'visual', 'interface', 'experience', 'aesthetic', 'theme', 'style'],
+    test: ['test', 'testing', 'unit test', 'integration test', 'e2e test', 'automated test', 'test case', 'test suite', 'qa', 'quality assurance'],
+    compatibility: ['compatible', 'incompatible', 'version', 'compatibility', 'interop', 'support', 'versioning', 'cross-platform', 'integration', 'compatibility issue']
+  },
+  labelsNotAllowed: [
+    'duplicate',
+    'good first issue',
+    'invalid'
+  ],
+  //defaultLabels: ['triage'],
+  ignoreComments: true
+}
