@@ -1,24 +1,35 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 on:
-  pull_request:
-    types: [closed]
+  pull_request_target:
     branches:
       - develop
-      - main
+    types:
+      - closed
+  push:
+    tags:
+      - 'v*.*.*'
+
   workflow_dispatch:
     inputs:
-      job:
-        description: "Select job to run"
-        required: true
-        type: choice
-        options:
-          - Build-and-publish-to-Test-PyPI
-          - test-install
-          - publish-to-pypi
+      test:
+        description: "Run tests"
+        default: true
+        type: boolean
+      publish_to_pypi:
+        description: "Publish to PyPI"
+        default: false
+        type: boolean
 
 jobs: 
   Build-and-publish-to-Test-PyPI:
+    if: |
+      (github.event_name == 'workflow_dispatch' &&
+       github.event.inputs.test == 'true') ||
+      (github.event_name == 'pull_request_target' &&
+       github.event.pull_request.merged &&
+       contains(github.event.pull_request.labels.*.name, 'release')) ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v4
@@ -32,7 +43,7 @@ jobs:
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
 
-  test-install:
+  Test-PyPi-install:
     name: Test Installation from TestPyPI
     needs: Build-and-publish-to-Test-PyPI
     runs-on: ubuntu-latest
@@ -54,8 +65,18 @@ jobs:
 
   publish-to-pypi:
     name: Publish to PyPI
-    needs: test-install
+    needs: Test-PyPi-install
     runs-on: ubuntu-latest
+    if: |
+      always() &&
+      (( needs.Build-and-publish-to-Test-PyPI.result  != 'failure' &&
+        needs.Test-PyPi-install.result != 'failure' ) &&
+      ((github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.publish_to_pypi == 'true') ||
+      (github.event_name == 'pull_request_target' &&
+      github.event.pull_request.merged &&
+      contains(github.event.pull_request.labels.*.name, 'release')) ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))))
     steps: 
       - name: Checkout Repository Tags
         uses: actions/checkout@v4
