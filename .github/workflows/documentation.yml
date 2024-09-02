@@ -2,8 +2,8 @@ name: documentation
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,6 @@ jobs:
           make html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/sphinx_action' }}
         with:
           publish_branch: gh-pages
           github_token: ${{ secrets.TOKEN_GH }}
