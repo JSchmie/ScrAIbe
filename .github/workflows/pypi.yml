@@ -6,6 +6,10 @@ on:
       - develop
     types:
       - closed
+    paths: 
+      - scraibe/**
+      - pyproject.toml
+
   push:
     tags:
       - 'v*.*.*'
