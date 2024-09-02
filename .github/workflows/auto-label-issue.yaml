@@ -1,7 +1,7 @@
 name: Labeling new issue
 on:
   issues:
-    types: ['opened', 'reopened']
+    types: [opened, reopened]
     
 jobs:
   build:
