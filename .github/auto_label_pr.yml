@@ -42,6 +42,7 @@ github:
   - changed-files:
       - any-glob-to-any-file:
         - '.gitignore'
+        - '.github/ISSUE_TEMPLATE/*'
 
 dependencies: 
   - changed-files:
