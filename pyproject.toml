@@ -34,7 +34,7 @@ python = "^3.9"
 tqdm = "^4.66.5"
 numpy = "^1.26.4"
 openai-whisper = "^20231117"
-whisperx = "^3.1.5"
+whisperx = "^3.1.1"
 "pyannote.audio" = "^3.3.1"
 torch = "^2.3.0"
 
