@@ -1,6 +1,6 @@
 import pytest
 from scraibe import (Transcriber, WhisperTranscriber,
-                     WhisperXTranscriber, load_transcriber)
+                     FasterWhisperTranscriber, load_transcriber)
 import torch
 
 
@@ -35,24 +35,24 @@ def whisper_instance():
 
 
 @pytest.fixture
-def whisperx_instance():
-    return load_transcriber('medium', whisper_type='whisperx')
+def faster_whisper_instance():
+    return load_transcriber('medium', whisper_type='faster-whisper')
 
 
 def test_whisper_base_initialization(whisper_instance):
     assert isinstance(whisper_instance, Transcriber)
 
 
-def test_whisperx_base_initialization(whisperx_instance):
-    assert isinstance(whisperx_instance, Transcriber)
+def test_faster_whisper_base_initialization(faster_whisper_instance):
+    assert isinstance(faster_whisper_instance, Transcriber)
 
 
 def test_whisper_transcriber_initialization(whisper_instance):
     assert isinstance(whisper_instance, WhisperTranscriber)
 
 
-def test_whisperx_transcriber_initialization(whisperx_instance):
-    assert isinstance(whisperx_instance, WhisperXTranscriber)
+def test_faster_whisper_transcriber_initialization(faster_whisper_instance):
+    assert isinstance(faster_whisper_instance, FasterWhisperTranscriber)
 
 
 def test_wrong_transcriber_initialization():
@@ -73,8 +73,8 @@ def test_whisper_transcribe(whisper_instance):
     assert isinstance(transcript, str)
 
 
-def test_whisperx_transcribe(whisperx_instance):
-    model = whisperx_instance
+def test_faster_whisper_transcribe(faster_whisper_instance):
+    model = faster_whisper_instance
     # mocker.patch.object(transcriber_instance.model, 'transcribe', return_value={'Hello, World !'} )
     transcript = model.transcribe('test/audio_test_2.mp4')
     assert isinstance(transcript, str)
