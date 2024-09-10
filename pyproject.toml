@@ -31,7 +31,7 @@ exclude =[
         ]
 [tool.poetry.dependencies]
 python = "^3.9"
-tqdm = "^4.66.4"
+tqdm = "^4.66.5"
 numpy = "^1.26.4"
 openai-whisper = "^20231117"
 faster-whisper = "^1.0.3"

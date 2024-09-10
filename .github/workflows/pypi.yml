@@ -1,24 +1,29 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - develop
-      - main
+  push:
+    tags:
+      - 'v*.*.*'
+    branches: 
+      - "develop"
+    paths: 
+      - "scraibe/**"
+      - "pyproject.toml"
+
   workflow_dispatch:
     inputs:
-      job:
-        description: "Select job to run"
-        required: true
-        type: choice
-        options:
-          - Build-and-publish-to-Test-PyPI
-          - test-install
-          - publish-to-pypi
+      test:
+        description: "Run tests"
+        default: true
+        type: boolean
+      publish_to_pypi:
+        description: "Publish to PyPI"
+        default: false
+        type: boolean
 
 jobs: 
   Build-and-publish-to-Test-PyPI:
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.test == 'true'
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v4
@@ -32,7 +37,7 @@ jobs:
           repository_name: "scraibe"
           repository_url: "https://test.pypi.org/legacy/"
 
-  test-install:
+  Test-PyPi-install:
     name: Test Installation from TestPyPI
     needs: Build-and-publish-to-Test-PyPI
     runs-on: ubuntu-latest
@@ -54,21 +59,19 @@ jobs:
 
   publish-to-pypi:
     name: Publish to PyPI
-    needs: test-install
+    needs: Test-PyPi-install
     runs-on: ubuntu-latest
+    if: |
+        always() &&
+        (( needs.Build-and-publish-to-Test-PyPI.result  != 'failure' &&
+          needs.Test-PyPi-install.result != 'failure' ) ||
+        ((github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.publish_to_pypi == 'true')))
     steps: 
-      - name: Checkout Repository Tags
-        uses: actions/checkout@v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          fetch-depth: '0'
-          branch: 'main'
       - name: Checkout Repository (Develop)
         uses: actions/checkout@v4
-        if: github.ref == 'refs/heads/develop'
         with:
           fetch-depth: '0'
-          branch: 'develop'
       - name: Set up Poetry 📦
         uses: JRubics/poetry-publish@v1.16
         with:

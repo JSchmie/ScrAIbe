@@ -1,4 +1,4 @@
-tqdm>=4.65.0
+tqdm>=4.66.5
 numpy>=1.26.4
 
 openai-whisper==20231117

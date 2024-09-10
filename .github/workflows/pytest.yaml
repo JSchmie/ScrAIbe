@@ -2,7 +2,14 @@ name: Run Tests
 
 on:
   pull_request:
-    branches: ['main', 'develop']
+    branches:
+      - main
+      - develop
+    paths: 
+      - scraibe/**
+      - pyproject.toml
+      - requirements.txt
+      - test/**    
   workflow_dispatch:
 
 jobs:
