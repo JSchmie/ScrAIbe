@@ -2,9 +2,9 @@ tqdm>=4.65.0
 numpy>=1.26.4
 
 openai-whisper==20231117
-faster-whisper~=1.0.1
+faster-whisper~=1.0.3
 
-pyannote.audio~=3.1.1
+pyannote.audio~=3.3.1
 pyannote.core~=5.0.0
 pyannote.database~=5.0.1 
 pyannote.metrics~=3.2.1
