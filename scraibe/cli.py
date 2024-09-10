@@ -36,8 +36,8 @@ def cli():
                         help="List of audio files to transcribe.")
 
     parser.add_argument("--whisper-type", type=str, default="whisper",
-                        choices=["whisper", "whisperx"],
-                        help="Type of Whisper model to use ('whisper' or 'whisperx').")
+                        choices=["whisper", "faster-whisper"],
+                        help="Type of Whisper model to use ('whisper' or 'faster-whisper').")
     
     parser.add_argument("--whisper-model-name", default="medium",
                         help="Name of the Whisper model to use.")
