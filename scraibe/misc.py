@@ -7,7 +7,10 @@ CACHE_DIR = os.getenv(
     "AUTOT_CACHE",
     os.path.expanduser("~/.cache/torch/models"),
 )
-os.environ["PYANNOTE_CACHE"] = os.path.join(CACHE_DIR, "pyannote")
+os.getenv(
+    "PYANNOTE_CACHE",
+    os.path.join(CACHE_DIR, "pyannote"),
+)
 
 WHISPER_DEFAULT_PATH = os.path.join(CACHE_DIR, "whisper")
 PYANNOTE_DEFAULT_PATH = os.path.join(CACHE_DIR, "pyannote")
