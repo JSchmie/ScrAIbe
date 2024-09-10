@@ -1,18 +1,14 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 on:
-  pull_request_target:
-    branches:
-      - develop
-    types:
-      - closed
-    paths: 
-      - scraibe/**
-      - pyproject.toml
-
   push:
     tags:
       - 'v*.*.*'
+    branches: 
+      - "develop"
+    paths: 
+      - "scraibe/**"
+      - "pyproject.toml"
 
   workflow_dispatch:
     inputs:
@@ -27,13 +23,7 @@ on:
 
 jobs: 
   Build-and-publish-to-Test-PyPI:
-    if: |
-      (github.event_name == 'workflow_dispatch' &&
-       github.event.inputs.test == 'true') ||
-      (github.event_name == 'pull_request_target' &&
-       github.event.pull_request.merged &&
-       contains(github.event.pull_request.labels.*.name, 'release')) ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.test == 'true'
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v4
@@ -72,28 +62,16 @@ jobs:
     needs: Test-PyPi-install
     runs-on: ubuntu-latest
     if: |
-      always() &&
-      (( needs.Build-and-publish-to-Test-PyPI.result  != 'failure' &&
-        needs.Test-PyPi-install.result != 'failure' ) &&
-      ((github.event_name == 'workflow_dispatch' &&
-      github.event.inputs.publish_to_pypi == 'true') ||
-      (github.event_name == 'pull_request_target' &&
-      github.event.pull_request.merged &&
-      contains(github.event.pull_request.labels.*.name, 'release')) ||
-      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))))
+        always() &&
+        (( needs.Build-and-publish-to-Test-PyPI.result  != 'failure' &&
+          needs.Test-PyPi-install.result != 'failure' ) ||
+        ((github.event_name == 'workflow_dispatch' &&
+        github.event.inputs.publish_to_pypi == 'true')))
     steps: 
-      - name: Checkout Repository Tags
-        uses: actions/checkout@v4
-        if: github.ref == 'refs/heads/main'
-        with:
-          fetch-depth: '0'
-          branch: 'main'
       - name: Checkout Repository (Develop)
         uses: actions/checkout@v4
-        if: github.ref == 'refs/heads/develop'
         with:
           fetch-depth: '0'
-          branch: 'develop'
       - name: Set up Poetry 📦
         uses: JRubics/poetry-publish@v1.16
         with:
