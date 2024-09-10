@@ -31,12 +31,12 @@ def test_transcriber(mock_load_model, audio_file, expected_transcription):
 
 @pytest.fixture
 def whisper_instance():
-    return load_transcriber('medium', whisper_type='whisper')
+    return load_transcriber('tiny', whisper_type='whisper')
 
 
 @pytest.fixture
 def faster_whisper_instance():
-    return load_transcriber('medium', whisper_type='faster-whisper')
+    return load_transcriber('tiny', whisper_type='faster-whisper')
 
 
 def test_whisper_base_initialization(whisper_instance):
@@ -57,7 +57,7 @@ def test_faster_whisper_transcriber_initialization(faster_whisper_instance):
 
 def test_wrong_transcriber_initialization():
     with pytest.raises(ValueError):
-        load_transcriber('medium', whisper_type='wrong_whisper')
+        load_transcriber('tiny', whisper_type='wrong_whisper')
 
 
 def test_get_whisper_kwargs():
