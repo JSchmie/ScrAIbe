@@ -1,6 +1,5 @@
 import os
 import yaml
-from pyannote.audio.core.model import CACHE_DIR as PYANNOTE_CACHE_DIR
 from argparse import Action
 from ast import literal_eval
 
@@ -8,9 +7,7 @@ CACHE_DIR = os.getenv(
     "AUTOT_CACHE",
     os.path.expanduser("~/.cache/torch/models"),
 )
-
-if CACHE_DIR != PYANNOTE_CACHE_DIR:
-    os.environ["PYANNOTE_CACHE"] = os.path.join(CACHE_DIR, "pyannote")
+os.environ["PYANNOTE_CACHE"] = os.path.join(CACHE_DIR, "pyannote")
 
 WHISPER_DEFAULT_PATH = os.path.join(CACHE_DIR, "whisper")
 PYANNOTE_DEFAULT_PATH = os.path.join(CACHE_DIR, "pyannote")
