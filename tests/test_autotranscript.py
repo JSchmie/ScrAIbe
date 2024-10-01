@@ -6,7 +6,7 @@ import os
 @pytest.fixture
 def create_scraibe_instance():
     if "HF_TOKEN" in os.environ:
-        return Scraibe(use_auth_token=os.environ["HF_TOKEN"])
+        return Scraibe(use_auth_token=os.environ["HF_TOKEN"], whisper_model= "tiny")
     else:
         return Scraibe()
 
@@ -19,19 +19,19 @@ def test_scraibe_init(create_scraibe_instance):
 
 def test_scraibe_autotranscribe(create_scraibe_instance):
     model = create_scraibe_instance
-    transcript = model.autotranscribe('test/audio_test_2.mp4')
+    transcript = model.autotranscribe('tests/audio_test_2.mp4')
     assert isinstance(transcript, Transcript)
 
 
 def test_scraibe_diarization(create_scraibe_instance):
     model = create_scraibe_instance
-    diarisation_result = model.diarization('test/audio_test_2.mp4')
+    diarisation_result = model.diarization('tests/audio_test_2.mp4')
     assert isinstance(diarisation_result, dict)
 
 
 def test_scraibe_transcribe(create_scraibe_instance):
     model = create_scraibe_instance
-    transcription_result = model.transcribe('test/audio_test_2.mp4')
+    transcription_result = model.transcribe('tests/audio_test_2.mp4')
     assert isinstance(transcription_result, str)
 
 
