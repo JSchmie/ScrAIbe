@@ -7,7 +7,7 @@ CACHE_DIR = os.getenv(
     "AUTOT_CACHE",
     os.path.expanduser("~/.cache/torch/models"),
 )
-os.getenv(
+os.environ["PYANNOTE_CACHE"] = os.getenv(
     "PYANNOTE_CACHE",
     os.path.join(CACHE_DIR, "pyannote"),
 )
