@@ -37,7 +37,7 @@ from pyannote.audio import Pipeline
 from pyannote.audio.pipelines.speaker_diarization import SpeakerDiarization
 from torch import Tensor
 from torch import device as torch_device
-from torch.cuda import is_available
+
 from huggingface_hub import HfApi
 from huggingface_hub.utils import RepositoryNotFoundError
 

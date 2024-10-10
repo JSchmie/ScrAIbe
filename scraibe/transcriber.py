@@ -31,7 +31,6 @@ from faster_whisper import WhisperModel as FasterWhisperModel
 from faster_whisper.tokenizer import _LANGUAGE_CODES as FASTER_WHISPER_LANGUAGE_CODES
 from typing import TypeVar, Union, Optional
 from torch import Tensor, device
-from torch.cuda import is_available as cuda_is_available
 from numpy import ndarray
 from inspect import signature
 from abc import abstractmethod
