@@ -36,8 +36,8 @@ def cli():
                         help="List of audio files to transcribe.")
 
     parser.add_argument("--whisper-type", type=str, default="whisper",
-                        choices=["whisper", "whisperx"],
-                        help="Type of Whisper model to use ('whisper' or 'whisperx').")
+                        choices=["whisper", "faster-whisper"],
+                        help="Type of Whisper model to use ('whisper' or 'faster-whisper').")
     
     parser.add_argument("--whisper-model-name", default="medium",
                         help="Name of the Whisper model to use.")
@@ -79,6 +79,8 @@ def cli():
                         choices=sorted(
                             LANGUAGES.keys()) + sorted([k.title() for k in TO_LANGUAGE_CODE.keys()]),
                         help="Language spoken in the audio. Specify None to perform language detection.")
+    parser.add_argument("--num-speakers", type=int, default=2,
+                        help="Number of speakers in the audio.")
 
     args = parser.parse_args()
 
@@ -117,8 +119,13 @@ def cli():
                 else:
                     task = "transcribe"
 
-                out = model.autotranscribe(audio, task=task, language=arg_dict.pop(
-                    "language"), verbose=arg_dict.pop("verbose_output"))
+                out = model.autotranscribe(
+                        audio, 
+                        task=task, 
+                        language=arg_dict.pop("language"), 
+                        verbose=arg_dict.pop("verbose_output"),
+                        num_speakers=arg_dict.pop("num_speakers")
+                        )
                 basename = audio.split("/")[-1].split(".")[0]
                 print(f'Saving {basename}.{out_format} to {out_folder}')
                 out.save(os.path.join(
