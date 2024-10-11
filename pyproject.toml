@@ -33,7 +33,7 @@ exclude =[
 python = "^3.9"
 tqdm = "^4.66.5"
 numpy = "^1.26.4"
-openai-whisper = "^20231117"
+openai-whisper = ">=20231117,<20240931"
 faster-whisper = "^1.0.3"
 "pyannote.audio" = "^3.3.1"
 torch = "^2.1.2"
