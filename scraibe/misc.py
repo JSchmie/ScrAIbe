@@ -1,6 +1,5 @@
 import os
 import yaml
-from pyannote.audio.core.model import CACHE_DIR as PYANNOTE_CACHE_DIR
 from argparse import Action
 from ast import literal_eval
 
@@ -8,15 +7,16 @@ CACHE_DIR = os.getenv(
     "AUTOT_CACHE",
     os.path.expanduser("~/.cache/torch/models"),
 )
-
-if CACHE_DIR != PYANNOTE_CACHE_DIR:
-    os.environ["PYANNOTE_CACHE"] = os.path.join(CACHE_DIR, "pyannote")
+os.getenv(
+    "PYANNOTE_CACHE",
+    os.path.join(CACHE_DIR, "pyannote"),
+)
 
 WHISPER_DEFAULT_PATH = os.path.join(CACHE_DIR, "whisper")
 PYANNOTE_DEFAULT_PATH = os.path.join(CACHE_DIR, "pyannote")
 PYANNOTE_DEFAULT_CONFIG = os.path.join(PYANNOTE_DEFAULT_PATH, "config.yaml") \
     if os.path.exists(os.path.join(PYANNOTE_DEFAULT_PATH, "config.yaml")) \
-    else ('jaikinator/scraibe', 'pyannote/speaker-diarization-3.1')
+    else ('Jaikinator/ScrAIbe', 'pyannote/speaker-diarization-3.1')
 
 
 def config_diarization_yaml(file_path: str, path_to_segmentation: str = None) -> None:
