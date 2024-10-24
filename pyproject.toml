@@ -31,12 +31,12 @@ exclude =[
         ]
 [tool.poetry.dependencies]
 python = "^3.9"
-tqdm = "^4.66.4"
+tqdm = "^4.66.5"
 numpy = "^1.26.4"
-openai-whisper = "^20231117"
-whisperx = "^3.1.3"
-"pyannote.audio" = "^3.1.1"
-torch = "^2.3.0"
+openai-whisper = ">=20231117,<20240931"
+faster-whisper = "^1.0.3"
+"pyannote.audio" = "^3.3.1"
+torch = "^2.1.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1.1"
@@ -57,7 +57,7 @@ format-jinja = """
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "^7.3.7"
-sphinx-rtd-theme = "^2.0.0"
+sphinx-rtd-theme = ">=2,<4"
 markdown-it-py = {version = "~3.0.0", extras = ["plugins"]}
 myst-parser = "^3.0.1"
 mdit-py-plugins = "^0.4.1"

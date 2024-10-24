@@ -26,17 +26,17 @@ Usage:
 
 from whisper import Whisper
 from whisper import load_model as whisper_load_model
-from whisperx.asr import WhisperModel
-from whisperx import load_model as whisperx_load_model
+from whisper.tokenizer import TO_LANGUAGE_CODE
+from faster_whisper import WhisperModel as FasterWhisperModel
+from faster_whisper.tokenizer import _LANGUAGE_CODES as FASTER_WHISPER_LANGUAGE_CODES
 from typing import TypeVar, Union, Optional
 from torch import Tensor, device
-from torch.cuda import is_available as cuda_is_available
 from numpy import ndarray
 from inspect import signature
 from abc import abstractmethod
 import warnings
 
-from .misc import WHISPER_DEFAULT_PATH
+from .misc import WHISPER_DEFAULT_PATH, SCRAIBE_TORCH_DEVICE
 whisper = TypeVar('whisper')
 
 
@@ -123,7 +123,7 @@ class Transcriber:
                    model: str = "medium",
                    whisper_type: str = 'whisper',
                    download_root: str = WHISPER_DEFAULT_PATH,
-                   device: Optional[Union[str, device]] = None,
+                   device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
                    in_memory: bool = False,
                    *args, **kwargs
                    ) -> None:
@@ -145,7 +145,7 @@ class Transcriber:
                         - 'large-v3'
                         - 'large'
             whisper_type (str):
-                                Type of whisper model to load. "whisper" or "whisperx".
+                                Type of whisper model to load. "whisper" or "faster-whisper".
             download_root (str, optional): Path to download the model.
                                             Defaults to WHISPER_DEFAULT_PATH.
             device (Optional[Union[str, torch.device]], optional): 
@@ -205,7 +205,7 @@ class WhisperTranscriber(Transcriber):
     def load_model(cls,
                    model: str = "medium",
                    download_root: str = WHISPER_DEFAULT_PATH,
-                   device: Optional[Union[str, device]] = None,
+                   device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
                    in_memory: bool = False,
                    *args, **kwargs
                    ) -> 'WhisperTranscriber':
@@ -272,7 +272,7 @@ class WhisperTranscriber(Transcriber):
         return f"WhisperTranscriber(model_name={self.model_name}, model={self.model})"
 
 
-class WhisperXTranscriber(Transcriber):
+class FasterWhisperTranscriber(Transcriber):
     def __init__(self, model: whisper, model_name: str) -> None:
         super().__init__(model, model_name)
 
@@ -294,19 +294,19 @@ class WhisperXTranscriber(Transcriber):
 
         if isinstance(audio, Tensor):
             audio = audio.cpu().numpy()
-        result = self.model.transcribe(audio, *args, **kwargs)
+        result, _ = self.model.transcribe(audio, *args, **kwargs)
         text = ""
-        for seg in result['segments']:
-            text += seg['text']
+        for seg in result:
+            text += seg.text
         return text
 
     @classmethod
     def load_model(cls,
                    model: str = "medium",
                    download_root: str = WHISPER_DEFAULT_PATH,
-                   device: Optional[Union[str, device]] = None,
+                   device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
                    *args, **kwargs
-                   ) -> 'WhisperXTranscriber':
+                   ) -> 'FasterWhisperModel':
         """
         Load whisper model.
 
@@ -329,7 +329,7 @@ class WhisperXTranscriber(Transcriber):
                                             Defaults to WHISPER_DEFAULT_PATH.
 
             device (Optional[Union[str, torch.device]], optional): 
-                                        Device to load model on. Defaults to None.
+                                        Device to load model on. Defaults to SCRAIBE_TORCH_DEVICE.
             in_memory (bool, optional): Whether to load model in memory. 
                                         Defaults to False.
             args: Additional arguments only to avoid errors.
@@ -338,17 +338,17 @@ class WhisperXTranscriber(Transcriber):
         Returns:
             Transcriber: A Transcriber object initialized with the specified model.
         """
-        if device is None:
-            device = "cuda" if cuda_is_available() else "cpu"
+
         if not isinstance(device, str):
             device = str(device)
+            
         compute_type = kwargs.get('compute_type', 'float16')
         if device == 'cpu' and compute_type == 'float16':
             warnings.warn(f'Compute type {compute_type} not compatible with '
                           f'device {device}! Changing compute type to int8.')
             compute_type = 'int8'
-        _model = whisperx_load_model(model, download_root=download_root,
-                                     device=device, compute_type=compute_type)
+        _model = FasterWhisperModel(model, download_root=download_root,
+                                    device=device, compute_type=compute_type)
 
         return cls(_model, model_name=model)
 
@@ -361,7 +361,7 @@ class WhisperXTranscriber(Transcriber):
             dict: Keyword arguments for whisper model.
         """
         # _possible_kwargs = WhisperModel.transcribe.__code__.co_varnames
-        _possible_kwargs = signature(WhisperModel.transcribe).parameters.keys()
+        _possible_kwargs = signature(FasterWhisperModel.transcribe).parameters.keys()
 
         whisper_kwargs = {k: v for k,
                           v in kwargs.items() if k in _possible_kwargs}
@@ -370,21 +370,51 @@ class WhisperXTranscriber(Transcriber):
             whisper_kwargs["task"] = task
 
         if (language := kwargs.get("language")):
+            language = FasterWhisperTranscriber.convert_to_language_code(language)
             whisper_kwargs["language"] = language
 
         return whisper_kwargs
 
+    @staticmethod
+    def convert_to_language_code(lang : str) -> str:
+        """
+        Load whisper model.
+
+        Args:
+            lang (str): language as code or language name
+
+        Returns:
+            language (str) code of language 
+        """
+        
+        # If the input is already in FASTER_WHISPER_LANGUAGE_CODES, return it directly
+        if lang in FASTER_WHISPER_LANGUAGE_CODES:
+            return lang
+
+        # Normalize the input to lowercase
+        lang = lang.lower()
+
+        # Check if the language name is in the TO_LANGUAGE_CODE mapping
+        if lang in TO_LANGUAGE_CODE:
+            return TO_LANGUAGE_CODE[lang]
+
+        # If the language is not recognized, raise a ValueError with the available options
+        available_codes = ', '.join(FASTER_WHISPER_LANGUAGE_CODES)
+        raise ValueError(f"Language '{lang}' is not a valid language code or name. "
+                        f"Available language codes are: {available_codes}.")
+
     def __repr__(self) -> str:
-        return f"WhisperXTranscriber(model_name={self.model_name}, model={self.model})"
+        return f"FasterWhisperTranscriber(model_name={self.model_name}, model={self.model})"
+
 
 
 def load_transcriber(model: str = "medium",
                      whisper_type: str = 'whisper',
                      download_root: str = WHISPER_DEFAULT_PATH,
-                     device: Optional[Union[str, device]] = None,
+                     device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
                      in_memory: bool = False,
                      *args, **kwargs
-                     ) -> Union[WhisperTranscriber, WhisperXTranscriber]:
+                     ) -> Union[WhisperTranscriber, FasterWhisperTranscriber]:
     """
     Load whisper model.
 
@@ -403,28 +433,28 @@ def load_transcriber(model: str = "medium",
                     - 'large-v3'
                     - 'large'
         whisper_type (str):
-                            Type of whisper model to load. "whisper" or "whisperx".
+                            Type of whisper model to load. "whisper" or "faster-whisper".
         download_root (str, optional): Path to download the model.
                                         Defaults to WHISPER_DEFAULT_PATH.
-        device (Optional[Union[str, torch.device]], optional): 
-                                    Device to load model on. Defaults to None.
-        in_memory (bool, optional): Whether to load model in memory. 
+        device (Optional[Union[str, torch.device]], optional):
+                                    Device to load model on. Defaults to SCRAIBE_TORCH_DEVICE.
+        in_memory (bool, optional): Whether to load model in memory.
                                     Defaults to False.
         args: Additional arguments only to avoid errors.
         kwargs: Additional keyword arguments only to avoid errors.
 
     Returns:
-        Union[WhisperTranscriber, WhisperXTranscriber]: 
+        Union[WhisperTranscriber, FasterWhisperTranscriber]:
         One of the Whisper variants as Transcrbier object initialized with the specified model.
     """
     if whisper_type.lower() == 'whisper':
         _model = WhisperTranscriber.load_model(
             model, download_root, device, in_memory, *args, **kwargs)
         return _model
-    elif whisper_type.lower() == 'whisperx':
-        _model = WhisperXTranscriber.load_model(
+    elif whisper_type.lower() == 'faster-whisper':
+        _model = FasterWhisperTranscriber.load_model(
             model, download_root, device, *args, **kwargs)
         return _model
     else:
         raise ValueError(f'Model type not recognized, exptected "whisper" '
-                         f'or "whisperx", got {whisper_type}.')
+                         f'or "faster-whisper", got {whisper_type}.')
