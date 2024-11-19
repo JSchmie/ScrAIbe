@@ -9,8 +9,8 @@ import json
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
 from torch.cuda import is_available
-from torch import set_num_threads
 from .autotranscript import Scraibe
+from .misc import set_threads
 
 def cli():
     """
@@ -55,7 +55,7 @@ def cli():
                         default="cuda" if is_available() else "cpu",
                         help="Device to use for PyTorch inference.")
 
-    parser.add_argument("--num-threads", type=int, default=0,
+    parser.add_argument("--num-threads", type=int, default=None,
                         help="Number of threads used by torch for CPU inference; '\
                             'overrides MKL_NUM_THREADS/OMP_NUM_THREADS.")
 
@@ -94,8 +94,7 @@ def cli():
 
     task = arg_dict.pop("task")
 
-    if args.num_threads > 0:
-        set_num_threads(arg_dict.pop("num_threads"))
+    set_threads(arg_dict.pop("num_threads"))
 
     class_kwargs = {'whisper_model': arg_dict.pop("whisper_model_name"),
                     'whisper_type':arg_dict.pop("whisper_type"),
