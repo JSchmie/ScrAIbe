@@ -53,8 +53,7 @@ def config_diarization_yaml(file_path: str, path_to_segmentation: str = None) ->
 
 
 def set_threads(parse_threads=None,
-                yaml_threads=None,
-                env_var_threads=None):
+                yaml_threads=None):
     global SCRAIBE_NUM_THREADS
     if parse_threads is not None:
         if not isinstance(parse_threads, int):
