@@ -35,8 +35,5 @@ RUN --mount=source=.git,target=.git,type=bind \
 #    --mount=source=scraibe_webui,target=scraibe_webui,type=bind \
     pip install --no-cache-dir ./src
 
-# Expose port
-EXPOSE 7860
 # Run the application
-
 ENTRYPOINT ["python3", "-m",  "scraibe.cli"]  
