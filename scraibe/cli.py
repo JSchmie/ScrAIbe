@@ -100,6 +100,7 @@ def cli():
                     'whisper_type':arg_dict.pop("whisper_type"),
                     'dia_model': arg_dict.pop("diarization_directory"),
                     'use_auth_token': arg_dict.pop("hf_token"),
+                    'device': arg_dict.pop('inference_device')
                     }
 
     if arg_dict["whisper_model_directory"]:

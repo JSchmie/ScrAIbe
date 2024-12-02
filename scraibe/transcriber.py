@@ -36,7 +36,7 @@ from inspect import signature
 from abc import abstractmethod
 import warnings
 
-from .misc import WHISPER_DEFAULT_PATH, SCRAIBE_TORCH_DEVICE, SCRAIBE_NUM_THREADS
+import scraibe.misc
 whisper = TypeVar('whisper')
 
 
@@ -122,8 +122,8 @@ class Transcriber:
     def load_model(cls,
                    model: str = "medium",
                    whisper_type: str = 'whisper',
-                   download_root: str = WHISPER_DEFAULT_PATH,
-                   device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
+                   download_root: str = scraibe.misc.WHISPER_DEFAULT_PATH,
+                   device: Optional[Union[str, device]] = scraibe.misc.SCRAIBE_TORCH_DEVICE,
                    in_memory: bool = False,
                    *args, **kwargs
                    ) -> None:
@@ -204,8 +204,8 @@ class WhisperTranscriber(Transcriber):
     @classmethod
     def load_model(cls,
                    model: str = "medium",
-                   download_root: str = WHISPER_DEFAULT_PATH,
-                   device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
+                   download_root: str = scraibe.misc.WHISPER_DEFAULT_PATH,
+                   device: Optional[Union[str, device]] = scraibe.misc.SCRAIBE_TORCH_DEVICE,
                    in_memory: bool = False,
                    *args, **kwargs
                    ) -> 'WhisperTranscriber':
@@ -303,8 +303,8 @@ class FasterWhisperTranscriber(Transcriber):
     @classmethod
     def load_model(cls,
                    model: str = "medium",
-                   download_root: str = WHISPER_DEFAULT_PATH,
-                   device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
+                   download_root: str = scraibe.misc.WHISPER_DEFAULT_PATH,
+                   device: Optional[Union[str, device]] = scraibe.misc.SCRAIBE_TORCH_DEVICE,
                    *args, **kwargs
                    ) -> 'FasterWhisperModel':
         """
@@ -349,7 +349,7 @@ class FasterWhisperTranscriber(Transcriber):
             compute_type = 'int8'
         _model = FasterWhisperModel(model, download_root=download_root,
                                     device=device, compute_type=compute_type, 
-                                    cpu_threads=SCRAIBE_NUM_THREADS)
+                                    cpu_threads=scraibe.misc.SCRAIBE_NUM_THREADS)
 
         return cls(_model, model_name=model)
 
@@ -411,8 +411,8 @@ class FasterWhisperTranscriber(Transcriber):
 
 def load_transcriber(model: str = "medium",
                      whisper_type: str = 'whisper',
-                     download_root: str = WHISPER_DEFAULT_PATH,
-                     device: Optional[Union[str, device]] = SCRAIBE_TORCH_DEVICE,
+                     download_root: str = scraibe.misc.WHISPER_DEFAULT_PATH,
+                     device: Optional[Union[str, device]] = scraibe.misc.SCRAIBE_TORCH_DEVICE,
                      in_memory: bool = False,
                      *args, **kwargs
                      ) -> Union[WhisperTranscriber, FasterWhisperTranscriber]:
