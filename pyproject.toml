@@ -17,8 +17,6 @@ classifiers = [
                 'Intended Audience :: Developers',
                 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
                 'Programming Language :: Python :: 3.8',
-                'Programming Language :: Python :: 3.9',
-                'Programming Language :: Python :: 3.10',
                 'Programming Language :: Python :: 3.11',
                 'Environment :: GPU :: NVIDIA CUDA :: 12 :: 12.1',
                 'Topic :: Scientific/Engineering :: Artificial Intelligence'
@@ -30,7 +28,7 @@ exclude =[
         "test"
         ]
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 tqdm = "^4.66.5"
 numpy = "^1.26.4"
 openai-whisper = ">=20231117,<20240931"
